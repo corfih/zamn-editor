@@ -3,22 +3,17 @@
     Public r As ROM
     Public EdControl As LvlEdCtrl
     Public CurTool As Tool
-    Private PBrushTool As PaintbrushTool
-    Private Dropper As DropperTool
-    Private TileSuggest As TileSuggestTool
-    Private RectSelect As RectangleSelectTool
-    Private PencilSlct As PencilSelectTool
-    Private TileSlct As TileSelectTool
+    Private PBrushTool As New PaintbrushTool(Me)
+    Private Dropper As New DropperTool(Me)
+    Private TileSuggest As New TileSuggestTool(Me)
+    Private RectSelect As New RectangleSelectTool(Me)
+    Private PencilSlct As New PencilSelectTool(Me)
+    Private TileSlct As New TileSelectTool(Me)
+    Private ItemT As New ItemTool(Me)
     Private updateTab As Boolean = True
     Private LevelItems As ToolStripItem()
 
     Private Sub Editor_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        PBrushTool = New PaintbrushTool(Me)
-        Dropper = New DropperTool(Me)
-        TileSuggest = New TileSuggestTool(Me)
-        RectSelect = New RectangleSelectTool(Me)
-        PencilSlct = New PencilSelectTool(Me)
-        TileSlct = New TileSelectTool(Me)
         LevelItems = New ToolStripItem() {FileSave, SaveTool, EditPaste, PasteTool, EditSelectAll, EditSelectNone, ViewGrid}
         TileSuggestList.LoadAll()
     End Sub
@@ -27,6 +22,7 @@
         If OpenROM.ShowDialog = DialogResult.OK Then
             r = New ROM(OpenROM.FileName)
             FileOpenLevel.Enabled = True
+            Items.Load(r)
         End If
     End Sub
 
@@ -39,7 +35,6 @@
             tp.Controls.Add(EdControl)
             EdControl.Dock = DockStyle.Fill
             EdControl.LoadLevel(l)
-            EdControl.Focus()
             SetTool(CurTool)
             UpdateEdControl()
             updateTab = True
@@ -48,6 +43,7 @@
             Next
             Tabs.Visible = True
             TSContainer.ContentPanel.BackColor = SystemColors.Control
+            EdControl.Focus()
         End If
     End Sub
 
@@ -82,12 +78,14 @@
         ToolsRectangleSelect.Checked = False
         ToolsPencilSelect.Checked = False
         ToolsTileSelect.Checked = False
+        ToolsItem.Checked = False
         BrushTool.Checked = False
         DropperTool.Checked = False
         TileSgstTool.Checked = False
         RectangleTool.Checked = False
         PencilTool.Checked = False
         TileSlctTool.Checked = False
+        ItemTool.Checked = False
     End Sub
 
     Private Sub ToolsPaintBrush_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolsPaintBrush.Click, BrushTool.Click
@@ -114,6 +112,10 @@
         SwitchToTool(ToolsTileSelect, TileSlctTool, TileSlct)
     End Sub
 
+    Private Sub ItemToolToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolsItem.Click, ItemTool.Click
+        SwitchToTool(ToolsItem, ItemTool, ItemT)
+    End Sub
+
     Private Sub SwitchToTool(ByVal item1 As ToolStripMenuItem, ByVal item2 As ToolStripButton, ByVal t As Tool)
         If Not item1.Checked Then
             UncheckTools()
@@ -129,6 +131,10 @@
             Case SideContentType.Tiles
                 t.TilePicker = EdControl.TilePicker
                 EdControl.SetSidePanel(EdControl.TilePicker)
+                EdControl.TilePicker.SetAll()
+            Case SideContentType.Items
+                t.ItemPicker = EdControl.ItemPicker
+                EdControl.SetSidePanel(EdControl.ItemPicker)
         End Select
         CurTool = t
         EdControl.t = t
@@ -164,6 +170,9 @@
     End Sub
 
     Private Sub Tabs_TabsClosed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Tabs.TabsClosed
+        For Each i As ToolStripItem In LevelItems
+            i.Enabled = False
+        Next
         Tabs.Visible = False
         TSContainer.ContentPanel.BackColor = SystemColors.AppWorkspace
     End Sub
@@ -177,5 +186,4 @@
         End Using
         Clipboard.SetImage(b)
     End Sub
-
 End Class

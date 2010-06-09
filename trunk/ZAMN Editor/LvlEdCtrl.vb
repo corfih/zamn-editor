@@ -2,6 +2,7 @@
     Public lvl As Level
     Public t As Tool
     Public TilePicker As New TilesetBrowser
+    Public ItemPicker As New ItemBrowser
     Public Grid As Boolean
     Public selection As Selection
 
@@ -83,6 +84,13 @@
                 e.Graphics.DrawImage(lvl.tileset.images(lvl.Tiles(l, m)), l * 64, m * 64)
             Next
         Next
+        For Each i As Item In lvl.items
+            e.Graphics.DrawImage(Items.Images(i.type), i.x, i.y)
+        Next
+        For Each v As Victim In lvl.victims
+            e.Graphics.FillRectangle(Brushes.Yellow, v.x - 9, v.y - 16, 18, 32)
+            e.Graphics.DrawRectangle(Pens.Black, v.x - 9, v.y - 16, 18, 32)
+        Next
         If Grid Then
             For l As Integer = HScrl.Value \ 64 To (HScrl.Value + HScrl.LargeChange) \ 64
                 e.Graphics.DrawLine(Pens.White, l * 64, VScrl.Value, l * 64, VScrl.Value + VScrl.LargeChange)
@@ -121,6 +129,8 @@
         ElseIf HScrl.Enabled Then
             HScrl.Value = Math.Max(0, Math.Min(HScrl.Maximum - HScrl.LargeChange + 1, HScrl.Value - e.Delta \ 2))
         End If
+        Dim pt As Point = canvas.PointToClient(MousePosition)
+        canvas_MouseMove(sender, New MouseEventArgs(Control.MouseButtons, 0, pt.X, pt.Y, e.Delta))
     End Sub
 
     Private Sub canvas_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles canvas.MouseDown

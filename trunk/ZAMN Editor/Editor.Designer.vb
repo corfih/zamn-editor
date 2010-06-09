@@ -52,6 +52,7 @@ Partial Class Editor
         Me.ToolsRectangleSelect = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolsPencilSelect = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolsTileSelect = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolsItem = New System.Windows.Forms.ToolStripMenuItem
         Me.Tools = New System.Windows.Forms.ToolStrip
         Me.OpenTool = New System.Windows.Forms.ToolStripButton
         Me.SaveTool = New System.Windows.Forms.ToolStripButton
@@ -66,8 +67,9 @@ Partial Class Editor
         Me.RectangleTool = New System.Windows.Forms.ToolStripButton
         Me.PencilTool = New System.Windows.Forms.ToolStripButton
         Me.TileSlctTool = New System.Windows.Forms.ToolStripButton
-        Me.OpenROM = New System.Windows.Forms.OpenFileDialog
+        Me.ItemTool = New System.Windows.Forms.ToolStripButton
         Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton
+        Me.OpenROM = New System.Windows.Forms.OpenFileDialog
         Me.TSContainer.ContentPanel.SuspendLayout()
         Me.TSContainer.TopToolStripPanel.SuspendLayout()
         Me.TSContainer.SuspendLayout()
@@ -274,7 +276,7 @@ Partial Class Editor
         '
         'ToolsMenu
         '
-        Me.ToolsMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolsPaintBrush, Me.ToolsDropper, Me.ToolsTileSuggest, Me.ToolsRectangleSelect, Me.ToolsPencilSelect, Me.ToolsTileSelect})
+        Me.ToolsMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolsPaintBrush, Me.ToolsDropper, Me.ToolsTileSuggest, Me.ToolsRectangleSelect, Me.ToolsPencilSelect, Me.ToolsTileSelect, Me.ToolsItem})
         Me.ToolsMenu.Name = "ToolsMenu"
         Me.ToolsMenu.Size = New System.Drawing.Size(44, 20)
         Me.ToolsMenu.Text = "&Tools"
@@ -320,14 +322,21 @@ Partial Class Editor
         Me.ToolsTileSelect.Size = New System.Drawing.Size(154, 22)
         Me.ToolsTileSelect.Text = "Tile Select"
         '
+        'ToolsItem
+        '
+        Me.ToolsItem.Image = CType(resources.GetObject("ToolsItem.Image"), System.Drawing.Image)
+        Me.ToolsItem.Name = "ToolsItem"
+        Me.ToolsItem.Size = New System.Drawing.Size(154, 22)
+        Me.ToolsItem.Text = "Items"
+        '
         'Tools
         '
         Me.Tools.Dock = System.Windows.Forms.DockStyle.None
-        Me.Tools.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenTool, Me.SaveTool, Me.toolStripSeparator, Me.CutTool, Me.CopyTool, Me.PasteTool, Me.toolStripSeparator1, Me.BrushTool, Me.DropperTool, Me.TileSgstTool, Me.RectangleTool, Me.PencilTool, Me.TileSlctTool, Me.ToolStripButton1})
+        Me.Tools.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenTool, Me.SaveTool, Me.toolStripSeparator, Me.CutTool, Me.CopyTool, Me.PasteTool, Me.toolStripSeparator1, Me.BrushTool, Me.DropperTool, Me.TileSgstTool, Me.RectangleTool, Me.PencilTool, Me.TileSlctTool, Me.ItemTool, Me.ToolStripButton1})
         Me.Tools.Location = New System.Drawing.Point(3, 24)
         Me.Tools.Name = "Tools"
         Me.Tools.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-        Me.Tools.Size = New System.Drawing.Size(331, 25)
+        Me.Tools.Size = New System.Drawing.Size(323, 25)
         Me.Tools.TabIndex = 1
         '
         'OpenTool
@@ -443,10 +452,14 @@ Partial Class Editor
         Me.TileSlctTool.Size = New System.Drawing.Size(23, 22)
         Me.TileSlctTool.Text = "Tile Select"
         '
-        'OpenROM
+        'ItemTool
         '
-        Me.OpenROM.DefaultExt = "smc"
-        Me.OpenROM.Filter = "SNES ROM Files (*.smc)|*.smc|All Files (*.*)|*.*"
+        Me.ItemTool.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.ItemTool.Image = CType(resources.GetObject("ItemTool.Image"), System.Drawing.Image)
+        Me.ItemTool.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ItemTool.Name = "ItemTool"
+        Me.ItemTool.Size = New System.Drawing.Size(23, 22)
+        Me.ItemTool.Text = "Item Tool"
         '
         'ToolStripButton1
         '
@@ -456,6 +469,11 @@ Partial Class Editor
         Me.ToolStripButton1.Name = "ToolStripButton1"
         Me.ToolStripButton1.Size = New System.Drawing.Size(23, 22)
         Me.ToolStripButton1.Text = "ToolStripButton1"
+        '
+        'OpenROM
+        '
+        Me.OpenROM.DefaultExt = "smc"
+        Me.OpenROM.Filter = "SNES ROM Files (*.smc)|*.smc|All Files (*.*)|*.*"
         '
         'Editor
         '
@@ -522,5 +540,7 @@ Partial Class Editor
     Friend WithEvents ToolsTileSuggest As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents TileSgstTool As System.Windows.Forms.ToolStripButton
     Friend WithEvents ToolStripButton1 As System.Windows.Forms.ToolStripButton
+    Friend WithEvents ItemTool As System.Windows.Forms.ToolStripButton
+    Friend WithEvents ToolsItem As System.Windows.Forms.ToolStripMenuItem
 
 End Class

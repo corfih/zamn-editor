@@ -1,16 +1,29 @@
 ﻿Public Class SharedFuncs
 
     Public Shared Function ReadFileAddr(ByVal s As IO.Stream) As Integer
-        Dim Part2 As Integer = s.ReadByte() + s.ReadByte() * &H100
+        Dim part2 As Integer = s.ReadByte() + s.ReadByte() * &H100
         Dim Banknum As Integer = s.ReadByte()
-        If Banknum < &H80 Or Part2 < &H8000 Then
+        s.ReadByte()
+        If Banknum < &H80 Or part2 < &H8000 Then
             Return -1
         End If
-        Return (Banknum - &H80) * &H8000 + Part2 - &H7E00
+        Return (Banknum - &H80) * &H8000 + part2 - &H7E00
     End Function
 
     Public Shared Sub GoToPointer(ByVal s As IO.Stream)
         s.Seek(ReadFileAddr(s), IO.SeekOrigin.Begin)
+    End Sub
+
+    Public Shared Function ReadRelativeFileAddr(ByVal s As IO.Stream, ByVal bank As Byte) As Integer
+        Dim part2 As Integer = s.ReadByte + s.ReadByte * &H100
+        If bank < &H80 Or part2 < &H8000 Then
+            Return -1
+        End If
+        Return (bank - &H80) * &H8000 + part2 - &H7E00
+    End Function
+
+    Public Shared Sub GoToRelativePointer(ByVal s As IO.Stream, ByVal bank As Byte)
+        s.Seek(ReadRelativeFileAddr(s, bank), IO.SeekOrigin.Begin)
     End Sub
 
     Public Shared Function RGBtoSNESLo(ByVal RGB As Color) As Byte
@@ -24,6 +37,17 @@
     Public Shared Function SNEStoRGB(ByVal LoByte As Byte, ByVal HiByte As Byte) As Color
         Dim v As Integer = LoByte + &H100 * HiByte
         Return Color.FromArgb((v Mod &H20) * 8, ((v \ &H20) Mod &H20) * 8, ((v \ &H400) Mod &H20) * 8)
+    End Function
+
+    Public Shared Function ReadPalette(ByVal s As IO.Stream, ByVal colorCount As Integer, ByVal transparant As Boolean) As Color()
+        Dim plt(colorCount - 1) As Color
+        For l As Integer = 0 To colorCount - 1
+            plt(l) = SNEStoRGB(s.ReadByte, s.ReadByte)
+            If transparant AndAlso l Mod 16 = 0 Then
+                plt(l) = Color.FromArgb(0, plt(l))
+            End If
+        Next
+        Return plt
     End Function
 
     Public Shared Function PlanarToLinear(ByVal bytes As Byte(), ByVal index As Integer) As Byte(,)

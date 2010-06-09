@@ -67,6 +67,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ByteArrayStream.vb" />
+    <Compile Include="Item.vb" />
+    <Compile Include="ItemBrowser.Designer.vb">
+      <DependentUpon>ItemBrowser.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ItemBrowser.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Items.vb" />
     <Compile Include="LvlEdCtrl.Designer.vb">
       <DependentUpon>LvlEdCtrl.vb</DependentUpon>
@@ -127,14 +134,19 @@
     </Compile>
     <Compile Include="TileSuggestList.vb" />
     <Compile Include="Tools\DropperTool.vb" />
+    <Compile Include="Tools\ItemTool.vb" />
     <Compile Include="Tools\PaintbrushTool.vb" />
     <Compile Include="Tools\PencilSelectTool.vb" />
     <Compile Include="Tools\RectangleSelectTool.vb" />
     <Compile Include="Tools\TileSelectTool.vb" />
     <Compile Include="Tools\TileSuggestTool.vb" />
     <Compile Include="Tools\Tool.vb" />
+    <Compile Include="Victim.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ItemBrowser.resx">
+      <DependentUpon>ItemBrowser.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LvlEdCtrl.resx">
       <DependentUpon>LvlEdCtrl.vb</DependentUpon>
     </EmbeddedResource>
