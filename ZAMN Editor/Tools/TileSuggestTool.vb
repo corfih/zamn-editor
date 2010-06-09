@@ -9,6 +9,7 @@
     Private pY As Integer = -1
     Private Direction As Integer = -1
     Private starting As Boolean = False
+    Private linePen As New Pen(Color.White, 2)
 
     Public Sub New(ByVal ed As Editor)
         MyBase.New(ed)
@@ -38,14 +39,11 @@
             Direction = -1
             If nx = XStart - 1 And ny = YStart Then
                 Direction = 0
-            End If
-            If ny = YStart - 1 And nx = XStart Then
+            ElseIf ny = YStart - 1 And nx = XStart Then
                 Direction = 1
-            End If
-            If nx = XStart + 1 And ny = YStart Then
+            ElseIf nx = XStart + 1 And ny = YStart Then
                 Direction = 2
-            End If
-            If ny = YStart + 1 And nx = XStart Then
+            ElseIf ny = YStart + 1 And nx = XStart Then
                 Direction = 3
             End If
             Repaint()
@@ -55,12 +53,12 @@
     Public Overrides Sub MouseUp(ByVal e As MouseEventArgs)
         If Direction = -1 Then
             XStart = -1
-            pX = -1
             Repaint()
             TilePicker.SetAll()
         Else
             TilePicker.SetTiles(TileSuggestList.GetList(0, ed.EdControl.lvl.Tiles(XStart, YStart), Direction))
         End If
+        pX = -1
     End Sub
 
     Public Overrides Sub Paint(ByVal g As Graphics)
@@ -68,7 +66,7 @@
             g.FillEllipse(Brushes.White, XStart * 64 + 28, YStart * 64 + 28, 8, 8)
         End If
         If Direction > -1 Then
-            g.DrawLine(Pens.White, XStart * 64 + 32, YStart * 64 + 32, XEnd * 64 + 32, YEnd * 64 + 32)
+            g.DrawLine(linePen, XStart * 64 + 32, YStart * 64 + 32, XEnd * 64 + 32, YEnd * 64 + 32)
             Dim b As Bitmap = My.Resources.Arrow
             b.RotateFlip(Direction)
             g.DrawImage(b, XEnd * 64 + 28, YEnd * 64 + 28, 8, 8)

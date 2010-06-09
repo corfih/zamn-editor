@@ -4,6 +4,7 @@
     Public SidePanel As SideContentType
     Public Cursor As Cursor = Cursors.Default
     Public WithEvents TilePicker As TilesetBrowser
+    Public WithEvents ItemPicker As ItemBrowser
 
     Public Sub New(ByVal ed As Editor)
         Me.ed = ed
@@ -23,12 +24,18 @@
     Public Overridable Sub TileChanged()
 
     End Sub
+    Public Overridable Sub ItemChanged()
+
+    End Sub
     Public Overridable Sub Refresh()
 
     End Sub
 
     Private Sub TilePicker_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TilePicker.ValueChanged
         TileChanged()
+    End Sub
+    Private Sub ItemPicker_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ItemPicker.ValueChanged
+        ItemChanged()
     End Sub
 
     Public Sub Repaint()
@@ -38,4 +45,5 @@ End Class
 
 Public Enum SideContentType
     Tiles
+    Items
 End Enum

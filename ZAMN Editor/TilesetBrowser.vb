@@ -12,14 +12,14 @@
 
     Public Sub LoadTileset(ByVal ts As Tileset)
         Me.ts = ts
-        bgBrush = New Drawing2D.LinearGradientBrush(New Rectangle(Point.Empty, New Size(Me.Width - 17, Me.Height)), Color.FromArgb(243, 241, 230), Color.FromArgb(228, 225, 208), Drawing2D.LinearGradientMode.Horizontal)
+        bgBrush = New Drawing2D.LinearGradientBrush(New Rectangle(Point.Empty, New Size(Me.Width - 17, Me.Height)), Color.White, Color.FromArgb(228, 225, 208), Drawing2D.LinearGradientMode.Horizontal)
         borderPen = New Pen(Color.FromArgb(49, 106, 197))
         selectedBrush = New SolidBrush(Color.FromArgb(225, 230, 232))
         SetAll()
         UpdateScrollBar()
     End Sub
 
-    Protected Overridable Sub UpdateScrollBar()
+    Private Sub UpdateScrollBar()
         VScrl.Maximum = maxIndex
         VScrl.LargeChange = Math.Max(1, Me.Height \ 80)
         VScrl.Value = Math.Min(VScrl.Value, Math.Max(0, VScrl.Maximum - VScrl.LargeChange))
