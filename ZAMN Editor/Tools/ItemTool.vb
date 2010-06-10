@@ -9,7 +9,6 @@
     Public width As Integer
     Public height As Integer
 
-    Private createItem As Boolean = False
     Private curSelItems As New List(Of Item)
     Private selecting As Boolean = False
     Private curX As Integer
@@ -34,11 +33,13 @@
 
     Public Overrides Sub MouseDown(ByVal e As System.Windows.Forms.MouseEventArgs)
         Dim additem As Boolean = False
-        Dim dontClear As Boolean = False
         For l As Integer = ed.EdControl.lvl.items.Count - 1 To 0 Step -1
             Dim i As Item = ed.EdControl.lvl.items(l)
             If i.GetRect.Contains(e.Location) Then
                 If Not selectedItems.Contains(i) Then
+                    If Control.ModifierKeys <> Keys.Shift Then
+                        selectedItems.Clear()
+                    End If
                     selectedItems.Add(i)
                 End If
                 selectedItem = i
@@ -62,6 +63,29 @@
             curY = e.Y
             width = 0
             height = 0
+        End If
+        If Control.ModifierKeys = Keys.Control Then
+            If selectedItems.Count = 0 Then
+                If ItemPicker.SelectedIndex > -1 Then
+                    Dim i As New Item(Math.Max(0, e.X - 8), Math.Max(0, e.Y - 8), ItemPicker.SelectedIndex)
+                    selectedItems.Clear()
+                    selectedItems.Add(i)
+                    selectedItem = i
+                    ed.EdControl.lvl.items.Add(i)
+                    dragXOff = 8
+                    dragYOff = 8
+                    selecting = False
+                End If
+            Else
+                Dim newItems As New List(Of Item)
+                For Each i As Item In selectedItems
+                    newItems.Add(New Item(i))
+                    ed.EdControl.lvl.items.Add(newItems.Last)
+                Next
+                selectedItem = newItems(selectedItems.IndexOf(selectedItem))
+                selectedItems = newItems
+                selecting = False
+            End If
         End If
         Repaint()
     End Sub
@@ -119,6 +143,23 @@
         curSelItems.Clear()
         selecting = False
         Repaint()
+    End Sub
+
+    Public Overrides Sub KeyDown(ByVal e As System.Windows.Forms.KeyEventArgs)
+        If e.KeyCode = Keys.Delete Then
+            For Each i As Item In selectedItems
+                ed.EdControl.lvl.items.Remove(i)
+            Next
+            selectedItems.Clear()
+            Repaint()
+        End If
+    End Sub
+
+    Public Overrides Sub ItemChanged()
+        For Each i As Item In selectedItems
+            i.type = ItemPicker.SelectedIndex
+            Repaint()
+        Next
     End Sub
 
     Public Overrides Sub Paint(ByVal g As System.Drawing.Graphics)

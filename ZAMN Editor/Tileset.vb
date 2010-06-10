@@ -79,56 +79,6 @@
             writeByte = writeByte \ 2
         Loop
         Return result
-
-        'Dim result(&H7FFF) As Byte
-        'Dim writeindex As Integer = 0
-        'Dim dict(&HFFF) As Byte, dictindex As Integer = 0
-        'Dim bytesLeft As Integer = s.ReadByte() + s.ReadByte() * &H100
-        'Dim r3A As Integer = &HFEE, r3C As Integer = 0, r3E As Integer = 0
-        'Dim y As Integer = 0
-        'Dim a As Integer = bytesLeft
-        'Dim temp As Integer, temp2 As Integer
-        'Do
-        '    dictindex = y
-        '    If y = 0 Then
-        '        y = 8
-        '        If ReadNext(s, a, bytesLeft) Then Exit Do
-        '    End If
-        '    y -= 1
-        '    temp = a
-        '    a = a >> 1
-        '    If (temp And 1) = 1 Then
-        '        temp = a
-        '        If ReadNext(s, a, bytesLeft) Then Exit Do
-        '        WriteNext(result, writeindex, a)
-        '        dictindex = r3A
-        '        dict(dictindex) = CByte(a)
-        '        dictindex += 1
-        '        r3A = dictindex And &HFFF
-        '        a = temp
-        '    Else
-        '        temp = a
-        '        temp2 = y
-        '        If ReadNext(s, a, bytesLeft) Then Exit Do
-        '        r3C = a
-        '        If ReadNext(s, a, bytesLeft) Then Exit Do
-        '        r3C = (((a << 4) And &HF00) Or r3C)
-        '        r3E = (a And &HF) + 2
-        '        dictindex = r3C
-        '        y = r3A
-        '        For l As Integer = 0 To r3E
-        '            a = dict(dictindex)
-        '            dict(y) = a
-        '            WriteNext(result, writeindex, a)
-        '            y = (y + 1) And &HFFF
-        '            dictindex = (dictindex + 1) And &HFFF
-        '        Next
-        '        r3A = y
-        '        y = temp2
-        '        a = temp
-        '    End If
-        'Loop
-        'Return result
     End Function
 
     Private Shared Function ReadNext(ByVal s As IO.Stream, ByRef result As Integer, ByRef bytesLeft As Integer) As Boolean

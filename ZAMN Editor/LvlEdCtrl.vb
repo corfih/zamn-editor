@@ -11,7 +11,7 @@
     Private borderPen As Pen
     Private selectionGP As Drawing2D.GraphicsPath
     Private eraserRect As Rectangle
-    Private WithEvents borderTimer As Timer
+    Private forceMove As Boolean = False
 
     Public Sub New()
         InitializeComponent()
@@ -20,9 +20,6 @@
         borderPen = New Pen(Color.Black)
         borderPen.DashOffset = 0
         borderPen.DashPattern = New Single() {4, 4}
-        borderTimer = New Timer()
-        borderTimer.Interval = 100
-        borderTimer.Enabled = True
     End Sub
 
     Public Sub LoadLevel(ByVal lvl As Level)
@@ -85,7 +82,7 @@
             Next
         Next
         For Each i As Item In lvl.items
-            e.Graphics.DrawImage(Items.Images(i.type), i.x, i.y)
+            e.Graphics.DrawImage(LevelGFX.ItemImages(i.type), i.x, i.y)
         Next
         For Each v As Victim In lvl.victims
             e.Graphics.FillRectangle(Brushes.Yellow, v.x - 9, v.y - 16, 18, 32)
@@ -125,40 +122,75 @@
 
     Private Sub LvlEdCtrl_MouseWheel(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseWheel
         If VScrl.Enabled Then
-            VScrl.Value = Math.Max(0, Math.Min(VScrl.Maximum - VScrl.LargeChange + 1, VScrl.Value - e.Delta \ 2))
+            VScrl.Value = Math.Max(0, Math.Min(VScrl.Maximum - VScrl.LargeChange + 1, VScrl.Value - 64 * Math.Sign(e.Delta)))
         ElseIf HScrl.Enabled Then
-            HScrl.Value = Math.Max(0, Math.Min(HScrl.Maximum - HScrl.LargeChange + 1, HScrl.Value - e.Delta \ 2))
+            HScrl.Value = Math.Max(0, Math.Min(HScrl.Maximum - HScrl.LargeChange + 1, HScrl.Value - 64 * Math.Sign(e.Delta)))
         End If
-        Dim pt As Point = canvas.PointToClient(MousePosition)
-        canvas_MouseMove(sender, New MouseEventArgs(Control.MouseButtons, 0, pt.X, pt.Y, e.Delta))
     End Sub
 
     Private Sub canvas_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles canvas.MouseDown
         If t Is Nothing Then Return
         t.MouseDown(CreateMouseEventArgs(e))
+        DragTimer.Start()
     End Sub
 
     Private Sub canvas_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles canvas.MouseUp
         If t Is Nothing Then Return
         t.MouseUp(CreateMouseEventArgs(e))
+        DragTimer.Stop()
     End Sub
 
     Private Sub canvas_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles canvas.MouseMove
         If t Is Nothing Then Return
         t.MouseMove(CreateMouseEventArgs(e))
+        If DragTimer.Enabled And Not forceMove Then
+            DragTimer_Tick(Nothing, Nothing)
+        End If
+        forceMove = False
+    End Sub
+
+    Private Sub LvlEdCtrl_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
+        If t Is Nothing Then Return
+        t.KeyDown(e)
     End Sub
 
     Private Function CreateMouseEventArgs(ByVal e As MouseEventArgs)
         Return New MouseEventArgs(e.Button, e.Clicks, e.X + HScrl.Value, e.Y + VScrl.Value, e.Delta)
     End Function
 
-    Private Sub borderTimer_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles borderTimer.Tick
+    Public Sub DoMouseMove()
+        Dim pt As Point = canvas.PointToClient(MousePosition)
+        forceMove = True
+        canvas_MouseMove(Me, New MouseEventArgs(Control.MouseButtons, 0, pt.X, pt.Y, 0))
+    End Sub
+
+    Private Sub borderTimer_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles BorderTimer.Tick
         If selection.exists Then
             borderPen.DashOffset += 1
             If borderPen.DashOffset = 8 Then
                 borderPen.DashOffset = 0
             End If
             canvas.Invalidate()
+        End If
+    End Sub
+
+    Private Sub DragTimer_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles DragTimer.Tick
+        Dim pt As Point = canvas.PointToClient(MousePosition)
+        If pt.X > canvas.Width Then
+            HScrl.Value = Math.Min(HScrl.Maximum - HScrl.LargeChange + 1, HScrl.Value + (pt.X - canvas.Width) \ 2)
+            DoMouseMove()
+        End If
+        If pt.Y > canvas.Height Then
+            VScrl.Value = Math.Min(VScrl.Maximum - VScrl.LargeChange + 1, VScrl.Value + (pt.Y - canvas.Height) \ 2)
+            DoMouseMove()
+        End If
+        If pt.X < 0 Then
+            HScrl.Value = Math.Max(0, HScrl.Value + pt.X \ 2)
+            DoMouseMove()
+        End If
+        If pt.Y < 0 Then
+            VScrl.Value = Math.Max(0, VScrl.Value + pt.Y \ 2)
+            DoMouseMove()
         End If
     End Sub
 End Class

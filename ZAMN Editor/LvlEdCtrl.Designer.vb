@@ -22,10 +22,13 @@ Partial Class LvlEdCtrl
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container
         Me.VScrl = New System.Windows.Forms.VScrollBar
         Me.HScrl = New System.Windows.Forms.HScrollBar
         Me.canvas = New System.Windows.Forms.PictureBox
         Me.SideContent = New System.Windows.Forms.Panel
+        Me.BorderTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.DragTimer = New System.Windows.Forms.Timer(Me.components)
         CType(Me.canvas, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -74,6 +77,14 @@ Partial Class LvlEdCtrl
         Me.SideContent.Size = New System.Drawing.Size(133, 400)
         Me.SideContent.TabIndex = 3
         '
+        'BorderTimer
+        '
+        Me.BorderTimer.Enabled = True
+        '
+        'DragTimer
+        '
+        Me.DragTimer.Interval = 20
+        '
         'LvlEdCtrl
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -93,5 +104,7 @@ Partial Class LvlEdCtrl
     Friend WithEvents HScrl As System.Windows.Forms.HScrollBar
     Friend WithEvents canvas As System.Windows.Forms.PictureBox
     Friend WithEvents SideContent As System.Windows.Forms.Panel
+    Friend WithEvents BorderTimer As System.Windows.Forms.Timer
+    Friend WithEvents DragTimer As System.Windows.Forms.Timer
 
 End Class

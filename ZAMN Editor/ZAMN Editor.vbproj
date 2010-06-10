@@ -74,7 +74,7 @@
     <Compile Include="ItemBrowser.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Items.vb" />
+    <Compile Include="LevelGFX.vb" />
     <Compile Include="LvlEdCtrl.Designer.vb">
       <DependentUpon>LvlEdCtrl.vb</DependentUpon>
     </Compile>
