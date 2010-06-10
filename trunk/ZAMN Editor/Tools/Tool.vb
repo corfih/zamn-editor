@@ -2,7 +2,6 @@
 
     Public ed As Editor
     Public SidePanel As SideContentType
-    Public Cursor As Cursor = Cursors.Default
     Public WithEvents TilePicker As TilesetBrowser
     Public WithEvents ItemPicker As ItemBrowser
 
@@ -19,6 +18,9 @@
 
     End Sub
     Public Overridable Sub MouseMove(ByVal e As MouseEventArgs)
+
+    End Sub
+    Public Overridable Sub KeyDown(ByVal e As KeyEventArgs)
 
     End Sub
     Public Overridable Sub TileChanged()

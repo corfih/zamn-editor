@@ -22,7 +22,7 @@
         If OpenROM.ShowDialog = DialogResult.OK Then
             r = New ROM(OpenROM.FileName)
             FileOpenLevel.Enabled = True
-            Items.Load(r)
+            LevelGFX.Load(r)
         End If
     End Sub
 
@@ -123,6 +123,7 @@
             item2.Checked = True
             SetTool(t)
         End If
+        EdControl.Focus()
     End Sub
 
     Public Sub SetTool(ByVal t As Tool)
@@ -138,7 +139,6 @@
         End Select
         CurTool = t
         EdControl.t = t
-        EdControl.SetCursor(t.Cursor)
         t.Refresh()
         EdControl.Repaint()
     End Sub
