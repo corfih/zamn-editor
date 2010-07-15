@@ -18,9 +18,15 @@
     Private borderPen As New Pen(Color.Black)
     Private darkBrush As New SolidBrush(Color.FromArgb(92, 0, 0, 0))
 
+    Private Const DefaultText As String = "Click to select or move items. Hold shift to add to selection. Hold ctrl to create a new item."
+    Private Const ShiftText As String = "Click to add to the selection."
+    Private Const CtrlText As String = "Click to add a new item or click an existing item to clone it."
+    Private Const MoveText As String = "Moved items {0}, {1}. Hold shift to snap to 8x8 grid."
+
     Public Sub New(ByVal ed As Editor)
         MyBase.New(ed)
         Me.SidePanel = SideContentType.Items
+        Me.Status = DefaultText
         borderPen.DashPattern = New Single() {4, 4}
     End Sub
 
@@ -33,7 +39,7 @@
 
     Public Overrides Sub MouseDown(ByVal e As System.Windows.Forms.MouseEventArgs)
         Dim additem As Boolean = False
-        For l As Integer = ed.EdControl.lvl.items.Count - 1 To 0 Step -1
+        For l As Integer = ed.EdControl.lvl.items.Count - 1 To 0 Step -1 'Find item under mouse
             Dim i As Item = ed.EdControl.lvl.items(l)
             If i.GetRect.Contains(e.Location) Then
                 If Not selectedItems.Contains(i) Then
@@ -50,13 +56,14 @@
             End If
         Next
         curSelItems.Clear()
-        If additem Then
-            selecting = False
-        Else
+        If additem Then 'Move selected items
+            XStart = selectedItem.x
+            YStart = selectedItem.y
+        Else 'Create a selection rectangle
             If Control.ModifierKeys <> Keys.Shift Then
                 selectedItems.Clear()
+                ed.SetCopy(False)
             End If
-            selecting = True
             XStart = e.X
             YStart = e.Y
             curX = e.X
@@ -64,7 +71,8 @@
             width = 0
             height = 0
         End If
-        If Control.ModifierKeys = Keys.Control Then
+        selecting = Not additem
+        If Control.ModifierKeys = Keys.Control Then 'Add a new item
             If selectedItems.Count = 0 Then
                 If ItemPicker.SelectedIndex > -1 Then
                     Dim i As New Item(Math.Max(0, e.X - 8), Math.Max(0, e.Y - 8), ItemPicker.SelectedIndex)
@@ -74,9 +82,8 @@
                     ed.EdControl.lvl.items.Add(i)
                     dragXOff = 8
                     dragYOff = 8
-                    selecting = False
                 End If
-            Else
+            Else 'Clone the current item
                 Dim newItems As New List(Of Item)
                 For Each i As Item In selectedItems
                     newItems.Add(New Item(i))
@@ -84,8 +91,8 @@
                 Next
                 selectedItem = newItems(selectedItems.IndexOf(selectedItem))
                 selectedItems = newItems
-                selecting = False
             End If
+            selecting = False
         End If
         Repaint()
     End Sub
@@ -107,12 +114,13 @@
                 End If
                 Dim selRect As New Rectangle(curX, curY, width, height)
                 curSelItems.Clear()
-                For Each i As Item In ed.EdControl.lvl.items
+                For Each i As Item In ed.EdControl.lvl.items 'Find items in selection rectangle
                     If selRect.IntersectsWith(i.GetRect) Then
                         curSelItems.Add(i)
                     End If
                 Next
-            Else
+                ed.SetCopy(selectedItems.Count > 0 Or curSelItems.Count > 0)
+            ElseIf selectedItem IsNot Nothing Then
                 Dim minX As Integer = Integer.MaxValue
                 Dim minY As Integer = Integer.MaxValue
                 Dim stp As Integer = 1
@@ -129,6 +137,8 @@
                     i.x = ((i.x + XDelta) \ stp) * stp
                     i.y = ((i.y + YDelta) \ stp) * stp
                 Next
+                Me.Status = String.Format(MoveText, selectedItem.x - XStart, selectedItem.y - YStart)
+                UpdateStatus()
             End If
             Repaint()
         End If
@@ -142,6 +152,7 @@
         Next
         curSelItems.Clear()
         selecting = False
+        ResetStatus()
         Repaint()
     End Sub
 
@@ -153,6 +164,23 @@
             selectedItems.Clear()
             Repaint()
         End If
+        ResetStatus()
+    End Sub
+
+    Public Overrides Sub KeyUp(ByVal e As System.Windows.Forms.KeyEventArgs)
+        ResetStatus()
+    End Sub
+
+    Private Sub ResetStatus()
+        If Control.MouseButtons = MouseButtons.Left Then Return
+        If Control.ModifierKeys = Keys.Shift Then
+            Me.Status = ShiftText
+        ElseIf Control.ModifierKeys = Keys.Control Then
+            Me.Status = CtrlText
+        Else
+            Me.Status = DefaultText
+        End If
+        UpdateStatus()
     End Sub
 
     Public Overrides Sub ItemChanged()
@@ -175,5 +203,9 @@
             g.FillRectangle(darkBrush, i.GetRect)
             g.DrawRectangle(Pens.White, i.GetRect)
         Next
+    End Sub
+
+    Public Overrides Sub RemoveEdCtrl(ByVal e As LvlEdCtrl)
+        allSelectedItems.Remove(e)
     End Sub
 End Class

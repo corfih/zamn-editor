@@ -29,7 +29,10 @@ Partial Class LvlEdCtrl
         Me.SideContent = New System.Windows.Forms.Panel
         Me.BorderTimer = New System.Windows.Forms.Timer(Me.components)
         Me.DragTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.StatusStrip1 = New System.Windows.Forms.StatusStrip
+        Me.Status = New System.Windows.Forms.ToolStripStatusLabel
         CType(Me.canvas, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.StatusStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'VScrl
@@ -85,19 +88,38 @@ Partial Class LvlEdCtrl
         '
         Me.DragTimer.Interval = 20
         '
+        'StatusStrip1
+        '
+        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Status})
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 400)
+        Me.StatusStrip1.Name = "StatusStrip1"
+        Me.StatusStrip1.Size = New System.Drawing.Size(550, 22)
+        Me.StatusStrip1.TabIndex = 4
+        Me.StatusStrip1.Text = "StatusStrip1"
+        '
+        'Status
+        '
+        Me.Status.Name = "Status"
+        Me.Status.Size = New System.Drawing.Size(91, 17)
+        Me.Status.Text = "ZAMN Editor v1.0"
+        '
         'LvlEdCtrl
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.SideContent)
         Me.Controls.Add(Me.canvas)
         Me.Controls.Add(Me.HScrl)
         Me.Controls.Add(Me.VScrl)
         Me.DoubleBuffered = True
         Me.Name = "LvlEdCtrl"
-        Me.Size = New System.Drawing.Size(550, 400)
+        Me.Size = New System.Drawing.Size(550, 422)
         CType(Me.canvas, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.StatusStrip1.ResumeLayout(False)
+        Me.StatusStrip1.PerformLayout()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Friend WithEvents VScrl As System.Windows.Forms.VScrollBar
@@ -106,5 +128,7 @@ Partial Class LvlEdCtrl
     Friend WithEvents SideContent As System.Windows.Forms.Panel
     Friend WithEvents BorderTimer As System.Windows.Forms.Timer
     Friend WithEvents DragTimer As System.Windows.Forms.Timer
+    Friend WithEvents StatusStrip1 As System.Windows.Forms.StatusStrip
+    Friend WithEvents Status As System.Windows.Forms.ToolStripStatusLabel
 
 End Class

@@ -118,7 +118,7 @@
     </Compile>
     <Compile Include="ROM.vb" />
     <Compile Include="Selection.vb" />
-    <Compile Include="SharedFuncs.vb" />
+    <Compile Include="Shrd.vb" />
     <Compile Include="Tabs.Designer.vb">
       <DependentUpon>Tabs.vb</DependentUpon>
     </Compile>
@@ -141,7 +141,14 @@
     <Compile Include="Tools\TileSelectTool.vb" />
     <Compile Include="Tools\TileSuggestTool.vb" />
     <Compile Include="Tools\Tool.vb" />
+    <Compile Include="Tools\VictimTool.vb" />
     <Compile Include="Victim.vb" />
+    <Compile Include="VictimBrowser.Designer.vb">
+      <DependentUpon>VictimBrowser.vb</DependentUpon>
+    </Compile>
+    <Compile Include="VictimBrowser.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ItemBrowser.resx">
@@ -168,6 +175,9 @@
     <EmbeddedResource Include="TilesetBrowser.resx">
       <DependentUpon>TilesetBrowser.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="VictimBrowser.resx">
+      <DependentUpon>VictimBrowser.vb</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="My Project\Application.myapp">
@@ -190,8 +200,12 @@
     <None Include="Resources\X3.PNG" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Resources\Arrow.PNG" />
+    <None Include="Resources\ItemIndexes.bin" />
+    <None Include="Resources\ItemPallettes.bin" />
     <None Include="Resources\Suggest Lists\Grass.zsl" />
+    <None Include="Resources\VictimGFX.bin" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

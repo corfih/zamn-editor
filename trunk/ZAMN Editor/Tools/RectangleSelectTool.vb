@@ -5,9 +5,15 @@
     Public pX As Integer = -1
     Public pY As Integer = -1
 
+    Private Const DefaultText As String = "Click to create a rectangle selection. Hold shift to add to the selection. Hold alt to remove from the selection."
+    Private Const ShiftText As String = "Click to add a rectangle to the selection."
+    Private Const AltText As String = "Click to remove a rectangle from the selection."
+    Private Const DragText As String = "Rectangle {0}x{1}"
+
     Public Sub New(ByVal ed As Editor)
         MyBase.New(ed)
         Me.SidePanel = SideContentType.Tiles
+        Me.Status = DefaultText
     End Sub
 
     Public Overrides Sub MouseDown(ByVal e As System.Windows.Forms.MouseEventArgs)
@@ -40,6 +46,8 @@
             Else
                 ed.SetCopy(True)
             End If
+            Me.Status = String.Format(DragText, selection.width + 1, selection.height + 1)
+            UpdateStatus()
         End If
     End Sub
 
@@ -48,6 +56,7 @@
         pY = -1
         selection.ApplySelection()
         ed.EdControl.UpdateSelection()
+        ResetStatus()
     End Sub
 
     Public Overrides Sub Refresh()
@@ -56,5 +65,25 @@
 
     Public Overrides Sub TileChanged()
         ed.EdControl.FillSelection()
+    End Sub
+
+    Public Overrides Sub KeyDown(ByVal e As System.Windows.Forms.KeyEventArgs)
+        ResetStatus()
+    End Sub
+
+    Public Overrides Sub KeyUp(ByVal e As System.Windows.Forms.KeyEventArgs)
+        ResetStatus()
+    End Sub
+
+    Private Sub ResetStatus()
+        If Control.MouseButtons = MouseButtons.Left Then Return
+        If Control.ModifierKeys = Keys.Shift Then
+            Me.Status = ShiftText
+        ElseIf Control.ModifierKeys = Keys.Alt Then
+            Me.Status = AltText
+        Else
+            Me.Status = DefaultText
+        End If
+        UpdateStatus()
     End Sub
 End Class

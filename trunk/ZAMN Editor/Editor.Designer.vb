@@ -24,7 +24,6 @@ Partial Class Editor
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Editor))
         Me.TSContainer = New System.Windows.Forms.ToolStripContainer
-        Me.Tabs = New ZAMNEditor.Tabs
         Me.MainMenu = New System.Windows.Forms.MenuStrip
         Me.FileMenu = New System.Windows.Forms.ToolStripMenuItem
         Me.FileOpen = New System.Windows.Forms.ToolStripMenuItem
@@ -53,6 +52,7 @@ Partial Class Editor
         Me.ToolsPencilSelect = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolsTileSelect = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolsItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolsVictims = New System.Windows.Forms.ToolStripMenuItem
         Me.Tools = New System.Windows.Forms.ToolStrip
         Me.OpenTool = New System.Windows.Forms.ToolStripButton
         Me.SaveTool = New System.Windows.Forms.ToolStripButton
@@ -68,8 +68,10 @@ Partial Class Editor
         Me.PencilTool = New System.Windows.Forms.ToolStripButton
         Me.TileSlctTool = New System.Windows.Forms.ToolStripButton
         Me.ItemTool = New System.Windows.Forms.ToolStripButton
+        Me.VictimTool = New System.Windows.Forms.ToolStripButton
         Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton
         Me.OpenROM = New System.Windows.Forms.OpenFileDialog
+        Me.Tabs = New ZAMNEditor.Tabs
         Me.TSContainer.ContentPanel.SuspendLayout()
         Me.TSContainer.TopToolStripPanel.SuspendLayout()
         Me.TSContainer.SuspendLayout()
@@ -109,16 +111,6 @@ Partial Class Editor
         Me.TSContainer.TopToolStripPanel.Controls.Add(Me.MainMenu)
         Me.TSContainer.TopToolStripPanel.Controls.Add(Me.Tools)
         Me.TSContainer.TopToolStripPanel.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-        '
-        'Tabs
-        '
-        Me.Tabs.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Tabs.Location = New System.Drawing.Point(0, 0)
-        Me.Tabs.Name = "Tabs"
-        Me.Tabs.Size = New System.Drawing.Size(625, 386)
-        Me.Tabs.TabIndex = 1
-        Me.Tabs.Text = "Tabs1"
-        Me.Tabs.Visible = False
         '
         'MainMenu
         '
@@ -276,7 +268,7 @@ Partial Class Editor
         '
         'ToolsMenu
         '
-        Me.ToolsMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolsPaintBrush, Me.ToolsDropper, Me.ToolsTileSuggest, Me.ToolsRectangleSelect, Me.ToolsPencilSelect, Me.ToolsTileSelect, Me.ToolsItem})
+        Me.ToolsMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolsPaintBrush, Me.ToolsDropper, Me.ToolsTileSuggest, Me.ToolsRectangleSelect, Me.ToolsPencilSelect, Me.ToolsTileSelect, Me.ToolsItem, Me.ToolsVictims})
         Me.ToolsMenu.Name = "ToolsMenu"
         Me.ToolsMenu.Size = New System.Drawing.Size(44, 20)
         Me.ToolsMenu.Text = "&Tools"
@@ -329,14 +321,20 @@ Partial Class Editor
         Me.ToolsItem.Size = New System.Drawing.Size(154, 22)
         Me.ToolsItem.Text = "Items"
         '
+        'ToolsVictims
+        '
+        Me.ToolsVictims.Name = "ToolsVictims"
+        Me.ToolsVictims.Size = New System.Drawing.Size(154, 22)
+        Me.ToolsVictims.Text = "Victims"
+        '
         'Tools
         '
         Me.Tools.Dock = System.Windows.Forms.DockStyle.None
-        Me.Tools.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenTool, Me.SaveTool, Me.toolStripSeparator, Me.CutTool, Me.CopyTool, Me.PasteTool, Me.toolStripSeparator1, Me.BrushTool, Me.DropperTool, Me.TileSgstTool, Me.RectangleTool, Me.PencilTool, Me.TileSlctTool, Me.ItemTool, Me.ToolStripButton1})
+        Me.Tools.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenTool, Me.SaveTool, Me.toolStripSeparator, Me.CutTool, Me.CopyTool, Me.PasteTool, Me.toolStripSeparator1, Me.BrushTool, Me.DropperTool, Me.TileSgstTool, Me.RectangleTool, Me.PencilTool, Me.TileSlctTool, Me.ItemTool, Me.VictimTool, Me.ToolStripButton1})
         Me.Tools.Location = New System.Drawing.Point(3, 24)
         Me.Tools.Name = "Tools"
         Me.Tools.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-        Me.Tools.Size = New System.Drawing.Size(323, 25)
+        Me.Tools.Size = New System.Drawing.Size(346, 25)
         Me.Tools.TabIndex = 1
         '
         'OpenTool
@@ -461,6 +459,15 @@ Partial Class Editor
         Me.ItemTool.Size = New System.Drawing.Size(23, 22)
         Me.ItemTool.Text = "Item Tool"
         '
+        'VictimTool
+        '
+        Me.VictimTool.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.VictimTool.Image = CType(resources.GetObject("VictimTool.Image"), System.Drawing.Image)
+        Me.VictimTool.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.VictimTool.Name = "VictimTool"
+        Me.VictimTool.Size = New System.Drawing.Size(23, 22)
+        Me.VictimTool.Text = "Victim Tool"
+        '
         'ToolStripButton1
         '
         Me.ToolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
@@ -474,6 +481,16 @@ Partial Class Editor
         '
         Me.OpenROM.DefaultExt = "smc"
         Me.OpenROM.Filter = "SNES ROM Files (*.smc)|*.smc|All Files (*.*)|*.*"
+        '
+        'Tabs
+        '
+        Me.Tabs.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Tabs.Location = New System.Drawing.Point(0, 0)
+        Me.Tabs.Name = "Tabs"
+        Me.Tabs.Size = New System.Drawing.Size(625, 386)
+        Me.Tabs.TabIndex = 1
+        Me.Tabs.Text = "Tabs1"
+        Me.Tabs.Visible = False
         '
         'Editor
         '
@@ -542,5 +559,7 @@ Partial Class Editor
     Friend WithEvents ToolStripButton1 As System.Windows.Forms.ToolStripButton
     Friend WithEvents ItemTool As System.Windows.Forms.ToolStripButton
     Friend WithEvents ToolsItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents VictimTool As System.Windows.Forms.ToolStripButton
+    Friend WithEvents ToolsVictims As System.Windows.Forms.ToolStripMenuItem
 
 End Class

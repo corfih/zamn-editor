@@ -23,7 +23,7 @@ Public Class ROM
                 maxLvlNum = Math.Max(maxLvlNum, num)
             End If
             curLvl += 1
-        Loop Until curLvl >= Math.Max(maxLvlNum, regLvlCount - 1)
+        Loop Until curLvl >= maxLvlNum
         s.Close()
     End Sub
 

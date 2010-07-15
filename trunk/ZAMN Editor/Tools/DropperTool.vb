@@ -7,6 +7,7 @@
     Public Sub New(ByVal ed As Editor)
         MyBase.New(ed)
         Me.SidePanel = SideContentType.Tiles
+        Me.Status = "Click to select a tile type"
     End Sub
 
     Public Overrides Sub MouseDown(ByVal e As MouseEventArgs)

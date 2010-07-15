@@ -35,16 +35,15 @@
         For m As Integer = 0 To Data(tilesetNum)(direction).Count - 1
             If Data(tilesetNum)(direction)(m).Contains(startTileNum) Then
                 index = m
+                Exit For
             End If
         Next
         For Each i As Integer In ConnectsTo(tilesetNum)(direction)(index)
             l.AddRange(AllDataLists(tilesetNum)(i))
         Next
-        l.Sort()
         Return l
     End Function
 End Class
 
-'Tile 154 left
 'Hedges connect to other hedges (top and bottom)
 'Hedges connect to walls (top and bottom)

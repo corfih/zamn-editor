@@ -5,6 +5,7 @@
     Public SelectedTab As TabPage
     Public Event TabSelected(ByVal sender As Object, ByVal e As EventArgs)
     Public Event TabsClosed(ByVal sender As Object, ByVal e As EventArgs)
+    Public Event TabClosed(ByVal sender As Object, ByVal e As TabEventArgs)
 
     Public Sub New()
         InitializeComponent()
@@ -26,16 +27,20 @@
         Return tp
     End Function
 
+    Private Sub tabctrl_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles tabctrl.Layout
+        ReAlignAll()
+    End Sub
+
     Private Sub tabctrl_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles tabctrl.SelectedIndexChanged
         SelectedTab = tabctrl.SelectedTab
         If SelectedTab IsNot Nothing Then
-            Dim index As Integer = tabctrl.TabPages.Count - tabctrl.TabPages.IndexOf(SelectedTab) - 1
             ReAlignAll()
             RaiseEvent TabSelected(sender, e)
         End If
     End Sub
 
-    Private Sub TabClosing(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub TabClosing(ByVal sender As Object, ByVal e As TabEventArgs)
+        RaiseEvent TabClosed(sender, e)
         If tabctrl.TabPages.Count = 0 Then
             RaiseEvent TabsClosed(Me, EventArgs.Empty)
         End If
@@ -90,7 +95,7 @@ Public Class XButton
             Dim p As Control = Me.Parent
             Me.Parent.Controls.Remove(Me)
             CType(p, Tabs).ReAlignAll()
-            RaiseEvent Closing(Me, EventArgs.Empty)
+            RaiseEvent Closing(Me, New TabEventArgs(page))
         End If
         curImg = My.Resources.X2
         Me.Invalidate()
@@ -104,5 +109,15 @@ Public Class XButton
         Else
             Me.Location = New Point(tc.GetTabRect(tc.TabPages.IndexOf(page)).Right - 18, 6)
         End If
+    End Sub
+End Class
+
+Public Class TabEventArgs
+    Inherits EventArgs
+
+    Public Tab As TabPage
+
+    Public Sub New(ByVal tp As TabPage)
+        Me.Tab = tp
     End Sub
 End Class
