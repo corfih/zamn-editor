@@ -3,6 +3,8 @@
     Public t As Tool
     Public TilePicker As New TilesetBrowser
     Public ItemPicker As New ItemBrowser
+    Public VictimPicker As New VictimBrowser
+
     Public Grid As Boolean
     Public selection As Selection
 
@@ -33,6 +35,10 @@
         SideContent.Controls.Clear()
         SideContent.Controls.Add(ctrl)
         ctrl.Dock = DockStyle.Fill
+    End Sub
+
+    Public Sub SetStatusText(ByVal txt As String)
+        Status.Text = txt
     End Sub
 
     Public Sub Repaint()
@@ -85,8 +91,9 @@
             e.Graphics.DrawImage(LevelGFX.ItemImages(i.type), i.x, i.y)
         Next
         For Each v As Victim In lvl.victims
-            e.Graphics.FillRectangle(Brushes.Yellow, v.x - 9, v.y - 16, 18, 32)
-            e.Graphics.DrawRectangle(Pens.Black, v.x - 9, v.y - 16, 18, 32)
+            Dim img As Bitmap = LevelGFX.VictimImages(1 + Array.IndexOf(LevelGFX.ptrs, v.ptr))
+            e.Graphics.DrawImage(img, v.x, v.y)
+            e.Graphics.DrawString(v.num.ToString, Me.Font, Brushes.White, v.x + img.Width \ 2, v.y + img.Height + 8)
         Next
         If Grid Then
             For l As Integer = HScrl.Value \ 64 To (HScrl.Value + HScrl.LargeChange) \ 64
@@ -111,6 +118,10 @@
         End If
     End Sub
 
+    Private Sub LvlEdCtrl_GotFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.GotFocus
+        canvas.Focus()
+    End Sub
+
     Private Sub LvlEdCtrl_SizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.SizeChanged, Me.DockChanged
         If lvl Is Nothing Then Return
         UpdateScrollBars()
@@ -126,10 +137,12 @@
         ElseIf HScrl.Enabled Then
             HScrl.Value = Math.Max(0, Math.Min(HScrl.Maximum - HScrl.LargeChange + 1, HScrl.Value - 64 * Math.Sign(e.Delta)))
         End If
+        DoMouseMove()
     End Sub
 
     Private Sub canvas_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles canvas.MouseDown
         If t Is Nothing Then Return
+        canvas.Focus()
         t.MouseDown(CreateMouseEventArgs(e))
         DragTimer.Start()
     End Sub
@@ -149,9 +162,14 @@
         forceMove = False
     End Sub
 
-    Private Sub LvlEdCtrl_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyDown
+    Private Sub canvas_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles canvas.KeyDown
         If t Is Nothing Then Return
         t.KeyDown(e)
+    End Sub
+
+    Private Sub canvas_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles canvas.KeyUp
+        If t Is Nothing Then Return
+        t.KeyUp(e)
     End Sub
 
     Private Function CreateMouseEventArgs(ByVal e As MouseEventArgs)

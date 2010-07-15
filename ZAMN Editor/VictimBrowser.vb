@@ -1,10 +1,10 @@
-﻿Public Class ItemBrowser
+﻿Public Class VictimBrowser
 
     Private bgBrush As Drawing2D.LinearGradientBrush
     Private borderPen As Pen
     Private selectedBrush As SolidBrush
-    Public SelectedIndex As Integer = -1
-    Public itemCt As Integer
+    Public SelectedIndex As Integer = 2
+    Public victimCt As Integer
     Public Event ValueChanged(ByVal sender As Object, ByVal e As EventArgs)
 
     Public Sub New()
@@ -12,13 +12,13 @@
         bgBrush = New Drawing2D.LinearGradientBrush(New Rectangle(Point.Empty, New Size(Me.Width - 17, Me.Height)), Color.White, Color.FromArgb(228, 225, 208), Drawing2D.LinearGradientMode.Horizontal)
         borderPen = New Pen(Color.FromArgb(49, 106, 197))
         selectedBrush = New SolidBrush(Color.FromArgb(225, 230, 232))
-        itemCt = LevelGFX.ItemImages.Count - 1
+        victimCt = LevelGFX.VictimImages.Count - 2
         UpdateScrollBar()
     End Sub
 
     Private Sub UpdateScrollBar()
-        VScrl.Maximum = itemCt
-        VScrl.LargeChange = Math.Max(1, Me.Height \ 32)
+        VScrl.Maximum = victimCt
+        VScrl.LargeChange = Math.Max(1, Me.Height \ 88)
         VScrl.Value = Math.Min(VScrl.Value, Math.Max(0, VScrl.Maximum - VScrl.LargeChange))
         VScrl.Enabled = (VScrl.Maximum > VScrl.LargeChange)
         Me.Invalidate()
@@ -27,15 +27,14 @@
     Private Sub ItemBrowser_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
         e.Graphics.FillRectangle(bgBrush, Me.DisplayRectangle)
         Dim yPos As Integer = 0
-        For l As Integer = VScrl.Value To Math.Min(itemCt, VScrl.Value + VScrl.LargeChange)
-            e.Graphics.DrawLine(Pens.Black, 0, yPos + 32, Me.Width, yPos + 32)
+        For l As Integer = VScrl.Value + 1 To Math.Min(victimCt, VScrl.Value + VScrl.LargeChange) + 1
+            e.Graphics.DrawLine(Pens.Black, 0, yPos + 88, Me.Width, yPos + 88)
             If l = SelectedIndex Then
-                e.Graphics.FillRectangle(selectedBrush, 0, yPos + 1, Me.Width - 18, 32)
-                e.Graphics.DrawRectangle(borderPen, 0, yPos, Me.Width - 18, 32)
+                e.Graphics.FillRectangle(selectedBrush, 0, yPos + 1, Me.Width - 18, 88)
+                e.Graphics.DrawRectangle(borderPen, 0, yPos, Me.Width - 18, 88)
             End If
-            e.Graphics.DrawImage(LevelGFX.ItemImages(l), 8, yPos + 8)
-            e.Graphics.DrawString(l.ToString(), Me.Font, Brushes.Black, 32, yPos + 10)
-            yPos += 32
+            e.Graphics.DrawImage(LevelGFX.VictimImages(l), 8, yPos + (88 - LevelGFX.VictimImages(l).Height) \ 2)
+            yPos += 88
         Next
     End Sub
 
@@ -43,14 +42,14 @@
         Me.Invalidate()
     End Sub
 
-    Private Sub ItemBrowser_SizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.SizeChanged, Me.DockChanged
+    Private Sub VictimBrowser_SizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.SizeChanged, Me.DockChanged
         UpdateScrollBar()
     End Sub
 
-    Private Sub ItemBrowser_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseDown
-        Dim v As Integer = e.Y \ 32 + VScrl.Value
-        If v <= itemCt Then
-            SelectedIndex = v
+    Private Sub VictimBrowser_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseDown
+        Dim v As Integer = e.Y \ 88 + VScrl.Value
+        If v <= victimCt + 1 Then
+            SelectedIndex = v + 1
             RaiseEvent ValueChanged(Me, EventArgs.Empty)
         End If
         Me.Invalidate()

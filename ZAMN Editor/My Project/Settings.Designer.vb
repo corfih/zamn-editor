@@ -53,6 +53,54 @@ Namespace My
                 Return defaultInstance
             End Get
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0, 0")>  _
+        Public Property Location() As Global.System.Drawing.Point
+            Get
+                Return CType(Me("Location"),Global.System.Drawing.Point)
+            End Get
+            Set
+                Me("Location") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0, 0")>  _
+        Public Property Size() As Global.System.Drawing.Size
+            Get
+                Return CType(Me("Size"),Global.System.Drawing.Size)
+            End Get
+            Set
+                Me("Size") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property Maximized() As Boolean
+            Get
+                Return CType(Me("Maximized"),Boolean)
+            End Get
+            Set
+                Me("Maximized") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("False")>  _
+        Public Property Initialized() As Boolean
+            Get
+                Return CType(Me("Initialized"),Boolean)
+            End Get
+            Set
+                Me("Initialized") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

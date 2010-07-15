@@ -8,16 +8,16 @@
         Dim levelStartPos As Long = s.Position
         'Load pallette
         s.Seek(16, IO.SeekOrigin.Current)
-        SharedFuncs.GoToPointer(s)
-        Dim plt As Color() = SharedFuncs.ReadPalette(s, &H80, False)
+        Shrd.GoToPointer(s)
+        Dim plt As Color() = Shrd.ReadPalette(s, &H80, False)
         'Load graphics data
         s.Seek(levelStartPos + 12, IO.SeekOrigin.Begin)
-        SharedFuncs.GoToPointer(s)
+        Shrd.GoToPointer(s)
         Dim gfx(&H3FFF) As Byte
         s.Read(gfx, 0, &H4000)
         'Load map16 data
         s.Seek(levelStartPos, IO.SeekOrigin.Begin)
-        SharedFuncs.GoToPointer(s)
+        Shrd.GoToPointer(s)
         address = s.Position
         Dim map16 As Byte() = DecompressMap16(s)
         'Copy to bitmaps
@@ -31,7 +31,7 @@
                 If (map16(m + 1) And 1) = 1 Then
                     g += &H2000
                 End If
-                SharedFuncs.DrawTile(CurBmp, x, y, gfx, g, plt, &H10 * ((map16(m + 1) \ 4) And 7), (map16(m + 1) And &H40) > 1, (map16(m + 1) And &H80) > 1)
+                Shrd.DrawTile(CurBmp, x, y, gfx, g, plt, &H10 * ((map16(m + 1) \ 4) And 7), (map16(m + 1) And &H40) > 1, (map16(m + 1) And &H80) > 1)
                 x += 8
                 If x = &H40 Then
                     x = 0

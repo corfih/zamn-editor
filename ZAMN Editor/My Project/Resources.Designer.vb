@@ -74,6 +74,27 @@ Namespace My.Resources
             End Get
         End Property
         
+        Friend ReadOnly Property ItemIndexes() As Byte()
+            Get
+                Dim obj As Object = ResourceManager.GetObject("ItemIndexes", resourceCulture)
+                Return CType(obj,Byte())
+            End Get
+        End Property
+        
+        Friend ReadOnly Property ItemPallettes() As Byte()
+            Get
+                Dim obj As Object = ResourceManager.GetObject("ItemPallettes", resourceCulture)
+                Return CType(obj,Byte())
+            End Get
+        End Property
+        
+        Friend ReadOnly Property VictimGFX() As Byte()
+            Get
+                Dim obj As Object = ResourceManager.GetObject("VictimGFX", resourceCulture)
+                Return CType(obj,Byte())
+            End Get
+        End Property
+        
         Friend ReadOnly Property X() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("X", resourceCulture)

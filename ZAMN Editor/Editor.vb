@@ -10,12 +10,28 @@
     Private PencilSlct As New PencilSelectTool(Me)
     Private TileSlct As New TileSelectTool(Me)
     Private ItemT As New ItemTool(Me)
+    Private VictimT As New VictimTool(Me)
     Private updateTab As Boolean = True
     Private LevelItems As ToolStripItem()
+    Private attempts As Integer = 0
 
     Private Sub Editor_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        LevelItems = New ToolStripItem() {FileSave, SaveTool, EditPaste, PasteTool, EditSelectAll, EditSelectNone, ViewGrid}
+        If My.Settings.Initialized Then
+            Me.Location = My.Settings.Location
+            Me.Size = My.Settings.Size
+            If My.Settings.Maximized Then
+                Me.WindowState = FormWindowState.Maximized
+            End If
+        End If
+        LevelItems = New ToolStripItem() {FileSave, SaveTool, EditPaste, PasteTool, EditSelectAll, EditSelectNone, ViewGrid, ToolStripButton1}
         TileSuggestList.LoadAll()
+    End Sub
+
+    Private Sub Editor_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
+        My.Settings.Initialized = True
+        My.Settings.Location = Me.Location
+        My.Settings.Size = Me.Size
+        My.Settings.Maximized = Me.WindowState = FormWindowState.Maximized
     End Sub
 
     Private Sub FileOpen_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles FileOpen.Click, OpenTool.Click
@@ -72,20 +88,12 @@
     End Sub
 
     Private Sub UncheckTools()
-        ToolsPaintBrush.Checked = False
-        ToolsDropper.Checked = False
-        ToolsTileSuggest.Checked = False
-        ToolsRectangleSelect.Checked = False
-        ToolsPencilSelect.Checked = False
-        ToolsTileSelect.Checked = False
-        ToolsItem.Checked = False
-        BrushTool.Checked = False
-        DropperTool.Checked = False
-        TileSgstTool.Checked = False
-        RectangleTool.Checked = False
-        PencilTool.Checked = False
-        TileSlctTool.Checked = False
-        ItemTool.Checked = False
+        For Each Item As ToolStripMenuItem In ToolsMenu.DropDownItems
+            Item.Checked = False
+        Next
+        For l As Integer = Tools.Items.IndexOf(BrushTool) To Tools.Items.Count - 1
+            CType(Tools.Items(l), ToolStripButton).Checked = False
+        Next
     End Sub
 
     Private Sub ToolsPaintBrush_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolsPaintBrush.Click, BrushTool.Click
@@ -112,8 +120,12 @@
         SwitchToTool(ToolsTileSelect, TileSlctTool, TileSlct)
     End Sub
 
-    Private Sub ItemToolToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolsItem.Click, ItemTool.Click
+    Private Sub ToolsItems_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolsItem.Click, ItemTool.Click
         SwitchToTool(ToolsItem, ItemTool, ItemT)
+    End Sub
+
+    Private Sub ToolsVictims_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolsVictims.Click, VictimTool.Click
+        SwitchToTool(ToolsVictims, VictimTool, VictimT)
     End Sub
 
     Private Sub SwitchToTool(ByVal item1 As ToolStripMenuItem, ByVal item2 As ToolStripButton, ByVal t As Tool)
@@ -136,9 +148,13 @@
             Case SideContentType.Items
                 t.ItemPicker = EdControl.ItemPicker
                 EdControl.SetSidePanel(EdControl.ItemPicker)
+            Case SideContentType.Victims
+                t.VictimPicker = EdControl.VictimPicker
+                EdControl.SetSidePanel(EdControl.VictimPicker)
         End Select
         CurTool = t
         EdControl.t = t
+        EdControl.SetStatusText(t.Status)
         t.Refresh()
         EdControl.Repaint()
     End Sub
@@ -167,6 +183,11 @@
             SetTool(CurTool)
             UpdateEdControl()
         End If
+    End Sub
+
+    Private Sub Tabs_TabClosed(ByVal sender As Object, ByVal e As TabEventArgs) Handles Tabs.TabClosed
+        If CurTool Is Nothing Then Return
+        CurTool.RemoveEdCtrl(e.Tab.Controls(0))
     End Sub
 
     Private Sub Tabs_TabsClosed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Tabs.TabsClosed

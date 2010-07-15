@@ -1,4 +1,4 @@
-﻿Public Class SharedFuncs
+﻿Public Class Shrd
 
     Public Shared Function ReadFileAddr(ByVal s As IO.Stream) As Integer
         Dim part2 As Integer = s.ReadByte() + s.ReadByte() * &H100
@@ -85,11 +85,19 @@
         End If
         For l As Integer = 0 To 7
             For m As Integer = 0 To 7
-                bmp.SetPixel(x, y, pallette(palIndex + tile(l, m)))
+                If pallette(palIndex + tile(l, m)).A > 0 Then
+                    bmp.SetPixel(x, y, pallette(palIndex + tile(l, m)))
+                End If
                 x += xStep
             Next
             y += yStep
             x -= 8 * xStep
         Next
+    End Sub
+
+    Public Shared Sub DrawTile(ByVal s As IO.Stream, ByVal bmp As Bitmap, ByVal x As Integer, ByVal y As Integer, ByVal pallette As Color(), ByVal palIndex As Integer, ByVal xFlip As Boolean, ByVal yFlip As Boolean)
+        Dim gfx(31) As Byte
+        s.Read(gfx, 0, 32)
+        DrawTile(bmp, x, y, gfx, 0, pallette, palIndex, xFlip, yFlip)
     End Sub
 End Class

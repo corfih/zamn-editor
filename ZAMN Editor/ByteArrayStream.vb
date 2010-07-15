@@ -3,7 +3,6 @@
 
     Private array As Byte()
     Private pos As Long
-    Dim a As IO.FileStream
 
     Public Sub New(ByVal array As Byte())
         Me.array = array
@@ -49,9 +48,13 @@
 
     Public Overrides Function Read(ByVal buffer() As Byte, ByVal offset As Integer, ByVal count As Integer) As Integer
         Dim nC As Integer = Math.Min(pos + count, array.Length - 1) - pos
-        System.Array.Copy(array, pos, buffer, offset, nC)
-        pos += count
-        Return nC
+        If nC > 0 Then
+            System.Array.Copy(array, pos, buffer, offset, nC)
+            pos += count
+            Return nC
+        Else
+            Return 1
+        End If
     End Function
 
     Public Overrides Function Seek(ByVal offset As Long, ByVal origin As System.IO.SeekOrigin) As Long

@@ -67,6 +67,7 @@
     End Sub
 
     Public Sub SetTiles(ByVal tiles As List(Of Byte))
+        tiles.Sort()
         Me.tiles = tiles
         maxIndex = tiles.Count - 1
         UpdateScrollBar()

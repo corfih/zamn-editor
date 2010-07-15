@@ -6,9 +6,9 @@
     Public erasing As Boolean
     Public exists As Boolean = False
     Public selectPts As Boolean(,)
+    Public curX As Integer
+    Public curY As Integer
 
-    Private curX As Integer
-    Private curY As Integer
     Private fullWidth As Integer
     Private fullHeight As Integer
     Private curRectExists As Boolean = False

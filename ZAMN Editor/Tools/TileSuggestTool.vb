@@ -14,6 +14,7 @@
     Public Sub New(ByVal ed As Editor)
         MyBase.New(ed)
         Me.SidePanel = SideContentType.Tiles
+        Me.Status = "Click a tile and drag to an adjacent tile to show all possible tiles"
     End Sub
 
     Public Overrides Sub MouseDown(ByVal e As MouseEventArgs)
