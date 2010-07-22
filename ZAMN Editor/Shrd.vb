@@ -1,4 +1,7 @@
-﻿Public Class Shrd
+﻿Imports System.Runtime.InteropServices
+Imports System.Drawing.Imaging
+
+Public Class Shrd
 
     Public Shared Function ReadFileAddr(ByVal s As IO.Stream) As Integer
         Dim part2 As Integer = s.ReadByte() + s.ReadByte() * &H100
@@ -51,7 +54,7 @@
     End Function
 
     Public Shared Function PlanarToLinear(ByVal bytes As Byte(), ByVal index As Integer) As Byte(,)
-        Dim result(8, 8) As Byte
+        Dim result(7, 7) As Byte
         Dim line As Integer = 0
         Dim bit As Integer = 0
         For l As Integer = index To index + &H1F Step 2
@@ -79,6 +82,7 @@
             x += 7
             xStep = -1
         End If
+        Dim xOrig As Integer = x
         If yFlip Then
             y += 7
             yStep = -1
@@ -91,13 +95,34 @@
                 x += xStep
             Next
             y += yStep
-            x -= 8 * xStep
+            x = xOrig
         Next
     End Sub
 
-    Public Shared Sub DrawTile(ByVal s As IO.Stream, ByVal bmp As Bitmap, ByVal x As Integer, ByVal y As Integer, ByVal pallette As Color(), ByVal palIndex As Integer, ByVal xFlip As Boolean, ByVal yFlip As Boolean)
+    Public Shared Sub DrawTile(ByVal bmp As Bitmap, ByVal x As Integer, ByVal y As Integer, ByVal s As IO.Stream, ByVal pallette As Color(), ByVal palIndex As Integer, ByVal xFlip As Boolean, ByVal yFlip As Boolean)
         Dim gfx(31) As Byte
         s.Read(gfx, 0, 32)
         DrawTile(bmp, x, y, gfx, 0, pallette, palIndex, xFlip, yFlip)
+    End Sub
+
+    Public Shared Sub DrawTile(ByVal bmp As BitmapData, ByVal x As Integer, ByVal y As Integer, ByVal tile As Byte(,), ByVal palIndex As Byte, ByVal xFlip As Boolean, ByVal yFlip As Boolean)
+        Dim xStep As Integer = 1, yStep As Integer = 1
+        If xFlip Then
+            x += 7
+            xStep = -1
+        End If
+        Dim xOrig As Integer = x
+        If yFlip Then
+            y += 7
+            yStep = -1
+        End If
+        For l As Integer = 0 To 7
+            For m As Integer = 0 To 7
+                Marshal.WriteByte(bmp.Scan0, y * bmp.Stride + x, palIndex + tile(l, m))
+                x += xStep
+            Next
+            y += yStep
+            x = xOrig
+        Next
     End Sub
 End Class

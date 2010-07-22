@@ -1,10 +1,14 @@
-﻿Public Class Tileset
+﻿Imports System.Drawing.Imaging
+
+Public Class Tileset
 
     Public images(&HFF) As Bitmap
     Public priorityImages(&HFF) As Bitmap
     Public address As Integer
 
     Public Sub New(ByVal s As IO.Stream)
+        Dim sw As New Stopwatch
+        sw.Start()
         Dim levelStartPos As Long = s.Position
         'Load pallette
         s.Seek(16, IO.SeekOrigin.Current)
@@ -21,27 +25,34 @@
         address = s.Position
         Dim map16 As Byte() = DecompressMap16(s)
         'Copy to bitmaps
-        For i As Integer = 0 To &HFF 'Current image
-            Dim CurBmp As New Bitmap(64, 64)
-            Dim CurPBmp As New Bitmap(64, 64)
-            Dim x As Integer = 0, y As Integer = 0
+        Dim LinGFX(511)(,) As Byte
+        For l As Integer = 0 To &H1FF
+            LinGFX(l) = Shrd.PlanarToLinear(gfx, l * &H20)
+        Next
+        Debug.WriteLine(sw.ElapsedMilliseconds)
+        For i As Integer = 0 To &HFF
+            Dim CurBmp As New Bitmap(64, 64, PixelFormat.Format8bppIndexed)
+            FillPalette(CurBmp, plt)
+            Dim data As BitmapData = CurBmp.LockBits(New Rectangle(0, 0, 64, 64), ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed)
+            Dim x As Long = 0, y As Long = 0
             Dim m As Integer = i * &H80
-            For m = m To m + &H7F Step 2 'Current position in map16
-                Dim g As Integer = map16(m) * &H20
+            For m = m To m + &H7F Step 2
+                Dim g As Integer = map16(m)
                 If (map16(m + 1) And 1) = 1 Then
-                    g += &H2000
+                    g += &H100
                 End If
-                Shrd.DrawTile(CurBmp, x, y, gfx, g, plt, &H10 * ((map16(m + 1) \ 4) And 7), (map16(m + 1) And &H40) > 1, (map16(m + 1) And &H80) > 1)
+                Shrd.DrawTile(data, x, y, LinGFX(g), &H10 * ((map16(m + 1) \ 4) And 7), (map16(m + 1) And &H40) > 1, (map16(m + 1) And &H80) > 1)
                 x += 8
                 If x = &H40 Then
                     x = 0
                     y += 8
                 End If
             Next
+            CurBmp.UnlockBits(data)
             images(i) = CurBmp
-            priorityImages(i) = CurPBmp
         Next
         s.Seek(levelStartPos, IO.SeekOrigin.Begin)
+        Debug.WriteLine(sw.ElapsedMilliseconds)
     End Sub
 
     Public Shared Function DecompressMap16(ByVal s As IO.Stream) As Byte()
@@ -91,5 +102,13 @@
     Private Shared Sub WriteNext(ByRef result As Byte(), ByRef writeindex As Integer, ByVal value As Integer)
         result(writeindex) = CByte(value)
         writeindex += 1
+    End Sub
+
+    Private Shared Sub FillPalette(ByVal bmp As Bitmap, ByVal colors As Color())
+        Dim pal As ColorPalette = bmp.Palette
+        For l As Integer = 0 To colors.Length - 1
+            pal.Entries(l) = colors(l)
+        Next
+        bmp.Palette = pal
     End Sub
 End Class

@@ -37,7 +37,7 @@
                         If indx > 0 Then
                             If s2.ReadByte = p Then
                                 s.Seek(indx, IO.SeekOrigin.Begin)
-                                Shrd.DrawTile(s, img, x * 8 + s2.ReadSByte, y * 8 + s2.ReadSByte, plt, s2.ReadByte * 16, s2.ReadByte > 0, s2.ReadByte > 0)
+                                Shrd.DrawTile(img, x * 8 + s2.ReadSByte, y * 8 + s2.ReadSByte, s, plt, s2.ReadByte * 16, s2.ReadByte > 0, s2.ReadByte > 0)
                             Else
                                 s2.BaseStream.Seek(5, IO.SeekOrigin.Current)
                             End If

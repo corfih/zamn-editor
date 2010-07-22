@@ -208,4 +208,17 @@
     Public Overrides Sub RemoveEdCtrl(ByVal e As LvlEdCtrl)
         allSelectedItems.Remove(e)
     End Sub
+
+    Public Overrides Function SelectAll(ByVal selected As Boolean) As Boolean
+        curSelItems.Clear()
+        selecting = False
+        selectedItems.Clear()
+        selectedItem = Nothing
+        If selected Then
+            For Each i As Item In ed.EdControl.lvl.items
+                selectedItems.Add(i)
+            Next
+        End If
+        Return False
+    End Function
 End Class
