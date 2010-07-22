@@ -91,9 +91,10 @@
             e.Graphics.DrawImage(LevelGFX.ItemImages(i.type), i.x, i.y)
         Next
         For Each v As Victim In lvl.victims
-            Dim img As Bitmap = LevelGFX.VictimImages(1 + Array.IndexOf(LevelGFX.ptrs, v.ptr))
+            Dim img As Bitmap = LevelGFX.VictimImages(v.vicnum)
             e.Graphics.DrawImage(img, v.x, v.y)
-            e.Graphics.DrawString(v.num.ToString, Me.Font, Brushes.White, v.x + img.Width \ 2, v.y + img.Height + 8)
+            e.Graphics.DrawString(v.num.ToString, Me.Font, Brushes.Black, v.x + img.Width \ 2 - 3, v.y + img.Height + 5)
+            e.Graphics.DrawString(v.num.ToString, Me.Font, Brushes.White, v.x + img.Width \ 2 - 4, v.y + img.Height + 4)
         Next
         If Grid Then
             For l As Integer = HScrl.Value \ 64 To (HScrl.Value + HScrl.LargeChange) \ 64

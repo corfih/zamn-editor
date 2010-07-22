@@ -84,7 +84,7 @@ Partial Class Editor
         '
         'TSContainer.BottomToolStripPanel
         '
-        Me.TSContainer.BottomToolStripPanel.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+        Me.TSContainer.BottomToolStripPanel.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
         '
         'TSContainer.ContentPanel
         '
@@ -95,13 +95,13 @@ Partial Class Editor
         '
         'TSContainer.LeftToolStripPanel
         '
-        Me.TSContainer.LeftToolStripPanel.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+        Me.TSContainer.LeftToolStripPanel.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
         Me.TSContainer.Location = New System.Drawing.Point(0, 0)
         Me.TSContainer.Name = "TSContainer"
         '
         'TSContainer.RightToolStripPanel
         '
-        Me.TSContainer.RightToolStripPanel.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+        Me.TSContainer.RightToolStripPanel.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
         Me.TSContainer.Size = New System.Drawing.Size(625, 435)
         Me.TSContainer.TabIndex = 0
         Me.TSContainer.Text = "ToolStripContainer1"
@@ -110,7 +110,7 @@ Partial Class Editor
         '
         Me.TSContainer.TopToolStripPanel.Controls.Add(Me.MainMenu)
         Me.TSContainer.TopToolStripPanel.Controls.Add(Me.Tools)
-        Me.TSContainer.TopToolStripPanel.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+        Me.TSContainer.TopToolStripPanel.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
         '
         'MainMenu
         '
@@ -119,7 +119,7 @@ Partial Class Editor
         Me.MainMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileMenu, Me.EditMenu, Me.ViewMenu, Me.ToolsMenu})
         Me.MainMenu.Location = New System.Drawing.Point(0, 0)
         Me.MainMenu.Name = "MainMenu"
-        Me.MainMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+        Me.MainMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
         Me.MainMenu.Size = New System.Drawing.Size(625, 24)
         Me.MainMenu.TabIndex = 0
         Me.MainMenu.Text = "MenuStrip1"
@@ -186,7 +186,7 @@ Partial Class Editor
         Me.EditUndo.Enabled = False
         Me.EditUndo.Name = "EditUndo"
         Me.EditUndo.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Z), System.Windows.Forms.Keys)
-        Me.EditUndo.Size = New System.Drawing.Size(139, 22)
+        Me.EditUndo.Size = New System.Drawing.Size(156, 22)
         Me.EditUndo.Text = "&Undo"
         '
         'EditRedo
@@ -194,13 +194,13 @@ Partial Class Editor
         Me.EditRedo.Enabled = False
         Me.EditRedo.Name = "EditRedo"
         Me.EditRedo.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Y), System.Windows.Forms.Keys)
-        Me.EditRedo.Size = New System.Drawing.Size(139, 22)
+        Me.EditRedo.Size = New System.Drawing.Size(156, 22)
         Me.EditRedo.Text = "&Redo"
         '
         'toolStripSeparator5
         '
         Me.toolStripSeparator5.Name = "toolStripSeparator5"
-        Me.toolStripSeparator5.Size = New System.Drawing.Size(136, 6)
+        Me.toolStripSeparator5.Size = New System.Drawing.Size(153, 6)
         '
         'EditCut
         '
@@ -209,7 +209,7 @@ Partial Class Editor
         Me.EditCut.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.EditCut.Name = "EditCut"
         Me.EditCut.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.X), System.Windows.Forms.Keys)
-        Me.EditCut.Size = New System.Drawing.Size(139, 22)
+        Me.EditCut.Size = New System.Drawing.Size(156, 22)
         Me.EditCut.Text = "Cu&t"
         '
         'EditCopy
@@ -219,7 +219,7 @@ Partial Class Editor
         Me.EditCopy.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.EditCopy.Name = "EditCopy"
         Me.EditCopy.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
-        Me.EditCopy.Size = New System.Drawing.Size(139, 22)
+        Me.EditCopy.Size = New System.Drawing.Size(156, 22)
         Me.EditCopy.Text = "&Copy"
         '
         'EditPaste
@@ -229,26 +229,27 @@ Partial Class Editor
         Me.EditPaste.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.EditPaste.Name = "EditPaste"
         Me.EditPaste.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.V), System.Windows.Forms.Keys)
-        Me.EditPaste.Size = New System.Drawing.Size(139, 22)
+        Me.EditPaste.Size = New System.Drawing.Size(156, 22)
         Me.EditPaste.Text = "&Paste"
         '
         'toolStripSeparator6
         '
         Me.toolStripSeparator6.Name = "toolStripSeparator6"
-        Me.toolStripSeparator6.Size = New System.Drawing.Size(136, 6)
+        Me.toolStripSeparator6.Size = New System.Drawing.Size(153, 6)
         '
         'EditSelectAll
         '
         Me.EditSelectAll.Enabled = False
         Me.EditSelectAll.Name = "EditSelectAll"
-        Me.EditSelectAll.Size = New System.Drawing.Size(139, 22)
+        Me.EditSelectAll.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.A), System.Windows.Forms.Keys)
+        Me.EditSelectAll.Size = New System.Drawing.Size(156, 22)
         Me.EditSelectAll.Text = "Select &All"
         '
         'EditSelectNone
         '
         Me.EditSelectNone.Enabled = False
         Me.EditSelectNone.Name = "EditSelectNone"
-        Me.EditSelectNone.Size = New System.Drawing.Size(139, 22)
+        Me.EditSelectNone.Size = New System.Drawing.Size(156, 22)
         Me.EditSelectNone.Text = "Select &None"
         '
         'ViewMenu
@@ -263,7 +264,7 @@ Partial Class Editor
         Me.ViewGrid.CheckOnClick = True
         Me.ViewGrid.Enabled = False
         Me.ViewGrid.Name = "ViewGrid"
-        Me.ViewGrid.Size = New System.Drawing.Size(93, 22)
+        Me.ViewGrid.Size = New System.Drawing.Size(152, 22)
         Me.ViewGrid.Text = "&Grid"
         '
         'ToolsMenu
@@ -333,7 +334,7 @@ Partial Class Editor
         Me.Tools.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenTool, Me.SaveTool, Me.toolStripSeparator, Me.CutTool, Me.CopyTool, Me.PasteTool, Me.toolStripSeparator1, Me.BrushTool, Me.DropperTool, Me.TileSgstTool, Me.RectangleTool, Me.PencilTool, Me.TileSlctTool, Me.ItemTool, Me.VictimTool, Me.ToolStripButton1})
         Me.Tools.Location = New System.Drawing.Point(3, 24)
         Me.Tools.Name = "Tools"
-        Me.Tools.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
+        Me.Tools.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
         Me.Tools.Size = New System.Drawing.Size(346, 25)
         Me.Tools.TabIndex = 1
         '

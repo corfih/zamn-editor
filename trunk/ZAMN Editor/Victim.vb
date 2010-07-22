@@ -2,7 +2,7 @@
     Public x As Integer
     Public y As Integer
     Public num As Integer
-    Public ptr As Integer
+    Public vicnum As Integer
     Public unknown As Integer
 
     Public Sub New()
@@ -17,7 +17,7 @@
         If num = 16 Then
             Me.num = 10
         End If
-        Me.ptr = ptr
+        Me.vicnum = 1 + Array.IndexOf(LevelGFX.ptrs, ptr)
     End Sub
 
     Public Sub New(ByVal v As Victim)
@@ -25,6 +25,10 @@
         Me.y = v.y
         Me.unknown = v.unknown
         Me.num = v.num
-        Me.ptr = v.ptr
+        Me.vicnum = v.vicnum
     End Sub
+
+    Public Function GetRect() As Rectangle
+        Return New Rectangle(New Point(Me.x, Me.y), LevelGFX.VictimImages(vicnum).Size)
+    End Function
 End Class

@@ -3,17 +3,9 @@
     Public r As ROM
     Public EdControl As LvlEdCtrl
     Public CurTool As Tool
-    Private PBrushTool As New PaintbrushTool(Me)
-    Private Dropper As New DropperTool(Me)
-    Private TileSuggest As New TileSuggestTool(Me)
-    Private RectSelect As New RectangleSelectTool(Me)
-    Private PencilSlct As New PencilSelectTool(Me)
-    Private TileSlct As New TileSelectTool(Me)
-    Private ItemT As New ItemTool(Me)
-    Private VictimT As New VictimTool(Me)
     Private updateTab As Boolean = True
+    Private EditingTools As Tool()
     Private LevelItems As ToolStripItem()
-    Private attempts As Integer = 0
 
     Private Sub Editor_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If My.Settings.Initialized Then
@@ -23,15 +15,18 @@
                 Me.WindowState = FormWindowState.Maximized
             End If
         End If
+        EditingTools = New Tool() {New PaintbrushTool(Me), New DropperTool(Me), New TileSuggestTool(Me), New RectangleSelectTool(Me), _
+                                   New PencilSelectTool(Me), New TileSelectTool(Me), New ItemTool(Me), New VictimTool(Me)}
         LevelItems = New ToolStripItem() {FileSave, SaveTool, EditPaste, PasteTool, EditSelectAll, EditSelectNone, ViewGrid, ToolStripButton1}
         TileSuggestList.LoadAll()
     End Sub
 
     Private Sub Editor_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
         My.Settings.Initialized = True
+        My.Settings.Maximized = Me.WindowState = FormWindowState.Maximized
+        Me.WindowState = FormWindowState.Normal
         My.Settings.Location = Me.Location
         My.Settings.Size = Me.Size
-        My.Settings.Maximized = Me.WindowState = FormWindowState.Maximized
     End Sub
 
     Private Sub FileOpen_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles FileOpen.Click, OpenTool.Click
@@ -54,21 +49,29 @@
             SetTool(CurTool)
             UpdateEdControl()
             updateTab = True
+            TSContainer.ContentPanel.BackColor = SystemColors.Control
             For Each item As ToolStripItem In LevelItems
                 item.Enabled = True
             Next
             Tabs.Visible = True
-            TSContainer.ContentPanel.BackColor = SystemColors.Control
             EdControl.Focus()
         End If
     End Sub
 
     Private Sub EditSelectAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EditSelectAll.Click
-        SelectAll(True)
+        If CurTool Is Nothing Then Return
+        If CurTool.SelectAll(True) Then
+            SelectAll(True)
+        End If
+        EdControl.Repaint()
     End Sub
 
     Private Sub EditSelectNone_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EditSelectNone.Click
-        SelectAll(False)
+        If CurTool Is Nothing Then Return
+        If CurTool.SelectAll(False) Then
+            SelectAll(False)
+        End If
+        EdControl.Repaint()
     End Sub
 
     Private Sub SelectAll(ByVal selected As Boolean)
@@ -87,6 +90,21 @@
         UpdateEdControl()
     End Sub
 
+    Private Sub Tools_ItemClicked(ByVal sender As Object, ByVal e As System.Windows.Forms.ToolStripItemClickedEventArgs) Handles Tools.ItemClicked
+        Dim indx As Integer = Tools.Items.IndexOf(e.ClickedItem)
+        Dim indx2 As Integer = Tools.Items.IndexOf(BrushTool)
+        If indx >= indx2 Then
+            indx2 = indx - indx2
+            SwitchToTool(ToolsMenu.DropDownItems(indx2), e.ClickedItem, EditingTools(indx2))
+        End If
+    End Sub
+
+    Private Sub ToolsMenu_DropDownItemClicked(ByVal sender As Object, ByVal e As System.Windows.Forms.ToolStripItemClickedEventArgs) Handles ToolsMenu.DropDownItemClicked
+        Dim indx As Integer = ToolsMenu.DropDownItems.IndexOf(e.ClickedItem)
+        Dim indx2 As Integer = indx + Tools.Items.IndexOf(BrushTool)
+        SwitchToTool(e.ClickedItem, Tools.Items(indx2), EditingTools(indx))
+    End Sub
+
     Private Sub UncheckTools()
         For Each Item As ToolStripMenuItem In ToolsMenu.DropDownItems
             Item.Checked = False
@@ -94,38 +112,6 @@
         For l As Integer = Tools.Items.IndexOf(BrushTool) To Tools.Items.Count - 1
             CType(Tools.Items(l), ToolStripButton).Checked = False
         Next
-    End Sub
-
-    Private Sub ToolsPaintBrush_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolsPaintBrush.Click, BrushTool.Click
-        SwitchToTool(ToolsPaintBrush, BrushTool, PBrushTool)
-    End Sub
-
-    Private Sub ToolsDropper_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolsDropper.Click, DropperTool.Click
-        SwitchToTool(ToolsDropper, DropperTool, Dropper)
-    End Sub
-
-    Private Sub ToolsTileSuggest_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolsTileSuggest.Click, TileSgstTool.Click
-        SwitchToTool(ToolsTileSuggest, TileSgstTool, TileSuggest)
-    End Sub
-
-    Private Sub ToolsRectangleSelect_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolsRectangleSelect.Click, RectangleTool.Click
-        SwitchToTool(ToolsRectangleSelect, RectangleTool, RectSelect)
-    End Sub
-
-    Private Sub ToolsPencilSelect_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolsPencilSelect.Click, PencilTool.Click
-        SwitchToTool(ToolsPencilSelect, PencilTool, PencilSlct)
-    End Sub
-
-    Private Sub ToolsTileSelect_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolsTileSelect.Click, TileSlctTool.Click
-        SwitchToTool(ToolsTileSelect, TileSlctTool, TileSlct)
-    End Sub
-
-    Private Sub ToolsItems_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolsItem.Click, ItemTool.Click
-        SwitchToTool(ToolsItem, ItemTool, ItemT)
-    End Sub
-
-    Private Sub ToolsVictims_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolsVictims.Click, VictimTool.Click
-        SwitchToTool(ToolsVictims, VictimTool, VictimT)
     End Sub
 
     Private Sub SwitchToTool(ByVal item1 As ToolStripMenuItem, ByVal item2 As ToolStripButton, ByVal t As Tool)
@@ -186,8 +172,9 @@
     End Sub
 
     Private Sub Tabs_TabClosed(ByVal sender As Object, ByVal e As TabEventArgs) Handles Tabs.TabClosed
-        If CurTool Is Nothing Then Return
-        CurTool.RemoveEdCtrl(e.Tab.Controls(0))
+        For Each t As Tool In EditingTools
+            t.RemoveEdCtrl(e.Tab.Controls(0))
+        Next
     End Sub
 
     Private Sub Tabs_TabsClosed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Tabs.TabsClosed

@@ -19,26 +19,19 @@
         items = New List(Of Item)
         Do
             Dim v As Integer = s.ReadByte + s.ReadByte * &H100
-            If v = 0 Then
-                Exit Do
-            End If
+            If v = 0 Then Exit Do
             items.Add(New Item(v - 8, s.ReadByte + s.ReadByte * &H100 - 8, s.ReadByte \ 2))
         Loop
         s.Seek(startAddr + &H1E, IO.SeekOrigin.Begin)
         Shrd.GoToRelativePointer(s, &H9F)
         victims = New List(Of Victim)
-        Do
-            Dim v As Integer = s.ReadByte + s.ReadByte * &H100
-            If v = 0 Then
-                Exit Do
-            End If
-            Dim vic As Victim = New Victim(v, s.ReadByte + s.ReadByte * &H100, s.ReadByte + s.ReadByte * &H100, _
+        For n As Integer = 1 To 10
+            Dim vic As Victim = New Victim(s.ReadByte + s.ReadByte * &H100, s.ReadByte + s.ReadByte * &H100, s.ReadByte + s.ReadByte * &H100, _
                                    s.ReadByte + s.ReadByte * &H100, Shrd.ReadFileAddr(s))
-            v = (1 + Array.IndexOf(LevelGFX.ptrs, vic.ptr)) * 2
-            vic.x -= LevelGFX.offsets(v)
-            vic.y -= LevelGFX.offsets(v + 1)
+            vic.x -= LevelGFX.offsets(vic.vicnum * 2)
+            vic.y -= LevelGFX.offsets(vic.vicnum * 2 + 1)
             victims.Add(vic)
-        Loop
+        Next
         s.Seek(startAddr + 4, IO.SeekOrigin.Begin)
         Shrd.GoToPointer(s)
         For l As Integer = 0 To Width * Height - 1

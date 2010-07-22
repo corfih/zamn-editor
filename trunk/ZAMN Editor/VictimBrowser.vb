@@ -3,7 +3,7 @@
     Private bgBrush As Drawing2D.LinearGradientBrush
     Private borderPen As Pen
     Private selectedBrush As SolidBrush
-    Public SelectedIndex As Integer = 2
+    Public SelectedIndex As Integer = 0
     Public victimCt As Integer
     Public Event ValueChanged(ByVal sender As Object, ByVal e As EventArgs)
 

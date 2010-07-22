@@ -43,6 +43,9 @@
     Public Overridable Sub RemoveEdCtrl(ByVal e As LvlEdCtrl)
 
     End Sub
+    Public Overridable Function SelectAll(ByVal selected As Boolean) As Boolean
+        Return True
+    End Function
 
     Private Sub TilePicker_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TilePicker.ValueChanged
         TileChanged()
