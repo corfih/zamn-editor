@@ -1,34 +1,31 @@
-﻿Public Class Victim
+﻿Public Class NRMonster
     Public x As Integer
     Public y As Integer
-    Public num As Integer
     Public ptr As Integer
     Public index As Integer
-    Public unused As Integer
+    Public unused1 As Integer
+    Public unused2 As Integer
 
     Public Sub New()
 
     End Sub
 
-    Public Sub New(ByVal x As Integer, ByVal y As Integer, ByVal unused As Integer, ByVal num As Integer, ByVal ptr As Integer)
+    Public Sub New(ByVal x As Integer, ByVal y As Integer, ByVal unused1 As Integer, ByVal unused2 As Integer, ByVal ptr As Integer)
         Me.x = x
         Me.y = y
-        Me.unused = unused
-        Me.num = num
-        If num = 16 Then
-            Me.num = 10
-        End If
+        Me.unused1 = unused1
+        Me.unused2 = unused2
         Me.ptr = ptr
         Me.index = 1 + Array.IndexOf(LevelGFX.ptrs, ptr)
     End Sub
 
-    Public Sub New(ByVal v As Victim)
-        Me.x = v.x
-        Me.y = v.y
-        Me.unused = v.unused
-        Me.ptr = v.ptr
-        Me.num = v.num
-        Me.index = v.index
+    Public Sub New(ByVal m As NRMonster)
+        Me.x = m.x
+        Me.y = m.y
+        Me.unused1 = m.unused1
+        Me.unused2 = m.unused2
+        Me.ptr = m.ptr
+        Me.index = m.index
     End Sub
 
     Public Function GetRect() As Rectangle

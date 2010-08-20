@@ -44,6 +44,7 @@ Partial Class Editor
         Me.EditSelectNone = New System.Windows.Forms.ToolStripMenuItem
         Me.ViewMenu = New System.Windows.Forms.ToolStripMenuItem
         Me.ViewGrid = New System.Windows.Forms.ToolStripMenuItem
+        Me.ViewPriority = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolsMenu = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolsPaintBrush = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolsDropper = New System.Windows.Forms.ToolStripMenuItem
@@ -55,6 +56,7 @@ Partial Class Editor
         Me.ToolsVictims = New System.Windows.Forms.ToolStripMenuItem
         Me.Tools = New System.Windows.Forms.ToolStrip
         Me.OpenTool = New System.Windows.Forms.ToolStripButton
+        Me.OpenLevelTool = New System.Windows.Forms.ToolStripButton
         Me.SaveTool = New System.Windows.Forms.ToolStripButton
         Me.toolStripSeparator = New System.Windows.Forms.ToolStripSeparator
         Me.CutTool = New System.Windows.Forms.ToolStripButton
@@ -71,7 +73,9 @@ Partial Class Editor
         Me.VictimTool = New System.Windows.Forms.ToolStripButton
         Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton
         Me.OpenROM = New System.Windows.Forms.OpenFileDialog
+        Me.NRMTool = New System.Windows.Forms.ToolStripButton
         Me.Tabs = New ZAMNEditor.Tabs
+        Me.ToolsNRMonsters = New System.Windows.Forms.ToolStripMenuItem
         Me.TSContainer.ContentPanel.SuspendLayout()
         Me.TSContainer.TopToolStripPanel.SuspendLayout()
         Me.TSContainer.SuspendLayout()
@@ -133,7 +137,7 @@ Partial Class Editor
         '
         'FileOpen
         '
-        Me.FileOpen.Image = CType(resources.GetObject("FileOpen.Image"), System.Drawing.Image)
+        Me.FileOpen.Image = Global.ZAMNEditor.My.Resources.Resources.Folder
         Me.FileOpen.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.FileOpen.Name = "FileOpen"
         Me.FileOpen.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
@@ -143,6 +147,7 @@ Partial Class Editor
         'FileOpenLevel
         '
         Me.FileOpenLevel.Enabled = False
+        Me.FileOpenLevel.Image = Global.ZAMNEditor.My.Resources.Resources.BlueFolder
         Me.FileOpenLevel.Name = "FileOpenLevel"
         Me.FileOpenLevel.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.L), System.Windows.Forms.Keys)
         Me.FileOpenLevel.Size = New System.Drawing.Size(165, 22)
@@ -156,7 +161,7 @@ Partial Class Editor
         'FileSave
         '
         Me.FileSave.Enabled = False
-        Me.FileSave.Image = CType(resources.GetObject("FileSave.Image"), System.Drawing.Image)
+        Me.FileSave.Image = Global.ZAMNEditor.My.Resources.Resources.Save
         Me.FileSave.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.FileSave.Name = "FileSave"
         Me.FileSave.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.S), System.Windows.Forms.Keys)
@@ -205,7 +210,7 @@ Partial Class Editor
         'EditCut
         '
         Me.EditCut.Enabled = False
-        Me.EditCut.Image = CType(resources.GetObject("EditCut.Image"), System.Drawing.Image)
+        Me.EditCut.Image = Global.ZAMNEditor.My.Resources.Resources.Cut
         Me.EditCut.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.EditCut.Name = "EditCut"
         Me.EditCut.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.X), System.Windows.Forms.Keys)
@@ -215,7 +220,7 @@ Partial Class Editor
         'EditCopy
         '
         Me.EditCopy.Enabled = False
-        Me.EditCopy.Image = CType(resources.GetObject("EditCopy.Image"), System.Drawing.Image)
+        Me.EditCopy.Image = Global.ZAMNEditor.My.Resources.Resources.Copy
         Me.EditCopy.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.EditCopy.Name = "EditCopy"
         Me.EditCopy.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
@@ -225,7 +230,7 @@ Partial Class Editor
         'EditPaste
         '
         Me.EditPaste.Enabled = False
-        Me.EditPaste.Image = CType(resources.GetObject("EditPaste.Image"), System.Drawing.Image)
+        Me.EditPaste.Image = Global.ZAMNEditor.My.Resources.Resources.Paste
         Me.EditPaste.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.EditPaste.Name = "EditPaste"
         Me.EditPaste.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.V), System.Windows.Forms.Keys)
@@ -254,7 +259,7 @@ Partial Class Editor
         '
         'ViewMenu
         '
-        Me.ViewMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ViewGrid})
+        Me.ViewMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ViewGrid, Me.ViewPriority})
         Me.ViewMenu.Name = "ViewMenu"
         Me.ViewMenu.Size = New System.Drawing.Size(41, 20)
         Me.ViewMenu.Text = "&View"
@@ -264,94 +269,113 @@ Partial Class Editor
         Me.ViewGrid.CheckOnClick = True
         Me.ViewGrid.Enabled = False
         Me.ViewGrid.Name = "ViewGrid"
-        Me.ViewGrid.Size = New System.Drawing.Size(152, 22)
+        Me.ViewGrid.Size = New System.Drawing.Size(127, 22)
         Me.ViewGrid.Text = "&Grid"
+        '
+        'ViewPriority
+        '
+        Me.ViewPriority.CheckOnClick = True
+        Me.ViewPriority.Enabled = False
+        Me.ViewPriority.Name = "ViewPriority"
+        Me.ViewPriority.Size = New System.Drawing.Size(127, 22)
+        Me.ViewPriority.Text = "Tile Priority"
         '
         'ToolsMenu
         '
-        Me.ToolsMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolsPaintBrush, Me.ToolsDropper, Me.ToolsTileSuggest, Me.ToolsRectangleSelect, Me.ToolsPencilSelect, Me.ToolsTileSelect, Me.ToolsItem, Me.ToolsVictims})
+        Me.ToolsMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolsPaintBrush, Me.ToolsDropper, Me.ToolsTileSuggest, Me.ToolsRectangleSelect, Me.ToolsPencilSelect, Me.ToolsTileSelect, Me.ToolsItem, Me.ToolsVictims, Me.ToolsNRMonsters})
         Me.ToolsMenu.Name = "ToolsMenu"
         Me.ToolsMenu.Size = New System.Drawing.Size(44, 20)
         Me.ToolsMenu.Text = "&Tools"
         '
         'ToolsPaintBrush
         '
-        Me.ToolsPaintBrush.Image = CType(resources.GetObject("ToolsPaintBrush.Image"), System.Drawing.Image)
+        Me.ToolsPaintBrush.Image = Global.ZAMNEditor.My.Resources.Resources.Brush
         Me.ToolsPaintBrush.Name = "ToolsPaintBrush"
-        Me.ToolsPaintBrush.Size = New System.Drawing.Size(154, 22)
+        Me.ToolsPaintBrush.Size = New System.Drawing.Size(202, 22)
         Me.ToolsPaintBrush.Text = "&Paint Brush"
         '
         'ToolsDropper
         '
-        Me.ToolsDropper.Image = CType(resources.GetObject("ToolsDropper.Image"), System.Drawing.Image)
+        Me.ToolsDropper.Image = Global.ZAMNEditor.My.Resources.Resources.Dropper
         Me.ToolsDropper.Name = "ToolsDropper"
-        Me.ToolsDropper.Size = New System.Drawing.Size(154, 22)
+        Me.ToolsDropper.Size = New System.Drawing.Size(202, 22)
         Me.ToolsDropper.Text = "&Dropper"
         '
         'ToolsTileSuggest
         '
         Me.ToolsTileSuggest.Name = "ToolsTileSuggest"
-        Me.ToolsTileSuggest.Size = New System.Drawing.Size(154, 22)
-        Me.ToolsTileSuggest.Text = "Tile Suggest"
+        Me.ToolsTileSuggest.Size = New System.Drawing.Size(202, 22)
+        Me.ToolsTileSuggest.Text = "Tile &Suggest"
         '
         'ToolsRectangleSelect
         '
-        Me.ToolsRectangleSelect.Image = CType(resources.GetObject("ToolsRectangleSelect.Image"), System.Drawing.Image)
+        Me.ToolsRectangleSelect.Image = Global.ZAMNEditor.My.Resources.Resources.Selection
         Me.ToolsRectangleSelect.Name = "ToolsRectangleSelect"
-        Me.ToolsRectangleSelect.Size = New System.Drawing.Size(154, 22)
-        Me.ToolsRectangleSelect.Text = "Rectangle Select"
+        Me.ToolsRectangleSelect.Size = New System.Drawing.Size(202, 22)
+        Me.ToolsRectangleSelect.Text = "&Rectangle Select"
         '
         'ToolsPencilSelect
         '
-        Me.ToolsPencilSelect.Image = CType(resources.GetObject("ToolsPencilSelect.Image"), System.Drawing.Image)
+        Me.ToolsPencilSelect.Image = Global.ZAMNEditor.My.Resources.Resources.PencilSelect
         Me.ToolsPencilSelect.Name = "ToolsPencilSelect"
-        Me.ToolsPencilSelect.Size = New System.Drawing.Size(154, 22)
-        Me.ToolsPencilSelect.Text = "Pencil Select"
+        Me.ToolsPencilSelect.Size = New System.Drawing.Size(202, 22)
+        Me.ToolsPencilSelect.Text = "&Pencil Select"
         '
         'ToolsTileSelect
         '
-        Me.ToolsTileSelect.Image = CType(resources.GetObject("ToolsTileSelect.Image"), System.Drawing.Image)
+        Me.ToolsTileSelect.Image = Global.ZAMNEditor.My.Resources.Resources.TileSelect
         Me.ToolsTileSelect.Name = "ToolsTileSelect"
-        Me.ToolsTileSelect.Size = New System.Drawing.Size(154, 22)
-        Me.ToolsTileSelect.Text = "Tile Select"
+        Me.ToolsTileSelect.Size = New System.Drawing.Size(202, 22)
+        Me.ToolsTileSelect.Text = "&Tile Select"
         '
         'ToolsItem
         '
-        Me.ToolsItem.Image = CType(resources.GetObject("ToolsItem.Image"), System.Drawing.Image)
+        Me.ToolsItem.Image = Global.ZAMNEditor.My.Resources.Resources.FirstAidKit
         Me.ToolsItem.Name = "ToolsItem"
-        Me.ToolsItem.Size = New System.Drawing.Size(154, 22)
-        Me.ToolsItem.Text = "Items"
+        Me.ToolsItem.Size = New System.Drawing.Size(202, 22)
+        Me.ToolsItem.Text = "&Items"
         '
         'ToolsVictims
         '
+        Me.ToolsVictims.Image = Global.ZAMNEditor.My.Resources.Resources.Dog
         Me.ToolsVictims.Name = "ToolsVictims"
-        Me.ToolsVictims.Size = New System.Drawing.Size(154, 22)
-        Me.ToolsVictims.Text = "Victims"
+        Me.ToolsVictims.Size = New System.Drawing.Size(202, 22)
+        Me.ToolsVictims.Text = "&Victims"
         '
         'Tools
         '
         Me.Tools.Dock = System.Windows.Forms.DockStyle.None
-        Me.Tools.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenTool, Me.SaveTool, Me.toolStripSeparator, Me.CutTool, Me.CopyTool, Me.PasteTool, Me.toolStripSeparator1, Me.BrushTool, Me.DropperTool, Me.TileSgstTool, Me.RectangleTool, Me.PencilTool, Me.TileSlctTool, Me.ItemTool, Me.VictimTool, Me.ToolStripButton1})
+        Me.Tools.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenTool, Me.OpenLevelTool, Me.SaveTool, Me.toolStripSeparator, Me.CutTool, Me.CopyTool, Me.PasteTool, Me.toolStripSeparator1, Me.BrushTool, Me.DropperTool, Me.TileSgstTool, Me.RectangleTool, Me.PencilTool, Me.TileSlctTool, Me.ItemTool, Me.VictimTool, Me.NRMTool, Me.ToolStripButton1})
         Me.Tools.Location = New System.Drawing.Point(3, 24)
         Me.Tools.Name = "Tools"
         Me.Tools.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
-        Me.Tools.Size = New System.Drawing.Size(346, 25)
+        Me.Tools.Size = New System.Drawing.Size(392, 25)
         Me.Tools.TabIndex = 1
         '
         'OpenTool
         '
         Me.OpenTool.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.OpenTool.Image = CType(resources.GetObject("OpenTool.Image"), System.Drawing.Image)
+        Me.OpenTool.Image = Global.ZAMNEditor.My.Resources.Resources.Folder
         Me.OpenTool.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.OpenTool.Name = "OpenTool"
         Me.OpenTool.Size = New System.Drawing.Size(23, 22)
         Me.OpenTool.Text = "&Open"
         '
+        'OpenLevelTool
+        '
+        Me.OpenLevelTool.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.OpenLevelTool.Enabled = False
+        Me.OpenLevelTool.Image = Global.ZAMNEditor.My.Resources.Resources.BlueFolder
+        Me.OpenLevelTool.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.OpenLevelTool.Name = "OpenLevelTool"
+        Me.OpenLevelTool.Size = New System.Drawing.Size(23, 22)
+        Me.OpenLevelTool.Text = "Open Level"
+        '
         'SaveTool
         '
         Me.SaveTool.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         Me.SaveTool.Enabled = False
-        Me.SaveTool.Image = CType(resources.GetObject("SaveTool.Image"), System.Drawing.Image)
+        Me.SaveTool.Image = Global.ZAMNEditor.My.Resources.Resources.Save
         Me.SaveTool.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.SaveTool.Name = "SaveTool"
         Me.SaveTool.Size = New System.Drawing.Size(23, 22)
@@ -366,7 +390,7 @@ Partial Class Editor
         '
         Me.CutTool.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         Me.CutTool.Enabled = False
-        Me.CutTool.Image = CType(resources.GetObject("CutTool.Image"), System.Drawing.Image)
+        Me.CutTool.Image = Global.ZAMNEditor.My.Resources.Resources.Cut
         Me.CutTool.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.CutTool.Name = "CutTool"
         Me.CutTool.Size = New System.Drawing.Size(23, 22)
@@ -376,7 +400,7 @@ Partial Class Editor
         '
         Me.CopyTool.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         Me.CopyTool.Enabled = False
-        Me.CopyTool.Image = CType(resources.GetObject("CopyTool.Image"), System.Drawing.Image)
+        Me.CopyTool.Image = Global.ZAMNEditor.My.Resources.Resources.Copy
         Me.CopyTool.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.CopyTool.Name = "CopyTool"
         Me.CopyTool.Size = New System.Drawing.Size(23, 22)
@@ -386,7 +410,7 @@ Partial Class Editor
         '
         Me.PasteTool.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
         Me.PasteTool.Enabled = False
-        Me.PasteTool.Image = CType(resources.GetObject("PasteTool.Image"), System.Drawing.Image)
+        Me.PasteTool.Image = Global.ZAMNEditor.My.Resources.Resources.Paste
         Me.PasteTool.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.PasteTool.Name = "PasteTool"
         Me.PasteTool.Size = New System.Drawing.Size(23, 22)
@@ -400,7 +424,7 @@ Partial Class Editor
         'BrushTool
         '
         Me.BrushTool.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.BrushTool.Image = CType(resources.GetObject("BrushTool.Image"), System.Drawing.Image)
+        Me.BrushTool.Image = Global.ZAMNEditor.My.Resources.Resources.Brush
         Me.BrushTool.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.BrushTool.Name = "BrushTool"
         Me.BrushTool.Size = New System.Drawing.Size(23, 22)
@@ -409,7 +433,7 @@ Partial Class Editor
         'DropperTool
         '
         Me.DropperTool.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.DropperTool.Image = CType(resources.GetObject("DropperTool.Image"), System.Drawing.Image)
+        Me.DropperTool.Image = Global.ZAMNEditor.My.Resources.Resources.Dropper
         Me.DropperTool.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.DropperTool.Name = "DropperTool"
         Me.DropperTool.Size = New System.Drawing.Size(23, 22)
@@ -427,7 +451,7 @@ Partial Class Editor
         'RectangleTool
         '
         Me.RectangleTool.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.RectangleTool.Image = CType(resources.GetObject("RectangleTool.Image"), System.Drawing.Image)
+        Me.RectangleTool.Image = Global.ZAMNEditor.My.Resources.Resources.Selection
         Me.RectangleTool.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.RectangleTool.Name = "RectangleTool"
         Me.RectangleTool.Size = New System.Drawing.Size(23, 22)
@@ -436,7 +460,7 @@ Partial Class Editor
         'PencilTool
         '
         Me.PencilTool.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.PencilTool.Image = CType(resources.GetObject("PencilTool.Image"), System.Drawing.Image)
+        Me.PencilTool.Image = Global.ZAMNEditor.My.Resources.Resources.PencilSelect
         Me.PencilTool.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.PencilTool.Name = "PencilTool"
         Me.PencilTool.Size = New System.Drawing.Size(23, 22)
@@ -445,7 +469,7 @@ Partial Class Editor
         'TileSlctTool
         '
         Me.TileSlctTool.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.TileSlctTool.Image = CType(resources.GetObject("TileSlctTool.Image"), System.Drawing.Image)
+        Me.TileSlctTool.Image = Global.ZAMNEditor.My.Resources.Resources.TileSelect
         Me.TileSlctTool.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.TileSlctTool.Name = "TileSlctTool"
         Me.TileSlctTool.Size = New System.Drawing.Size(23, 22)
@@ -454,7 +478,7 @@ Partial Class Editor
         'ItemTool
         '
         Me.ItemTool.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.ItemTool.Image = CType(resources.GetObject("ItemTool.Image"), System.Drawing.Image)
+        Me.ItemTool.Image = Global.ZAMNEditor.My.Resources.Resources.FirstAidKit
         Me.ItemTool.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ItemTool.Name = "ItemTool"
         Me.ItemTool.Size = New System.Drawing.Size(23, 22)
@@ -463,7 +487,7 @@ Partial Class Editor
         'VictimTool
         '
         Me.VictimTool.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.VictimTool.Image = CType(resources.GetObject("VictimTool.Image"), System.Drawing.Image)
+        Me.VictimTool.Image = Global.ZAMNEditor.My.Resources.Resources.Dog
         Me.VictimTool.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.VictimTool.Name = "VictimTool"
         Me.VictimTool.Size = New System.Drawing.Size(23, 22)
@@ -483,6 +507,15 @@ Partial Class Editor
         Me.OpenROM.DefaultExt = "smc"
         Me.OpenROM.Filter = "SNES ROM Files (*.smc)|*.smc|All Files (*.*)|*.*"
         '
+        'NRMTool
+        '
+        Me.NRMTool.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.NRMTool.Image = CType(resources.GetObject("NRMTool.Image"), System.Drawing.Image)
+        Me.NRMTool.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.NRMTool.Name = "NRMTool"
+        Me.NRMTool.Size = New System.Drawing.Size(23, 22)
+        Me.NRMTool.Text = "Non-Respawning Monster Tool"
+        '
         'Tabs
         '
         Me.Tabs.Dock = System.Windows.Forms.DockStyle.Fill
@@ -492,6 +525,12 @@ Partial Class Editor
         Me.Tabs.TabIndex = 1
         Me.Tabs.Text = "Tabs1"
         Me.Tabs.Visible = False
+        '
+        'ToolsNRMonsters
+        '
+        Me.ToolsNRMonsters.Name = "ToolsNRMonsters"
+        Me.ToolsNRMonsters.Size = New System.Drawing.Size(202, 22)
+        Me.ToolsNRMonsters.Text = "&Non-Respawning Monsters"
         '
         'Editor
         '
@@ -562,5 +601,9 @@ Partial Class Editor
     Friend WithEvents ToolsItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents VictimTool As System.Windows.Forms.ToolStripButton
     Friend WithEvents ToolsVictims As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ViewPriority As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents OpenLevelTool As System.Windows.Forms.ToolStripButton
+    Friend WithEvents NRMTool As System.Windows.Forms.ToolStripButton
+    Friend WithEvents ToolsNRMonsters As System.Windows.Forms.ToolStripMenuItem
 
 End Class

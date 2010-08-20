@@ -67,6 +67,69 @@ Namespace My.Resources
             End Get
         End Property
         
+        Friend ReadOnly Property BlueFolder() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("BlueFolder", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property Brush() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Brush", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property Chainsaw() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Chainsaw", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property Copy() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Copy", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property Cut() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Cut", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property Dog() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Dog", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property Dropper() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Dropper", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property FirstAidKit() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("FirstAidKit", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property Folder() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Folder", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Friend ReadOnly Property Grass() As Byte()
             Get
                 Dim obj As Object = ResourceManager.GetObject("Grass", resourceCulture)
@@ -85,6 +148,55 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("ItemPallettes", resourceCulture)
                 Return CType(obj,Byte())
+            End Get
+        End Property
+        
+        Friend ReadOnly Property Paste() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Paste", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property PencilSelect() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("PencilSelect", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property Save() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Save", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property Selection() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Selection", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property TileSelect() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("TileSelect", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property UnknownItem() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("UnknownItem", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property UnknownVictim() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("UnknownVictim", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         

@@ -5,14 +5,16 @@ Public Class Tileset
     Public images(&HFF) As Bitmap
     Public priorityImages(&HFF) As Bitmap
     Public address As Integer
+    Public pallette As Integer
 
     Public Sub New(ByVal s As IO.Stream)
         Dim sw As New Stopwatch
         sw.Start()
         Dim levelStartPos As Long = s.Position
-        'Load pallette
+        'Load palette
         s.Seek(16, IO.SeekOrigin.Current)
         Shrd.GoToPointer(s)
+        pallette = s.Position
         Dim plt As Color() = Shrd.ReadPalette(s, &H80, False)
         'Load graphics data
         s.Seek(levelStartPos + 12, IO.SeekOrigin.Begin)
@@ -24,17 +26,26 @@ Public Class Tileset
         Shrd.GoToPointer(s)
         address = s.Position
         Dim map16 As Byte() = DecompressMap16(s)
-        'Copy to bitmaps
+        'Load collision data
+        s.Seek(levelStartPos + 8, IO.SeekOrigin.Begin)
+        Shrd.GoToPointer(s)
+        Dim collision(&H3FF) As Byte
+        s.Read(collision, 0, &H400)
+        'Convert GFX to linear format
         Dim LinGFX(511)(,) As Byte
         For l As Integer = 0 To &H1FF
             LinGFX(l) = Shrd.PlanarToLinear(gfx, l * &H20)
         Next
         Debug.WriteLine(sw.ElapsedMilliseconds)
+        'Copy to bitmaps
         For i As Integer = 0 To &HFF
-            Dim CurBmp As New Bitmap(64, 64, PixelFormat.Format8bppIndexed)
-            FillPalette(CurBmp, plt)
+            Dim CurBmp As New Bitmap(64, 64, PixelFormat.Format8bppIndexed), CurPrBmp As New Bitmap(64, 64, PixelFormat.Format8bppIndexed)
+            Shrd.FillPalette(CurBmp, plt)
+            Shrd.FillPalette(CurPrBmp, plt)
+            'Shrd.MakePltTransparent(CurPrBmp)
             Dim data As BitmapData = CurBmp.LockBits(New Rectangle(0, 0, 64, 64), ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed)
-            Dim x As Long = 0, y As Long = 0
+            Dim dataPr As BitmapData = CurPrBmp.LockBits(New Rectangle(0, 0, 64, 64), ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed)
+            Dim x As Integer = 0, y As Integer = 0
             Dim m As Integer = i * &H80
             For m = m To m + &H7F Step 2
                 Dim g As Integer = map16(m)
@@ -42,14 +53,19 @@ Public Class Tileset
                     g += &H100
                 End If
                 Shrd.DrawTile(data, x, y, LinGFX(g), &H10 * ((map16(m + 1) \ 4) And 7), (map16(m + 1) And &H40) > 1, (map16(m + 1) And &H80) > 1)
+                If collision(g * 2) = 0 And collision(g * 2 + 1) = 0 Then
+                    Shrd.DrawTile(dataPr, x, y, LinGFX(g), &H10 * ((map16(m + 1) \ 4) And 7), (map16(m + 1) And &H40) > 1, (map16(m + 1) And &H80) > 1)
+                End If
                 x += 8
-                If x = &H40 Then
+                If x = 64 Then
                     x = 0
                     y += 8
                 End If
             Next
             CurBmp.UnlockBits(data)
+            CurPrBmp.UnlockBits(dataPr)
             images(i) = CurBmp
+            priorityImages(i) = CurPrBmp
         Next
         s.Seek(levelStartPos, IO.SeekOrigin.Begin)
         Debug.WriteLine(sw.ElapsedMilliseconds)
@@ -102,13 +118,5 @@ Public Class Tileset
     Private Shared Sub WriteNext(ByRef result As Byte(), ByRef writeindex As Integer, ByVal value As Integer)
         result(writeindex) = CByte(value)
         writeindex += 1
-    End Sub
-
-    Private Shared Sub FillPalette(ByVal bmp As Bitmap, ByVal colors As Color())
-        Dim pal As ColorPalette = bmp.Palette
-        For l As Integer = 0 To colors.Length - 1
-            pal.Entries(l) = colors(l)
-        Next
-        bmp.Palette = pal
     End Sub
 End Class

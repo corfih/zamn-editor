@@ -1,10 +1,10 @@
 ﻿Public Class OpenLevel
 
-    Public levelNum As Integer
-    Public LevelName As String
+    Public levelNums As Integer()
+    Public LevelNames As String()
     Private r As ROM
 
-    Public Overloads Function ShowDialog(ByVal r As ROM) As DialogResult
+    Public Sub LoadROM(ByVal r As ROM)
         Me.r = r
         levels.Items.Clear()
         For l As Integer = 0 To r.regLvlCount - 2
@@ -14,20 +14,23 @@
         For l As Integer = 0 To r.bonusLvls.Count - 1
             levels.Items.Add("Bonus Level " & l.ToString())
         Next
-        Return Me.ShowDialog()
-    End Function
+    End Sub
 
     Private Sub OK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK.Click
-        If levels.SelectedIndex = -1 Then
+        If levels.SelectedIndices.Count = 0 Then
             MsgBox("Select a level", MsgBoxStyle.Information, "Select a level")
             Return
         End If
-        If levels.SelectedIndex < r.regLvlCount Then
-            levelNum = levels.SelectedIndex
-        Else
-            levelNum = r.bonusLvls(levels.SelectedIndex - r.regLvlCount)
-        End If
-        LevelName = levels.SelectedItem.ToString()
+        ReDim levelNums(levels.SelectedIndices.Count - 1)
+        ReDim LevelNames(levels.SelectedIndices.Count - 1)
+        For l As Integer = 0 To LevelNames.Length - 1
+            If levels.SelectedIndex < r.regLvlCount Then
+                levelNums(l) = levels.SelectedIndices(l)
+            Else
+                levelNums(l) = r.bonusLvls(levels.SelectedIndices(l) - r.regLvlCount)
+            End If
+            LevelNames(l) = levels.SelectedItems(l).ToString
+        Next
         Me.DialogResult = DialogResult.OK
         Me.Close()
     End Sub

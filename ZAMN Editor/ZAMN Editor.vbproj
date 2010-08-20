@@ -110,6 +110,14 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="NRMBrowser.Designer.vb">
+      <DependentUpon>NRMBrowser.vb</DependentUpon>
+    </Compile>
+    <Compile Include="NRMBrowser.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="NRMonster.vb" />
+    <Compile Include="Tools\NRMonsterTool.vb" />
     <Compile Include="OpenLevel.Designer.vb">
       <DependentUpon>OpenLevel.vb</DependentUpon>
     </Compile>
@@ -169,6 +177,9 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="NRMBrowser.resx">
+      <DependentUpon>NRMBrowser.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="OpenLevel.resx">
       <DependentUpon>OpenLevel.vb</DependentUpon>
     </EmbeddedResource>
@@ -206,6 +217,32 @@
     <None Include="Resources\ItemPallettes.bin" />
     <None Include="Resources\Suggest Lists\Grass.zsl" />
     <None Include="Resources\VictimGFX.bin" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\UnknownItem.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\UnknownVictim.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Brush.PNG" />
+    <None Include="Resources\Copy.png" />
+    <None Include="Resources\Cut.PNG" />
+    <None Include="Resources\Dog.png" />
+    <None Include="Resources\Dropper.PNG" />
+    <None Include="Resources\FirstAidKit.PNG" />
+    <None Include="Resources\Folder.png" />
+    <None Include="Resources\Paste.PNG" />
+    <None Include="Resources\PencilSelect.PNG" />
+    <None Include="Resources\Save.png" />
+    <None Include="Resources\Selection.PNG" />
+    <None Include="Resources\TileSelect.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BlueFolder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Chainsaw.PNG" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

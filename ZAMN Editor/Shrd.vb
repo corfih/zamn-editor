@@ -125,4 +125,24 @@ Public Class Shrd
             x = xOrig
         Next
     End Sub
+
+    Public Shared Sub FillPalette(ByVal bmp As Bitmap, ByVal colors As Color())
+        Dim pal As ColorPalette = bmp.Palette
+        For l As Integer = 0 To colors.Length - 1
+            pal.Entries(l) = colors(l)
+        Next
+        bmp.Palette = pal
+    End Sub
+
+    Public Shared Sub MakePltTransparent(ByVal bmp As Bitmap)
+        Dim pal As ColorPalette = bmp.Palette
+        For l As Integer = 0 To pal.Entries.Length - 1 Step 16
+            pal.Entries(l) = Color.Transparent
+        Next
+        bmp.Palette = pal
+    End Sub
+
+    Public Shared Function RealSize(ByVal rect As Rectangle) As Rectangle
+        Return New Rectangle(rect.X, rect.Y, rect.Width - 1, rect.Height - 1)
+    End Function
 End Class
