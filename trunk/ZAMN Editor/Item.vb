@@ -20,6 +20,6 @@
     End Sub
 
     Public Function GetRect() As Rectangle
-        Return New Rectangle(x, y, 16, 16)
+        Return New Rectangle(x, y, 15, 15)
     End Function
 End Class

@@ -5,6 +5,7 @@
     Public WithEvents TilePicker As TilesetBrowser
     Public WithEvents ItemPicker As ItemBrowser
     Public WithEvents VictimPicker As VictimBrowser
+    Public WithEvents NRMPicker As NRMBrowser
     Public Status As String
 
     Public Sub New(ByVal ed As Editor)
@@ -37,6 +38,9 @@
     Public Overridable Sub VictimChanged()
 
     End Sub
+    Public Overridable Sub NRMChanged()
+
+    End Sub
     Public Overridable Sub Refresh()
 
     End Sub
@@ -56,6 +60,9 @@
     Private Sub VictimPicker_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles VictimPicker.ValueChanged
         VictimChanged()
     End Sub
+    Private Sub NRMPicker_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles NRMPicker.ValueChanged
+        NRMChanged()
+    End Sub
 
     Public Sub Repaint()
         ed.EdControl.Repaint()
@@ -70,4 +77,5 @@ Public Enum SideContentType
     Tiles
     Items
     Victims
+    NRMonsters
 End Enum

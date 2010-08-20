@@ -32,6 +32,7 @@ Partial Class OpenLevel
         Me.levels.FormattingEnabled = True
         Me.levels.Location = New System.Drawing.Point(12, 12)
         Me.levels.Name = "levels"
+        Me.levels.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
         Me.levels.Size = New System.Drawing.Size(268, 212)
         Me.levels.TabIndex = 0
         '

@@ -4,8 +4,10 @@
     Public TilePicker As New TilesetBrowser
     Public ItemPicker As New ItemBrowser
     Public VictimPicker As New VictimBrowser
+    Public NRMPicker As New NRMBrowser
 
     Public Grid As Boolean
+    Public priority As Boolean
     Public selection As Selection
 
     Private fillBrush As SolidBrush
@@ -87,15 +89,32 @@
                 e.Graphics.DrawImage(lvl.tileset.images(lvl.Tiles(l, m)), l * 64, m * 64)
             Next
         Next
-        For Each i As Item In lvl.items
-            e.Graphics.DrawImage(LevelGFX.ItemImages(i.type), i.x, i.y)
-        Next
         For Each v As Victim In lvl.victims
-            Dim img As Bitmap = LevelGFX.VictimImages(v.vicnum)
+            Dim img As Bitmap = LevelGFX.VictimImages(v.index)
             e.Graphics.DrawImage(img, v.x, v.y)
             e.Graphics.DrawString(v.num.ToString, Me.Font, Brushes.Black, v.x + img.Width \ 2 - 3, v.y + img.Height + 5)
             e.Graphics.DrawString(v.num.ToString, Me.Font, Brushes.White, v.x + img.Width \ 2 - 4, v.y + img.Height + 4)
         Next
+        For Each m As NRMonster In lvl.NRMonsters
+            e.Graphics.DrawImage(LevelGFX.VictimImages(m.index), m.x, m.y)
+            If m.index = 0 Then
+                e.Graphics.DrawRectangle(Pens.Yellow, m.GetRect)
+            End If
+        Next
+        For Each i As Item In lvl.items
+            If i.type < LevelGFX.ItemImages.Count Then
+                e.Graphics.DrawImage(LevelGFX.ItemImages(i.type), i.x, i.y)
+            Else
+                e.Graphics.DrawImage(My.Resources.UnknownItem, i.x, i.y)
+            End If
+        Next
+        If priority Then
+            For l As Integer = HScrl.Value \ 64 To Math.Min(lvl.Width - 1, (HScrl.Value + canvas.Width) \ 64 + 1)
+                For m As Integer = VScrl.Value \ 64 To Math.Min(lvl.Height - 1, (VScrl.Value + canvas.Height) \ 64 + 1)
+                    e.Graphics.DrawImage(lvl.tileset.priorityImages(lvl.Tiles(l, m)), l * 64, m * 64)
+                Next
+            Next
+        End If
         If Grid Then
             For l As Integer = HScrl.Value \ 64 To (HScrl.Value + HScrl.LargeChange) \ 64
                 e.Graphics.DrawLine(Pens.White, l * 64, VScrl.Value, l * 64, VScrl.Value + VScrl.LargeChange)

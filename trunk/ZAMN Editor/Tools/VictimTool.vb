@@ -159,9 +159,10 @@
 
     Public Overrides Sub VictimChanged()
         For Each v As Victim In selectedVictims
-            v.vicnum = VictimPicker.SelectedIndex
-            Repaint()
+            v.index = VictimPicker.SelectedIndex
+            v.UpdatePtr()
         Next
+        Repaint()
     End Sub
 
     Public Overrides Sub Paint(ByVal g As System.Drawing.Graphics)

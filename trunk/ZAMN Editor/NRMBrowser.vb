@@ -1,9 +1,9 @@
-﻿Public Class VictimBrowser
+﻿Public Class NRMBrowser
 
     Private bgBrush As Drawing2D.LinearGradientBrush
     Private borderPen As Pen
     Private selectedBrush As SolidBrush
-    Public SelectedIndex As Integer = 0
+    Public SelectedIndex As Integer = -1
     Public Event ValueChanged(ByVal sender As Object, ByVal e As EventArgs)
 
     Public Sub New()
@@ -15,19 +15,19 @@
     End Sub
 
     Private Sub UpdateScrollBar()
-        VScrl.Maximum = 10
+        VScrl.Maximum = 7
         VScrl.LargeChange = Math.Max(1, Me.Height \ 88)
         VScrl.Value = Math.Min(VScrl.Value, Math.Max(0, VScrl.Maximum - VScrl.LargeChange))
         VScrl.Enabled = (VScrl.Maximum > VScrl.LargeChange)
         Me.Invalidate()
     End Sub
 
-    Private Sub VictimBrowser_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
+    Private Sub NRMBrowser_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
         e.Graphics.FillRectangle(bgBrush, Me.DisplayRectangle)
         Dim yPos As Integer = 0
-        For l As Integer = VScrl.Value + 1 To Math.Min(10, VScrl.Value + VScrl.LargeChange) + 1
+        For l As Integer = VScrl.Value + 12 To Math.Min(7, VScrl.Value + VScrl.LargeChange) + 12
             e.Graphics.DrawLine(Pens.Black, 0, yPos + 88, Me.Width, yPos + 88)
-            If l = SelectedIndex Then
+            If l = SelectedIndex + 1 Then
                 e.Graphics.FillRectangle(selectedBrush, 0, yPos + 1, Me.Width - 18, 88)
                 e.Graphics.DrawRectangle(borderPen, 0, yPos, Me.Width - 18, 88)
             End If
@@ -40,14 +40,14 @@
         Me.Invalidate()
     End Sub
 
-    Private Sub VictimBrowser_SizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.SizeChanged, Me.DockChanged
+    Private Sub NRMBrowser_SizeChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.SizeChanged, Me.DockChanged
         UpdateScrollBar()
     End Sub
 
-    Private Sub VictimBrowser_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseDown
-        Dim v As Integer = e.Y \ 88 + VScrl.Value
-        If v <= 11 Then
-            SelectedIndex = v + 1
+    Private Sub NRMBrowser_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseDown
+        Dim v As Integer = e.Y \ 88 + VScrl.Value + 11
+        If v <= 18 Then
+            SelectedIndex = v
             RaiseEvent ValueChanged(Me, EventArgs.Empty)
         End If
         Me.Invalidate()

@@ -16,8 +16,8 @@
             End If
         End If
         EditingTools = New Tool() {New PaintbrushTool(Me), New DropperTool(Me), New TileSuggestTool(Me), New RectangleSelectTool(Me), _
-                                   New PencilSelectTool(Me), New TileSelectTool(Me), New ItemTool(Me), New VictimTool(Me)}
-        LevelItems = New ToolStripItem() {FileSave, SaveTool, EditPaste, PasteTool, EditSelectAll, EditSelectNone, ViewGrid, ToolStripButton1}
+                                   New PencilSelectTool(Me), New TileSelectTool(Me), New ItemTool(Me), New VictimTool(Me), New NRMonsterTool(Me)}
+        LevelItems = New ToolStripItem() {FileSave, SaveTool, EditPaste, PasteTool, EditSelectAll, EditSelectNone, ViewGrid, ViewPriority, ToolStripButton1}
         TileSuggestList.LoadAll()
     End Sub
 
@@ -32,29 +32,38 @@
     Private Sub FileOpen_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles FileOpen.Click, OpenTool.Click
         If OpenROM.ShowDialog = DialogResult.OK Then
             r = New ROM(OpenROM.FileName)
+            If r.failed Then Return
             FileOpenLevel.Enabled = True
+            OpenLevelTool.Enabled = True
             LevelGFX.Load(r)
+            OpenLevel.LoadROM(r)
         End If
     End Sub
 
-    Private Sub FileOpenLevel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles FileOpenLevel.Click
-        If OpenLevel.ShowDialog(r) = DialogResult.OK Then
-            Dim l As Level = r.GetLevel(OpenLevel.levelNum)
-            EdControl = New LvlEdCtrl()
-            updateTab = False
-            Dim tp As TabPage = Tabs.AddXPage(OpenLevel.LevelName)
-            tp.Controls.Add(EdControl)
-            EdControl.Dock = DockStyle.Fill
-            EdControl.LoadLevel(l)
-            SetTool(CurTool)
-            UpdateEdControl()
-            updateTab = True
-            TSContainer.ContentPanel.BackColor = SystemColors.Control
-            For Each item As ToolStripItem In LevelItems
-                item.Enabled = True
-            Next
-            Tabs.Visible = True
-            EdControl.Focus()
+    Private Sub FileOpenLevel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles FileOpenLevel.Click, OpenLevelTool.Click
+        If OpenLevel.ShowDialog = DialogResult.OK Then
+            Try
+                For l As Integer = 0 To OpenLevel.LevelNames.Length - 1
+                    Dim lvl As Level = r.GetLevel(OpenLevel.levelNums(l))
+                    EdControl = New LvlEdCtrl()
+                    updateTab = False
+                    Dim tp As TabPage = Tabs.AddXPage(OpenLevel.LevelNames(l))
+                    tp.Controls.Add(EdControl)
+                    EdControl.Dock = DockStyle.Fill
+                    EdControl.LoadLevel(lvl)
+                Next
+                SetTool(CurTool)
+                UpdateEdControl()
+                updateTab = True
+                TSContainer.ContentPanel.BackColor = SystemColors.Control
+                For Each item As ToolStripItem In LevelItems
+                    item.Enabled = True
+                Next
+                Tabs.Visible = True
+                EdControl.Focus()
+            Catch ex As Exception
+                MsgBox("The level file was corrupt.", MsgBoxStyle.Critical)
+            End Try
         End If
     End Sub
 
@@ -86,7 +95,11 @@
         SetCopy(selected)
     End Sub
 
-    Private Sub ViewBlockGrid_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ViewGrid.Click
+    Private Sub ViewGrid_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ViewGrid.Click
+        UpdateEdControl()
+    End Sub
+
+    Private Sub CollisionDataTestToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ViewPriority.Click
         UpdateEdControl()
     End Sub
 
@@ -137,6 +150,9 @@
             Case SideContentType.Victims
                 t.VictimPicker = EdControl.VictimPicker
                 EdControl.SetSidePanel(EdControl.VictimPicker)
+            Case SideContentType.NRMonsters
+                t.NRMPicker = EdControl.NRMPicker
+                EdControl.SetSidePanel(EdControl.NRMPicker)
         End Select
         CurTool = t
         EdControl.t = t
@@ -148,6 +164,7 @@
     Public Sub UpdateEdControl()
         If EdControl Is Nothing Then Return
         EdControl.Grid = ViewGrid.Checked
+        EdControl.priority = ViewPriority.Checked
         EdControl.Repaint()
         EdControl.Focus()
     End Sub
