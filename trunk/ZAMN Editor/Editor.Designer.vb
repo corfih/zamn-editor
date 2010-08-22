@@ -45,6 +45,10 @@ Partial Class Editor
         Me.ViewMenu = New System.Windows.Forms.ToolStripMenuItem
         Me.ViewGrid = New System.Windows.Forms.ToolStripMenuItem
         Me.ViewPriority = New System.Windows.Forms.ToolStripMenuItem
+        Me.toolStripSeparator7 = New System.Windows.Forms.ToolStripSeparator
+        Me.View100P = New System.Windows.Forms.ToolStripMenuItem
+        Me.View75P = New System.Windows.Forms.ToolStripMenuItem
+        Me.View50P = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolsMenu = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolsPaintBrush = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolsDropper = New System.Windows.Forms.ToolStripMenuItem
@@ -54,6 +58,7 @@ Partial Class Editor
         Me.ToolsTileSelect = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolsItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolsVictims = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolsNRMonsters = New System.Windows.Forms.ToolStripMenuItem
         Me.Tools = New System.Windows.Forms.ToolStrip
         Me.OpenTool = New System.Windows.Forms.ToolStripButton
         Me.OpenLevelTool = New System.Windows.Forms.ToolStripButton
@@ -63,6 +68,7 @@ Partial Class Editor
         Me.CopyTool = New System.Windows.Forms.ToolStripButton
         Me.PasteTool = New System.Windows.Forms.ToolStripButton
         Me.toolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
+        Me.toolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator
         Me.BrushTool = New System.Windows.Forms.ToolStripButton
         Me.DropperTool = New System.Windows.Forms.ToolStripButton
         Me.TileSgstTool = New System.Windows.Forms.ToolStripButton
@@ -71,11 +77,14 @@ Partial Class Editor
         Me.TileSlctTool = New System.Windows.Forms.ToolStripButton
         Me.ItemTool = New System.Windows.Forms.ToolStripButton
         Me.VictimTool = New System.Windows.Forms.ToolStripButton
+        Me.NRMTool = New System.Windows.Forms.ToolStripButton
         Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton
         Me.OpenROM = New System.Windows.Forms.OpenFileDialog
-        Me.NRMTool = New System.Windows.Forms.ToolStripButton
+        Me.Zoom = New System.Windows.Forms.ToolStripDropDownButton
+        Me.Zoom100Tool = New System.Windows.Forms.ToolStripMenuItem
+        Me.Zoom75Tool = New System.Windows.Forms.ToolStripMenuItem
+        Me.Zoom50Tool = New System.Windows.Forms.ToolStripMenuItem
         Me.Tabs = New ZAMNEditor.Tabs
-        Me.ToolsNRMonsters = New System.Windows.Forms.ToolStripMenuItem
         Me.TSContainer.ContentPanel.SuspendLayout()
         Me.TSContainer.TopToolStripPanel.SuspendLayout()
         Me.TSContainer.SuspendLayout()
@@ -259,7 +268,7 @@ Partial Class Editor
         '
         'ViewMenu
         '
-        Me.ViewMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ViewGrid, Me.ViewPriority})
+        Me.ViewMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ViewGrid, Me.ViewPriority, Me.toolStripSeparator7, Me.View100P, Me.View75P, Me.View50P})
         Me.ViewMenu.Name = "ViewMenu"
         Me.ViewMenu.Size = New System.Drawing.Size(41, 20)
         Me.ViewMenu.Text = "&View"
@@ -279,6 +288,29 @@ Partial Class Editor
         Me.ViewPriority.Name = "ViewPriority"
         Me.ViewPriority.Size = New System.Drawing.Size(127, 22)
         Me.ViewPriority.Text = "Tile Priority"
+        '
+        'toolStripSeparator7
+        '
+        Me.toolStripSeparator7.Name = "toolStripSeparator7"
+        Me.toolStripSeparator7.Size = New System.Drawing.Size(124, 6)
+        '
+        'View100P
+        '
+        Me.View100P.Name = "View100P"
+        Me.View100P.Size = New System.Drawing.Size(127, 22)
+        Me.View100P.Text = "100%"
+        '
+        'View75P
+        '
+        Me.View75P.Name = "View75P"
+        Me.View75P.Size = New System.Drawing.Size(127, 22)
+        Me.View75P.Text = "75%"
+        '
+        'View50P
+        '
+        Me.View50P.Name = "View50P"
+        Me.View50P.Size = New System.Drawing.Size(127, 22)
+        Me.View50P.Text = "50%"
         '
         'ToolsMenu
         '
@@ -342,14 +374,21 @@ Partial Class Editor
         Me.ToolsVictims.Size = New System.Drawing.Size(202, 22)
         Me.ToolsVictims.Text = "&Victims"
         '
+        'ToolsNRMonsters
+        '
+        Me.ToolsNRMonsters.Image = Global.ZAMNEditor.My.Resources.Resources.Chainsaw
+        Me.ToolsNRMonsters.Name = "ToolsNRMonsters"
+        Me.ToolsNRMonsters.Size = New System.Drawing.Size(202, 22)
+        Me.ToolsNRMonsters.Text = "&Non-Respawning Monsters"
+        '
         'Tools
         '
         Me.Tools.Dock = System.Windows.Forms.DockStyle.None
-        Me.Tools.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenTool, Me.OpenLevelTool, Me.SaveTool, Me.toolStripSeparator, Me.CutTool, Me.CopyTool, Me.PasteTool, Me.toolStripSeparator1, Me.BrushTool, Me.DropperTool, Me.TileSgstTool, Me.RectangleTool, Me.PencilTool, Me.TileSlctTool, Me.ItemTool, Me.VictimTool, Me.NRMTool, Me.ToolStripButton1})
+        Me.Tools.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenTool, Me.OpenLevelTool, Me.SaveTool, Me.toolStripSeparator, Me.CutTool, Me.CopyTool, Me.PasteTool, Me.toolStripSeparator1, Me.Zoom, Me.toolStripSeparator8, Me.BrushTool, Me.DropperTool, Me.TileSgstTool, Me.RectangleTool, Me.PencilTool, Me.TileSlctTool, Me.ItemTool, Me.VictimTool, Me.NRMTool, Me.ToolStripButton1})
         Me.Tools.Location = New System.Drawing.Point(3, 24)
         Me.Tools.Name = "Tools"
         Me.Tools.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
-        Me.Tools.Size = New System.Drawing.Size(392, 25)
+        Me.Tools.Size = New System.Drawing.Size(427, 25)
         Me.Tools.TabIndex = 1
         '
         'OpenTool
@@ -420,6 +459,11 @@ Partial Class Editor
         '
         Me.toolStripSeparator1.Name = "toolStripSeparator1"
         Me.toolStripSeparator1.Size = New System.Drawing.Size(6, 25)
+        '
+        'toolStripSeparator8
+        '
+        Me.toolStripSeparator8.Name = "toolStripSeparator8"
+        Me.toolStripSeparator8.Size = New System.Drawing.Size(6, 25)
         '
         'BrushTool
         '
@@ -493,6 +537,15 @@ Partial Class Editor
         Me.VictimTool.Size = New System.Drawing.Size(23, 22)
         Me.VictimTool.Text = "Victim Tool"
         '
+        'NRMTool
+        '
+        Me.NRMTool.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.NRMTool.Image = Global.ZAMNEditor.My.Resources.Resources.Chainsaw
+        Me.NRMTool.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.NRMTool.Name = "NRMTool"
+        Me.NRMTool.Size = New System.Drawing.Size(23, 22)
+        Me.NRMTool.Text = "Non-Respawning Monster Tool"
+        '
         'ToolStripButton1
         '
         Me.ToolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
@@ -507,14 +560,33 @@ Partial Class Editor
         Me.OpenROM.DefaultExt = "smc"
         Me.OpenROM.Filter = "SNES ROM Files (*.smc)|*.smc|All Files (*.*)|*.*"
         '
-        'NRMTool
+        'Zoom
         '
-        Me.NRMTool.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.NRMTool.Image = CType(resources.GetObject("NRMTool.Image"), System.Drawing.Image)
-        Me.NRMTool.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.NRMTool.Name = "NRMTool"
-        Me.NRMTool.Size = New System.Drawing.Size(23, 22)
-        Me.NRMTool.Text = "Non-Respawning Monster Tool"
+        Me.Zoom.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.Zoom.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Zoom100Tool, Me.Zoom75Tool, Me.Zoom50Tool})
+        Me.Zoom.Image = Global.ZAMNEditor.My.Resources.Resources.MagnifyingGlass
+        Me.Zoom.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.Zoom.Name = "Zoom"
+        Me.Zoom.Size = New System.Drawing.Size(29, 22)
+        Me.Zoom.Text = "Zoom Level"
+        '
+        'Zoom100Tool
+        '
+        Me.Zoom100Tool.Name = "Zoom100Tool"
+        Me.Zoom100Tool.Size = New System.Drawing.Size(103, 22)
+        Me.Zoom100Tool.Text = "100%"
+        '
+        'Zoom75Tool
+        '
+        Me.Zoom75Tool.Name = "Zoom75Tool"
+        Me.Zoom75Tool.Size = New System.Drawing.Size(103, 22)
+        Me.Zoom75Tool.Text = "75%"
+        '
+        'Zoom50Tool
+        '
+        Me.Zoom50Tool.Name = "Zoom50Tool"
+        Me.Zoom50Tool.Size = New System.Drawing.Size(103, 22)
+        Me.Zoom50Tool.Text = "50%"
         '
         'Tabs
         '
@@ -525,12 +597,6 @@ Partial Class Editor
         Me.Tabs.TabIndex = 1
         Me.Tabs.Text = "Tabs1"
         Me.Tabs.Visible = False
-        '
-        'ToolsNRMonsters
-        '
-        Me.ToolsNRMonsters.Name = "ToolsNRMonsters"
-        Me.ToolsNRMonsters.Size = New System.Drawing.Size(202, 22)
-        Me.ToolsNRMonsters.Text = "&Non-Respawning Monsters"
         '
         'Editor
         '
@@ -605,5 +671,14 @@ Partial Class Editor
     Friend WithEvents OpenLevelTool As System.Windows.Forms.ToolStripButton
     Friend WithEvents NRMTool As System.Windows.Forms.ToolStripButton
     Friend WithEvents ToolsNRMonsters As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents toolStripSeparator7 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents View100P As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents View75P As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents View50P As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents toolStripSeparator8 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents Zoom As System.Windows.Forms.ToolStripDropDownButton
+    Friend WithEvents Zoom100Tool As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents Zoom75Tool As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents Zoom50Tool As System.Windows.Forms.ToolStripMenuItem
 
 End Class

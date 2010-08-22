@@ -3,7 +3,7 @@
     Public Shared ItemImages As New List(Of Bitmap)
     Public Shared VictimImages As New List(Of Bitmap)
     Public Shared ptrs As Integer() = {&H1A1E2, &H19976, &H19E6D, &H1A015, &H19F00, &H19899, &H19B3D, &H19A43, &H19C89, &H1A0BE, &H19DAD, _
-                                       &H17136, &H9A3A, &HA655, &H1745D, &HD4F1, &HD4F9, &H1B75E, &H1B9F6}
+                                       &H17136, &H9A3A, &HA655, &H1745D, &HD4F1, &HD4F9, &H1B75E} ', &H1B9F6}
     Public Shared offsets As Integer() = {0, 0, 24, 47, 17, 29, 13, 38, 17, 38, 29, 40, 31, 63, 16, 47, 16, 29, 14, 32, 16, 37, 28, 44, _
                                           15, 48, 14, 46, 24, 63, 9, 31, 21, 31, 18, 42, 16, 48}
     'Tourist, Baby, Teacher, Explorer, Pool, Barbeque, Army, Trampoline, Dog, Cheerleader, Dr. Bug

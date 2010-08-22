@@ -1,4 +1,5 @@
 ﻿Public Class Level
+    Public name As String
     Public tileset As Tileset
     Public Tiles As Integer(,)
     Public Width As Integer
@@ -7,7 +8,8 @@
     Public victims As List(Of Victim)
     Public NRMonsters As List(Of NRMonster)
 
-    Public Sub New(ByVal s As IO.Stream)
+    Public Sub New(ByVal s As IO.Stream, ByVal name As String)
+        Me.name = name
         Dim startAddr As Long = s.Position
         tileset = New Tileset(s)
         s.Seek(&H22, IO.SeekOrigin.Current)
