@@ -3,6 +3,7 @@
     Public r As ROM
     Public EdControl As LvlEdCtrl
     Public CurTool As Tool
+    Public zoomLevel As Single = 1
     Private updateTab As Boolean = True
     Private EditingTools As Tool()
     Private LevelItems As ToolStripItem()
@@ -42,16 +43,17 @@
 
     Private Sub FileOpenLevel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles FileOpenLevel.Click, OpenLevelTool.Click
         If OpenLevel.ShowDialog = DialogResult.OK Then
-            Try
-                For l As Integer = 0 To OpenLevel.LevelNames.Length - 1
-                    Dim lvl As Level = r.GetLevel(OpenLevel.levelNums(l))
-                    EdControl = New LvlEdCtrl()
-                    updateTab = False
-                    Dim tp As TabPage = Tabs.AddXPage(OpenLevel.LevelNames(l))
-                    tp.Controls.Add(EdControl)
-                    EdControl.Dock = DockStyle.Fill
-                    EdControl.LoadLevel(lvl)
-                Next
+            EdControl = Nothing
+            LoadingLevel.Start(r, OpenLevel.levelNums, OpenLevel.LevelNames)
+            For Each l As Level In LoadingLevel.lvls
+                EdControl = New LvlEdCtrl
+                updateTab = False
+                Dim tp As TabPage = Tabs.AddXPage(l.name)
+                tp.Controls.Add(EdControl)
+                EdControl.Dock = DockStyle.Fill
+                EdControl.LoadLevel(l)
+            Next
+            If EdControl IsNot Nothing Then
                 SetTool(CurTool)
                 UpdateEdControl()
                 updateTab = True
@@ -61,9 +63,7 @@
                 Next
                 Tabs.Visible = True
                 EdControl.Focus()
-            Catch ex As Exception
-                MsgBox("The level file was corrupt.", MsgBoxStyle.Critical)
-            End Try
+            End If
         End If
     End Sub
 
@@ -165,8 +165,10 @@
         If EdControl Is Nothing Then Return
         EdControl.Grid = ViewGrid.Checked
         EdControl.priority = ViewPriority.Checked
-        EdControl.Repaint()
+        EdControl.zoom = zoomLevel
+        EdControl.UpdateScrollBars()
         EdControl.Focus()
+        EdControl.Repaint()
     End Sub
 
     Public Sub SetCopy(ByVal enabled As Boolean)
@@ -210,5 +212,20 @@
             Next
         End Using
         Clipboard.SetImage(b)
+    End Sub
+
+    Private ZoomLevels As Single() = {1.0F, 0.75F, 0.5F}
+
+    Private Sub ViewMenu_DropDownItemClicked(ByVal sender As Object, ByVal e As System.Windows.Forms.ToolStripItemClickedEventArgs) Handles ViewMenu.DropDownItemClicked, Zoom.DropDownItemClicked
+        Dim indx As Integer = e.ClickedItem.Owner.Items.IndexOf(e.ClickedItem)
+        Dim indx2 As Integer = 0
+        If e.ClickedItem.Owner.Items Is ViewMenu.DropDownItems Then
+            indx2 = ViewMenu.DropDownItems.IndexOf(View100P)
+        End If
+        If indx >= indx2 Then
+            indx -= indx2
+            zoomLevel = ZoomLevels(indx)
+            UpdateEdControl()
+        End If
     End Sub
 End Class

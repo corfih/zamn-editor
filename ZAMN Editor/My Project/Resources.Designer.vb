@@ -151,6 +151,13 @@ Namespace My.Resources
             End Get
         End Property
         
+        Friend ReadOnly Property MagnifyingGlass() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("MagnifyingGlass", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Friend ReadOnly Property Paste() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Paste", resourceCulture)

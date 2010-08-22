@@ -42,9 +42,9 @@ Public Class ROM
         s.Seek(GetLvlPtr(num, s), SeekOrigin.Begin)
     End Function
 
-    Public Function GetLevel(ByVal num As Integer) As Level
+    Public Function GetLevel(ByVal num As Integer, ByVal name As String) As Level
         Dim s As New FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read)
         GotoLvlPtr(num, s)
-        Return New Level(s)
+        Return New Level(s, name)
     End Function
 End Class

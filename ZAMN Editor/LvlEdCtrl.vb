@@ -8,6 +8,7 @@
 
     Public Grid As Boolean
     Public priority As Boolean
+    Public zoom As Single = 1
     Public selection As Selection
 
     Private fillBrush As SolidBrush
@@ -68,10 +69,10 @@
         Repaint()
     End Sub
 
-    Private Sub UpdateScrollBars()
+    Public Sub UpdateScrollBars()
         If lvl Is Nothing Then Return
-        HScrl.Maximum = lvl.Width * 64
-        VScrl.Maximum = lvl.Height * 64
+        HScrl.Maximum = lvl.Width * 64 * zoom
+        VScrl.Maximum = lvl.Height * 64 * zoom
         HScrl.LargeChange = canvas.Width
         VScrl.LargeChange = canvas.Height
         HScrl.Value = Math.Min(HScrl.Value, Math.Max(0, HScrl.Maximum - HScrl.LargeChange))
@@ -84,8 +85,9 @@
     Private Sub canvas_Paint(ByVal sender As Object, ByVal e As PaintEventArgs) Handles canvas.Paint
         If lvl Is Nothing Then Return
         e.Graphics.TranslateTransform(-HScrl.Value, -VScrl.Value)
-        For l As Integer = HScrl.Value \ 64 To Math.Min(lvl.Width - 1, (HScrl.Value + canvas.Width) \ 64 + 1)
-            For m As Integer = VScrl.Value \ 64 To Math.Min(lvl.Height - 1, (VScrl.Value + canvas.Height) \ 64 + 1)
+        e.Graphics.ScaleTransform(zoom, zoom)
+        For l As Integer = HScrl.Value \ (64 * zoom) To Math.Min(lvl.Width - 1, (HScrl.Value + canvas.Width) \ (64 * zoom) + 1)
+            For m As Integer = VScrl.Value \ (64 * zoom) To Math.Min(lvl.Height - 1, (VScrl.Value + canvas.Height) \ (64 * zoom) + 1)
                 e.Graphics.DrawImage(lvl.tileset.images(lvl.Tiles(l, m)), l * 64, m * 64)
             Next
         Next
@@ -109,18 +111,18 @@
             End If
         Next
         If priority Then
-            For l As Integer = HScrl.Value \ 64 To Math.Min(lvl.Width - 1, (HScrl.Value + canvas.Width) \ 64 + 1)
-                For m As Integer = VScrl.Value \ 64 To Math.Min(lvl.Height - 1, (VScrl.Value + canvas.Height) \ 64 + 1)
+            For l As Integer = HScrl.Value \ (64 * zoom) To Math.Min(lvl.Width - 1, (HScrl.Value + canvas.Width) \ (64 * zoom) + 1)
+                For m As Integer = VScrl.Value \ (64 * zoom) To Math.Min(lvl.Height - 1, (VScrl.Value + canvas.Height) \ (64 * zoom) + 1)
                     e.Graphics.DrawImage(lvl.tileset.priorityImages(lvl.Tiles(l, m)), l * 64, m * 64)
                 Next
             Next
         End If
         If Grid Then
-            For l As Integer = HScrl.Value \ 64 To (HScrl.Value + HScrl.LargeChange) \ 64
-                e.Graphics.DrawLine(Pens.White, l * 64, VScrl.Value, l * 64, VScrl.Value + VScrl.LargeChange)
+            For l As Integer = HScrl.Value \ (64 * zoom) To (HScrl.Value + HScrl.LargeChange) \ (64 * zoom)
+                e.Graphics.DrawLine(Pens.White, l * 64, VScrl.Value, l * 64, (VScrl.Value + VScrl.LargeChange) / zoom)
             Next
-            For l As Integer = VScrl.Value \ 64 To (VScrl.Value + VScrl.LargeChange) \ 64
-                e.Graphics.DrawLine(Pens.White, HScrl.Value, l * 64, HScrl.Value + HScrl.LargeChange, l * 64)
+            For l As Integer = VScrl.Value \ (64 * zoom) To (VScrl.Value + VScrl.LargeChange) \ (64 * zoom)
+                e.Graphics.DrawLine(Pens.White, HScrl.Value, l * 64, (HScrl.Value + HScrl.LargeChange) / zoom, l * 64)
             Next
         End If
         If selectionGP IsNot Nothing And selection.exists Then
@@ -193,7 +195,7 @@
     End Sub
 
     Private Function CreateMouseEventArgs(ByVal e As MouseEventArgs)
-        Return New MouseEventArgs(e.Button, e.Clicks, e.X + HScrl.Value, e.Y + VScrl.Value, e.Delta)
+        Return New MouseEventArgs(e.Button, e.Clicks, (e.X + HScrl.Value) / zoom, (e.Y + VScrl.Value) / zoom, e.Delta)
     End Function
 
     Public Sub DoMouseMove()
