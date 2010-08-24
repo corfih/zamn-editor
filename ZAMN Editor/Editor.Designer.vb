@@ -68,6 +68,10 @@ Partial Class Editor
         Me.CopyTool = New System.Windows.Forms.ToolStripButton
         Me.PasteTool = New System.Windows.Forms.ToolStripButton
         Me.toolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
+        Me.Zoom = New System.Windows.Forms.ToolStripDropDownButton
+        Me.Zoom100Tool = New System.Windows.Forms.ToolStripMenuItem
+        Me.Zoom75Tool = New System.Windows.Forms.ToolStripMenuItem
+        Me.Zoom50Tool = New System.Windows.Forms.ToolStripMenuItem
         Me.toolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator
         Me.BrushTool = New System.Windows.Forms.ToolStripButton
         Me.DropperTool = New System.Windows.Forms.ToolStripButton
@@ -80,11 +84,8 @@ Partial Class Editor
         Me.NRMTool = New System.Windows.Forms.ToolStripButton
         Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton
         Me.OpenROM = New System.Windows.Forms.OpenFileDialog
-        Me.Zoom = New System.Windows.Forms.ToolStripDropDownButton
-        Me.Zoom100Tool = New System.Windows.Forms.ToolStripMenuItem
-        Me.Zoom75Tool = New System.Windows.Forms.ToolStripMenuItem
-        Me.Zoom50Tool = New System.Windows.Forms.ToolStripMenuItem
         Me.Tabs = New ZAMNEditor.Tabs
+        Me.RecentROMs = New ZAMNEditor.RecentFilesList
         Me.TSContainer.ContentPanel.SuspendLayout()
         Me.TSContainer.TopToolStripPanel.SuspendLayout()
         Me.TSContainer.SuspendLayout()
@@ -139,7 +140,7 @@ Partial Class Editor
         '
         'FileMenu
         '
-        Me.FileMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileOpen, Me.FileOpenLevel, Me.toolStripSeparator2, Me.FileSave, Me.toolStripSeparator4, Me.FileExit})
+        Me.FileMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileOpen, Me.RecentROMs, Me.FileOpenLevel, Me.toolStripSeparator2, Me.FileSave, Me.toolStripSeparator4, Me.FileExit})
         Me.FileMenu.Name = "FileMenu"
         Me.FileMenu.Size = New System.Drawing.Size(35, 20)
         Me.FileMenu.Text = "&File"
@@ -460,6 +461,34 @@ Partial Class Editor
         Me.toolStripSeparator1.Name = "toolStripSeparator1"
         Me.toolStripSeparator1.Size = New System.Drawing.Size(6, 25)
         '
+        'Zoom
+        '
+        Me.Zoom.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.Zoom.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Zoom100Tool, Me.Zoom75Tool, Me.Zoom50Tool})
+        Me.Zoom.Image = Global.ZAMNEditor.My.Resources.Resources.MagnifyingGlass
+        Me.Zoom.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.Zoom.Name = "Zoom"
+        Me.Zoom.Size = New System.Drawing.Size(29, 22)
+        Me.Zoom.Text = "Zoom Level"
+        '
+        'Zoom100Tool
+        '
+        Me.Zoom100Tool.Name = "Zoom100Tool"
+        Me.Zoom100Tool.Size = New System.Drawing.Size(103, 22)
+        Me.Zoom100Tool.Text = "100%"
+        '
+        'Zoom75Tool
+        '
+        Me.Zoom75Tool.Name = "Zoom75Tool"
+        Me.Zoom75Tool.Size = New System.Drawing.Size(103, 22)
+        Me.Zoom75Tool.Text = "75%"
+        '
+        'Zoom50Tool
+        '
+        Me.Zoom50Tool.Name = "Zoom50Tool"
+        Me.Zoom50Tool.Size = New System.Drawing.Size(103, 22)
+        Me.Zoom50Tool.Text = "50%"
+        '
         'toolStripSeparator8
         '
         Me.toolStripSeparator8.Name = "toolStripSeparator8"
@@ -560,34 +589,6 @@ Partial Class Editor
         Me.OpenROM.DefaultExt = "smc"
         Me.OpenROM.Filter = "SNES ROM Files (*.smc)|*.smc|All Files (*.*)|*.*"
         '
-        'Zoom
-        '
-        Me.Zoom.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.Zoom.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Zoom100Tool, Me.Zoom75Tool, Me.Zoom50Tool})
-        Me.Zoom.Image = Global.ZAMNEditor.My.Resources.Resources.MagnifyingGlass
-        Me.Zoom.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.Zoom.Name = "Zoom"
-        Me.Zoom.Size = New System.Drawing.Size(29, 22)
-        Me.Zoom.Text = "Zoom Level"
-        '
-        'Zoom100Tool
-        '
-        Me.Zoom100Tool.Name = "Zoom100Tool"
-        Me.Zoom100Tool.Size = New System.Drawing.Size(103, 22)
-        Me.Zoom100Tool.Text = "100%"
-        '
-        'Zoom75Tool
-        '
-        Me.Zoom75Tool.Name = "Zoom75Tool"
-        Me.Zoom75Tool.Size = New System.Drawing.Size(103, 22)
-        Me.Zoom75Tool.Text = "75%"
-        '
-        'Zoom50Tool
-        '
-        Me.Zoom50Tool.Name = "Zoom50Tool"
-        Me.Zoom50Tool.Size = New System.Drawing.Size(103, 22)
-        Me.Zoom50Tool.Text = "50%"
-        '
         'Tabs
         '
         Me.Tabs.Dock = System.Windows.Forms.DockStyle.Fill
@@ -597,6 +598,15 @@ Partial Class Editor
         Me.Tabs.TabIndex = 1
         Me.Tabs.Text = "Tabs1"
         Me.Tabs.Visible = False
+        '
+        'RecentROMs
+        '
+        Me.RecentROMs.Items = CType(resources.GetObject("RecentROMs.Items"), System.Collections.Generic.List(Of String))
+        Me.RecentROMs.MaxItems = 5
+        Me.RecentROMs.MaxLength = 60
+        Me.RecentROMs.Name = "RecentROMs"
+        Me.RecentROMs.Size = New System.Drawing.Size(165, 22)
+        Me.RecentROMs.Text = "Recent ROMs"
         '
         'Editor
         '
@@ -680,5 +690,6 @@ Partial Class Editor
     Friend WithEvents Zoom100Tool As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Zoom75Tool As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Zoom50Tool As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents RecentROMs As ZAMNEditor.RecentFilesList
 
 End Class
