@@ -7,6 +7,7 @@
     Public items As List(Of Item)
     Public victims As List(Of Victim)
     Public NRMonsters As List(Of NRMonster)
+    Public Monsters As List(Of Monster)
 
     Public Sub New(ByVal s As IO.Stream, ByVal name As String)
         Me.name = name
@@ -28,8 +29,8 @@
         Shrd.GoToRelativePointer(s, &H9F)
         victims = New List(Of Victim)
         For n As Integer = 1 To 10
-            Dim vic As Victim = New Victim(s.ReadByte + s.ReadByte * &H100, s.ReadByte + s.ReadByte * &H100, s.ReadByte + s.ReadByte * &H100, _
-                                   s.ReadByte + s.ReadByte * &H100, Shrd.ReadFileAddr(s))
+            Dim vic As New Victim(s.ReadByte + s.ReadByte * &H100, s.ReadByte + s.ReadByte * &H100, s.ReadByte + s.ReadByte * &H100, _
+                                  s.ReadByte + s.ReadByte * &H100, Shrd.ReadFileAddr(s))
             vic.x -= LevelGFX.offsets(vic.index * 2)
             vic.y -= LevelGFX.offsets(vic.index * 2 + 1)
             victims.Add(vic)
@@ -38,11 +39,24 @@
         Do
             Dim x As Integer = s.ReadByte + s.ReadByte * &H100
             If x = 0 Then Exit Do
-            Dim mon As NRMonster = New NRMonster(x, s.ReadByte + s.ReadByte * &H100, s.ReadByte + s.ReadByte * &H100, _
-                                                 s.ReadByte + s.ReadByte * &H100, Shrd.ReadFileAddr(s))
+            Dim mon As New NRMonster(x, s.ReadByte + s.ReadByte * &H100, s.ReadByte + s.ReadByte * &H100, _
+                                     s.ReadByte + s.ReadByte * &H100, Shrd.ReadFileAddr(s))
             mon.x -= LevelGFX.offsets(mon.index * 2)
             mon.y -= LevelGFX.offsets(mon.index * 2 + 1)
             NRMonsters.Add(mon)
+        Loop
+        s.Seek(startAddr + 28, IO.SeekOrigin.Begin)
+        Shrd.GoToRelativePointer(s, &H9F)
+        Monsters = New List(Of Monster)
+        Do
+            Dim radius As Integer = s.ReadByte
+            Dim x1 As Integer = s.ReadByte
+            If x1 = 0 And radius = 0 Then Exit Do
+            Dim mon As New Monster(radius, x1 + s.ReadByte * &H100, s.ReadByte + s.ReadByte * &H100, _
+                                   s.ReadByte, Shrd.ReadFileAddr(s))
+            'mon.x -=
+            'mon.y -=
+            Monsters.Add(mon)
         Loop
         s.Seek(startAddr + 4, IO.SeekOrigin.Begin)
         Shrd.GoToPointer(s)

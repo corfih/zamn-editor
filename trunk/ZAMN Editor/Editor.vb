@@ -20,6 +20,9 @@
                                    New PencilSelectTool(Me), New TileSelectTool(Me), New ItemTool(Me), New VictimTool(Me), New NRMonsterTool(Me)}
         LevelItems = New ToolStripItem() {FileSave, SaveTool, EditPaste, PasteTool, EditSelectAll, EditSelectNone, ViewGrid, ViewPriority, ToolStripButton1}
         TileSuggestList.LoadAll()
+        If My.Settings.RecentROMs <> "" Then
+            RecentROMs.Items = StringToList(My.Settings.RecentROMs)
+        End If
     End Sub
 
     Private Sub Editor_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles Me.FormClosed
@@ -28,17 +31,27 @@
         Me.WindowState = FormWindowState.Normal
         My.Settings.Location = Me.Location
         My.Settings.Size = Me.Size
+        My.Settings.RecentROMs = ListToString(RecentROMs.Items)
     End Sub
 
     Private Sub FileOpen_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles FileOpen.Click, OpenTool.Click
         If OpenROM.ShowDialog = DialogResult.OK Then
-            r = New ROM(OpenROM.FileName)
-            If r.failed Then Return
-            FileOpenLevel.Enabled = True
-            OpenLevelTool.Enabled = True
-            LevelGFX.Load(r)
-            OpenLevel.LoadROM(r)
+            RecentROMs.Add(OpenROM.FileName)
+            LoadROM(OpenROM.FileName)
         End If
+    End Sub
+
+    Private Sub RecentROMs_ItemClicked(ByVal sender As Object, ByVal e As ItemClickedEventArgs) Handles RecentROMs.ItemClicked
+        LoadROM(e.Text)
+    End Sub
+
+    Public Sub LoadROM(ByVal path As String)
+        r = New ROM(path)
+        If r.failed Then Return
+        FileOpenLevel.Enabled = True
+        OpenLevelTool.Enabled = True
+        LevelGFX.Load(r)
+        OpenLevel.LoadROM(r)
     End Sub
 
     Private Sub FileOpenLevel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles FileOpenLevel.Click, OpenLevelTool.Click
@@ -228,4 +241,25 @@
             UpdateEdControl()
         End If
     End Sub
+
+    Private Function ListToString(ByVal items As List(Of String)) As String
+        Dim str As String = ""
+        For Each i As String In items
+            str &= i & "|"
+        Next
+        Return str
+    End Function
+
+    Private Function StringToList(ByVal str As String) As List(Of String)
+        Dim items As New List(Of String)
+        Dim str2 As String = str
+        Dim indx As Integer
+        Do
+            indx = InStr(str2, "|")
+            If indx = 0 Then Exit Do
+            items.Add(Mid(str2, 1, indx - 1))
+            str2 = Mid(str2, indx + 1)
+        Loop
+        Return items
+    End Function
 End Class
