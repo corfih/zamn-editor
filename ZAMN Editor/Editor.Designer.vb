@@ -26,19 +26,13 @@ Partial Class Editor
         Me.TSContainer = New System.Windows.Forms.ToolStripContainer
         Me.MainMenu = New System.Windows.Forms.MenuStrip
         Me.FileMenu = New System.Windows.Forms.ToolStripMenuItem
-        Me.FileOpen = New System.Windows.Forms.ToolStripMenuItem
-        Me.FileOpenLevel = New System.Windows.Forms.ToolStripMenuItem
         Me.toolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator
-        Me.FileSave = New System.Windows.Forms.ToolStripMenuItem
         Me.toolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator
         Me.FileExit = New System.Windows.Forms.ToolStripMenuItem
         Me.EditMenu = New System.Windows.Forms.ToolStripMenuItem
         Me.EditUndo = New System.Windows.Forms.ToolStripMenuItem
         Me.EditRedo = New System.Windows.Forms.ToolStripMenuItem
         Me.toolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator
-        Me.EditCut = New System.Windows.Forms.ToolStripMenuItem
-        Me.EditCopy = New System.Windows.Forms.ToolStripMenuItem
-        Me.EditPaste = New System.Windows.Forms.ToolStripMenuItem
         Me.toolStripSeparator6 = New System.Windows.Forms.ToolStripSeparator
         Me.EditSelectAll = New System.Windows.Forms.ToolStripMenuItem
         Me.EditSelectNone = New System.Windows.Forms.ToolStripMenuItem
@@ -50,29 +44,38 @@ Partial Class Editor
         Me.View75P = New System.Windows.Forms.ToolStripMenuItem
         Me.View50P = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolsMenu = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolsPaintBrush = New System.Windows.Forms.ToolStripMenuItem
-        Me.ToolsDropper = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolsTileSuggest = New System.Windows.Forms.ToolStripMenuItem
+        Me.Tools = New System.Windows.Forms.ToolStrip
+        Me.toolStripSeparator = New System.Windows.Forms.ToolStripSeparator
+        Me.toolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
+        Me.toolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator
+        Me.OpenROM = New System.Windows.Forms.OpenFileDialog
+        Me.Tabs = New ZAMNEditor.Tabs
+        Me.RecentROMs = New ZAMNEditor.RecentFilesList
+        Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem
+        Me.FileOpen = New System.Windows.Forms.ToolStripMenuItem
+        Me.FileOpenLevel = New System.Windows.Forms.ToolStripMenuItem
+        Me.FileSave = New System.Windows.Forms.ToolStripMenuItem
+        Me.EditCut = New System.Windows.Forms.ToolStripMenuItem
+        Me.EditCopy = New System.Windows.Forms.ToolStripMenuItem
+        Me.EditPaste = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolsDropper = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolsRectangleSelect = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolsPencilSelect = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolsTileSelect = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolsItem = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolsVictims = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolsNRMonsters = New System.Windows.Forms.ToolStripMenuItem
-        Me.Tools = New System.Windows.Forms.ToolStrip
         Me.OpenTool = New System.Windows.Forms.ToolStripButton
         Me.OpenLevelTool = New System.Windows.Forms.ToolStripButton
         Me.SaveTool = New System.Windows.Forms.ToolStripButton
-        Me.toolStripSeparator = New System.Windows.Forms.ToolStripSeparator
         Me.CutTool = New System.Windows.Forms.ToolStripButton
         Me.CopyTool = New System.Windows.Forms.ToolStripButton
         Me.PasteTool = New System.Windows.Forms.ToolStripButton
-        Me.toolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator
         Me.Zoom = New System.Windows.Forms.ToolStripDropDownButton
         Me.Zoom100Tool = New System.Windows.Forms.ToolStripMenuItem
         Me.Zoom75Tool = New System.Windows.Forms.ToolStripMenuItem
         Me.Zoom50Tool = New System.Windows.Forms.ToolStripMenuItem
-        Me.toolStripSeparator8 = New System.Windows.Forms.ToolStripSeparator
         Me.BrushTool = New System.Windows.Forms.ToolStripButton
         Me.DropperTool = New System.Windows.Forms.ToolStripButton
         Me.TileSgstTool = New System.Windows.Forms.ToolStripButton
@@ -82,10 +85,8 @@ Partial Class Editor
         Me.ItemTool = New System.Windows.Forms.ToolStripButton
         Me.VictimTool = New System.Windows.Forms.ToolStripButton
         Me.NRMTool = New System.Windows.Forms.ToolStripButton
-        Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton
-        Me.OpenROM = New System.Windows.Forms.OpenFileDialog
-        Me.Tabs = New ZAMNEditor.Tabs
-        Me.RecentROMs = New ZAMNEditor.RecentFilesList
+        Me.ToolsMonsters = New System.Windows.Forms.ToolStripMenuItem
+        Me.MonTool = New System.Windows.Forms.ToolStripButton
         Me.TSContainer.ContentPanel.SuspendLayout()
         Me.TSContainer.TopToolStripPanel.SuspendLayout()
         Me.TSContainer.SuspendLayout()
@@ -145,38 +146,10 @@ Partial Class Editor
         Me.FileMenu.Size = New System.Drawing.Size(35, 20)
         Me.FileMenu.Text = "&File"
         '
-        'FileOpen
-        '
-        Me.FileOpen.Image = Global.ZAMNEditor.My.Resources.Resources.Folder
-        Me.FileOpen.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.FileOpen.Name = "FileOpen"
-        Me.FileOpen.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
-        Me.FileOpen.Size = New System.Drawing.Size(165, 22)
-        Me.FileOpen.Text = "&Open"
-        '
-        'FileOpenLevel
-        '
-        Me.FileOpenLevel.Enabled = False
-        Me.FileOpenLevel.Image = Global.ZAMNEditor.My.Resources.Resources.BlueFolder
-        Me.FileOpenLevel.Name = "FileOpenLevel"
-        Me.FileOpenLevel.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.L), System.Windows.Forms.Keys)
-        Me.FileOpenLevel.Size = New System.Drawing.Size(165, 22)
-        Me.FileOpenLevel.Text = "Open Level"
-        '
         'toolStripSeparator2
         '
         Me.toolStripSeparator2.Name = "toolStripSeparator2"
         Me.toolStripSeparator2.Size = New System.Drawing.Size(162, 6)
-        '
-        'FileSave
-        '
-        Me.FileSave.Enabled = False
-        Me.FileSave.Image = Global.ZAMNEditor.My.Resources.Resources.Save
-        Me.FileSave.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.FileSave.Name = "FileSave"
-        Me.FileSave.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.S), System.Windows.Forms.Keys)
-        Me.FileSave.Size = New System.Drawing.Size(165, 22)
-        Me.FileSave.Text = "&Save"
         '
         'toolStripSeparator4
         '
@@ -216,36 +189,6 @@ Partial Class Editor
         '
         Me.toolStripSeparator5.Name = "toolStripSeparator5"
         Me.toolStripSeparator5.Size = New System.Drawing.Size(153, 6)
-        '
-        'EditCut
-        '
-        Me.EditCut.Enabled = False
-        Me.EditCut.Image = Global.ZAMNEditor.My.Resources.Resources.Cut
-        Me.EditCut.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.EditCut.Name = "EditCut"
-        Me.EditCut.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.X), System.Windows.Forms.Keys)
-        Me.EditCut.Size = New System.Drawing.Size(156, 22)
-        Me.EditCut.Text = "Cu&t"
-        '
-        'EditCopy
-        '
-        Me.EditCopy.Enabled = False
-        Me.EditCopy.Image = Global.ZAMNEditor.My.Resources.Resources.Copy
-        Me.EditCopy.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.EditCopy.Name = "EditCopy"
-        Me.EditCopy.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
-        Me.EditCopy.Size = New System.Drawing.Size(156, 22)
-        Me.EditCopy.Text = "&Copy"
-        '
-        'EditPaste
-        '
-        Me.EditPaste.Enabled = False
-        Me.EditPaste.Image = Global.ZAMNEditor.My.Resources.Resources.Paste
-        Me.EditPaste.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.EditPaste.Name = "EditPaste"
-        Me.EditPaste.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.V), System.Windows.Forms.Keys)
-        Me.EditPaste.Size = New System.Drawing.Size(156, 22)
-        Me.EditPaste.Text = "&Paste"
         '
         'toolStripSeparator6
         '
@@ -315,17 +258,129 @@ Partial Class Editor
         '
         'ToolsMenu
         '
-        Me.ToolsMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolsPaintBrush, Me.ToolsDropper, Me.ToolsTileSuggest, Me.ToolsRectangleSelect, Me.ToolsPencilSelect, Me.ToolsTileSelect, Me.ToolsItem, Me.ToolsVictims, Me.ToolsNRMonsters})
+        Me.ToolsMenu.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolsDropper, Me.ToolsTileSuggest, Me.ToolsRectangleSelect, Me.ToolsPencilSelect, Me.ToolsTileSelect, Me.ToolsItem, Me.ToolsVictims, Me.ToolsNRMonsters, Me.ToolStripMenuItem1, Me.ToolsMonsters})
         Me.ToolsMenu.Name = "ToolsMenu"
         Me.ToolsMenu.Size = New System.Drawing.Size(44, 20)
         Me.ToolsMenu.Text = "&Tools"
         '
-        'ToolsPaintBrush
+        'ToolsTileSuggest
         '
-        Me.ToolsPaintBrush.Image = Global.ZAMNEditor.My.Resources.Resources.Brush
-        Me.ToolsPaintBrush.Name = "ToolsPaintBrush"
-        Me.ToolsPaintBrush.Size = New System.Drawing.Size(202, 22)
-        Me.ToolsPaintBrush.Text = "&Paint Brush"
+        Me.ToolsTileSuggest.Name = "ToolsTileSuggest"
+        Me.ToolsTileSuggest.Size = New System.Drawing.Size(202, 22)
+        Me.ToolsTileSuggest.Text = "Tile &Suggest"
+        '
+        'Tools
+        '
+        Me.Tools.Dock = System.Windows.Forms.DockStyle.None
+        Me.Tools.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenTool, Me.OpenLevelTool, Me.SaveTool, Me.toolStripSeparator, Me.CutTool, Me.CopyTool, Me.PasteTool, Me.toolStripSeparator1, Me.Zoom, Me.toolStripSeparator8, Me.BrushTool, Me.DropperTool, Me.TileSgstTool, Me.RectangleTool, Me.PencilTool, Me.TileSlctTool, Me.ItemTool, Me.VictimTool, Me.NRMTool, Me.MonTool})
+        Me.Tools.Location = New System.Drawing.Point(3, 24)
+        Me.Tools.Name = "Tools"
+        Me.Tools.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
+        Me.Tools.Size = New System.Drawing.Size(427, 25)
+        Me.Tools.TabIndex = 1
+        '
+        'toolStripSeparator
+        '
+        Me.toolStripSeparator.Name = "toolStripSeparator"
+        Me.toolStripSeparator.Size = New System.Drawing.Size(6, 25)
+        '
+        'toolStripSeparator1
+        '
+        Me.toolStripSeparator1.Name = "toolStripSeparator1"
+        Me.toolStripSeparator1.Size = New System.Drawing.Size(6, 25)
+        '
+        'toolStripSeparator8
+        '
+        Me.toolStripSeparator8.Name = "toolStripSeparator8"
+        Me.toolStripSeparator8.Size = New System.Drawing.Size(6, 25)
+        '
+        'OpenROM
+        '
+        Me.OpenROM.DefaultExt = "smc"
+        Me.OpenROM.Filter = "SNES ROM Files (*.smc)|*.smc|All Files (*.*)|*.*"
+        '
+        'Tabs
+        '
+        Me.Tabs.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Tabs.Location = New System.Drawing.Point(0, 0)
+        Me.Tabs.Name = "Tabs"
+        Me.Tabs.Size = New System.Drawing.Size(625, 386)
+        Me.Tabs.TabIndex = 1
+        Me.Tabs.Text = "Tabs1"
+        Me.Tabs.Visible = False
+        '
+        'RecentROMs
+        '
+        Me.RecentROMs.Enabled = False
+        Me.RecentROMs.Items = CType(resources.GetObject("RecentROMs.Items"), System.Collections.Generic.List(Of String))
+        Me.RecentROMs.MaxItems = 5
+        Me.RecentROMs.MaxLength = 60
+        Me.RecentROMs.Name = "RecentROMs"
+        Me.RecentROMs.Size = New System.Drawing.Size(165, 22)
+        Me.RecentROMs.Text = "Recent ROMs"
+        '
+        'ToolStripMenuItem1
+        '
+        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(202, 22)
+        '
+        'FileOpen
+        '
+        Me.FileOpen.Image = Global.ZAMNEditor.My.Resources.Resources.Folder
+        Me.FileOpen.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.FileOpen.Name = "FileOpen"
+        Me.FileOpen.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
+        Me.FileOpen.Size = New System.Drawing.Size(165, 22)
+        Me.FileOpen.Text = "&Open"
+        '
+        'FileOpenLevel
+        '
+        Me.FileOpenLevel.Enabled = False
+        Me.FileOpenLevel.Image = Global.ZAMNEditor.My.Resources.Resources.BlueFolder
+        Me.FileOpenLevel.Name = "FileOpenLevel"
+        Me.FileOpenLevel.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.L), System.Windows.Forms.Keys)
+        Me.FileOpenLevel.Size = New System.Drawing.Size(165, 22)
+        Me.FileOpenLevel.Text = "Open Level"
+        '
+        'FileSave
+        '
+        Me.FileSave.Enabled = False
+        Me.FileSave.Image = Global.ZAMNEditor.My.Resources.Resources.Save
+        Me.FileSave.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.FileSave.Name = "FileSave"
+        Me.FileSave.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.S), System.Windows.Forms.Keys)
+        Me.FileSave.Size = New System.Drawing.Size(165, 22)
+        Me.FileSave.Text = "&Save"
+        '
+        'EditCut
+        '
+        Me.EditCut.Enabled = False
+        Me.EditCut.Image = Global.ZAMNEditor.My.Resources.Resources.Cut
+        Me.EditCut.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.EditCut.Name = "EditCut"
+        Me.EditCut.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.X), System.Windows.Forms.Keys)
+        Me.EditCut.Size = New System.Drawing.Size(156, 22)
+        Me.EditCut.Text = "Cu&t"
+        '
+        'EditCopy
+        '
+        Me.EditCopy.Enabled = False
+        Me.EditCopy.Image = Global.ZAMNEditor.My.Resources.Resources.Copy
+        Me.EditCopy.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.EditCopy.Name = "EditCopy"
+        Me.EditCopy.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
+        Me.EditCopy.Size = New System.Drawing.Size(156, 22)
+        Me.EditCopy.Text = "&Copy"
+        '
+        'EditPaste
+        '
+        Me.EditPaste.Enabled = False
+        Me.EditPaste.Image = Global.ZAMNEditor.My.Resources.Resources.Paste
+        Me.EditPaste.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.EditPaste.Name = "EditPaste"
+        Me.EditPaste.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.V), System.Windows.Forms.Keys)
+        Me.EditPaste.Size = New System.Drawing.Size(156, 22)
+        Me.EditPaste.Text = "&Paste"
         '
         'ToolsDropper
         '
@@ -333,12 +388,6 @@ Partial Class Editor
         Me.ToolsDropper.Name = "ToolsDropper"
         Me.ToolsDropper.Size = New System.Drawing.Size(202, 22)
         Me.ToolsDropper.Text = "&Dropper"
-        '
-        'ToolsTileSuggest
-        '
-        Me.ToolsTileSuggest.Name = "ToolsTileSuggest"
-        Me.ToolsTileSuggest.Size = New System.Drawing.Size(202, 22)
-        Me.ToolsTileSuggest.Text = "Tile &Suggest"
         '
         'ToolsRectangleSelect
         '
@@ -382,16 +431,6 @@ Partial Class Editor
         Me.ToolsNRMonsters.Size = New System.Drawing.Size(202, 22)
         Me.ToolsNRMonsters.Text = "&Non-Respawning Monsters"
         '
-        'Tools
-        '
-        Me.Tools.Dock = System.Windows.Forms.DockStyle.None
-        Me.Tools.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenTool, Me.OpenLevelTool, Me.SaveTool, Me.toolStripSeparator, Me.CutTool, Me.CopyTool, Me.PasteTool, Me.toolStripSeparator1, Me.Zoom, Me.toolStripSeparator8, Me.BrushTool, Me.DropperTool, Me.TileSgstTool, Me.RectangleTool, Me.PencilTool, Me.TileSlctTool, Me.ItemTool, Me.VictimTool, Me.NRMTool, Me.ToolStripButton1})
-        Me.Tools.Location = New System.Drawing.Point(3, 24)
-        Me.Tools.Name = "Tools"
-        Me.Tools.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
-        Me.Tools.Size = New System.Drawing.Size(427, 25)
-        Me.Tools.TabIndex = 1
-        '
         'OpenTool
         '
         Me.OpenTool.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
@@ -420,11 +459,6 @@ Partial Class Editor
         Me.SaveTool.Name = "SaveTool"
         Me.SaveTool.Size = New System.Drawing.Size(23, 22)
         Me.SaveTool.Text = "&Save"
-        '
-        'toolStripSeparator
-        '
-        Me.toolStripSeparator.Name = "toolStripSeparator"
-        Me.toolStripSeparator.Size = New System.Drawing.Size(6, 25)
         '
         'CutTool
         '
@@ -456,11 +490,6 @@ Partial Class Editor
         Me.PasteTool.Size = New System.Drawing.Size(23, 22)
         Me.PasteTool.Text = "&Paste"
         '
-        'toolStripSeparator1
-        '
-        Me.toolStripSeparator1.Name = "toolStripSeparator1"
-        Me.toolStripSeparator1.Size = New System.Drawing.Size(6, 25)
-        '
         'Zoom
         '
         Me.Zoom.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
@@ -488,11 +517,6 @@ Partial Class Editor
         Me.Zoom50Tool.Name = "Zoom50Tool"
         Me.Zoom50Tool.Size = New System.Drawing.Size(103, 22)
         Me.Zoom50Tool.Text = "50%"
-        '
-        'toolStripSeparator8
-        '
-        Me.toolStripSeparator8.Name = "toolStripSeparator8"
-        Me.toolStripSeparator8.Size = New System.Drawing.Size(6, 25)
         '
         'BrushTool
         '
@@ -575,38 +599,20 @@ Partial Class Editor
         Me.NRMTool.Size = New System.Drawing.Size(23, 22)
         Me.NRMTool.Text = "Non-Respawning Monster Tool"
         '
-        'ToolStripButton1
+        'ToolsMonsters
         '
-        Me.ToolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.ToolStripButton1.Image = CType(resources.GetObject("ToolStripButton1.Image"), System.Drawing.Image)
-        Me.ToolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.ToolStripButton1.Name = "ToolStripButton1"
-        Me.ToolStripButton1.Size = New System.Drawing.Size(23, 22)
-        Me.ToolStripButton1.Text = "ToolStripButton1"
+        Me.ToolsMonsters.Name = "ToolsMonsters"
+        Me.ToolsMonsters.Size = New System.Drawing.Size(202, 22)
+        Me.ToolsMonsters.Text = "&Monsters"
         '
-        'OpenROM
+        'MonTool
         '
-        Me.OpenROM.DefaultExt = "smc"
-        Me.OpenROM.Filter = "SNES ROM Files (*.smc)|*.smc|All Files (*.*)|*.*"
-        '
-        'Tabs
-        '
-        Me.Tabs.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Tabs.Location = New System.Drawing.Point(0, 0)
-        Me.Tabs.Name = "Tabs"
-        Me.Tabs.Size = New System.Drawing.Size(625, 386)
-        Me.Tabs.TabIndex = 1
-        Me.Tabs.Text = "Tabs1"
-        Me.Tabs.Visible = False
-        '
-        'RecentROMs
-        '
-        Me.RecentROMs.Items = CType(resources.GetObject("RecentROMs.Items"), System.Collections.Generic.List(Of String))
-        Me.RecentROMs.MaxItems = 5
-        Me.RecentROMs.MaxLength = 60
-        Me.RecentROMs.Name = "RecentROMs"
-        Me.RecentROMs.Size = New System.Drawing.Size(165, 22)
-        Me.RecentROMs.Text = "Recent ROMs"
+        Me.MonTool.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.MonTool.Image = CType(resources.GetObject("MonTool.Image"), System.Drawing.Image)
+        Me.MonTool.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.MonTool.Name = "MonTool"
+        Me.MonTool.Size = New System.Drawing.Size(23, 22)
+        Me.MonTool.Text = "Monster Tool"
         '
         'Editor
         '
@@ -656,7 +662,6 @@ Partial Class Editor
     Friend WithEvents FileOpenLevel As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents OpenROM As System.Windows.Forms.OpenFileDialog
     Friend WithEvents ToolsMenu As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ToolsPaintBrush As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents BrushTool As System.Windows.Forms.ToolStripButton
     Friend WithEvents ViewMenu As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ViewGrid As System.Windows.Forms.ToolStripMenuItem
@@ -672,7 +677,6 @@ Partial Class Editor
     Friend WithEvents EditSelectNone As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolsTileSuggest As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents TileSgstTool As System.Windows.Forms.ToolStripButton
-    Friend WithEvents ToolStripButton1 As System.Windows.Forms.ToolStripButton
     Friend WithEvents ItemTool As System.Windows.Forms.ToolStripButton
     Friend WithEvents ToolsItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents VictimTool As System.Windows.Forms.ToolStripButton
@@ -691,5 +695,8 @@ Partial Class Editor
     Friend WithEvents Zoom75Tool As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Zoom50Tool As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents RecentROMs As ZAMNEditor.RecentFilesList
+    Friend WithEvents ToolStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolsMonsters As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents MonTool As System.Windows.Forms.ToolStripButton
 
 End Class

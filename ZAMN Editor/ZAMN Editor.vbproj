@@ -102,6 +102,12 @@
     </Compile>
     <Compile Include="Level.vb" />
     <Compile Include="Monster.vb" />
+    <Compile Include="MonsterBrowser.Designer.vb">
+      <DependentUpon>MonsterBrowser.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MonsterBrowser.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -127,6 +133,7 @@
     <Compile Include="RecentFilesList.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Tools\MonsterTool.vb" />
     <Compile Include="Tools\NRMonsterTool.vb" />
     <Compile Include="OpenLevel.Designer.vb">
       <DependentUpon>OpenLevel.vb</DependentUpon>
@@ -183,6 +190,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonsterBrowser.resx">
+      <DependentUpon>MonsterBrowser.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

@@ -16,9 +16,9 @@
                 Me.WindowState = FormWindowState.Maximized
             End If
         End If
-        EditingTools = New Tool() {New PaintbrushTool(Me), New DropperTool(Me), New TileSuggestTool(Me), New RectangleSelectTool(Me), _
-                                   New PencilSelectTool(Me), New TileSelectTool(Me), New ItemTool(Me), New VictimTool(Me), New NRMonsterTool(Me)}
-        LevelItems = New ToolStripItem() {FileSave, SaveTool, EditPaste, PasteTool, EditSelectAll, EditSelectNone, ViewGrid, ViewPriority, ToolStripButton1}
+        EditingTools = New Tool() {New PaintbrushTool(Me), New DropperTool(Me), New TileSuggestTool(Me), New RectangleSelectTool(Me), New PencilSelectTool(Me), _
+                                   New TileSelectTool(Me), New ItemTool(Me), New VictimTool(Me), New NRMonsterTool(Me), New MonsterTool(Me)}
+        LevelItems = New ToolStripItem() {FileSave, SaveTool, EditPaste, PasteTool, EditSelectAll, EditSelectNone, ViewGrid, ViewPriority}
         TileSuggestList.LoadAll()
         If My.Settings.RecentROMs <> "" Then
             RecentROMs.Items = StringToList(My.Settings.RecentROMs)
@@ -80,11 +80,36 @@
         End If
     End Sub
 
+    Private Sub FileExit_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles FileExit.Click
+        Me.Close()
+    End Sub
+
+    Private Sub EditCopy_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles EditCopy.Click, CopyTool.Click
+        If CurTool.Copy() Then
+            'Copy selected tiles
+        End If
+    End Sub
+
+    Private Sub EditCut_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles EditCut.Click, CutTool.Click
+        If CurTool.Cut() Then
+            'Cut selected tiles
+        End If
+        EdControl.Repaint()
+    End Sub
+
+    Private Sub EditPaste_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles EditPaste.Click, PasteTool.Click
+        If CurTool.Paste() Then
+            'Paste tiles
+        End If
+        EdControl.Repaint()
+    End Sub
+
     Private Sub EditSelectAll_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EditSelectAll.Click
         If CurTool Is Nothing Then Return
         If CurTool.SelectAll(True) Then
             SelectAll(True)
         End If
+        SetCopy(True)
         EdControl.Repaint()
     End Sub
 
@@ -93,6 +118,7 @@
         If CurTool.SelectAll(False) Then
             SelectAll(False)
         End If
+        SetCopy(False)
         EdControl.Repaint()
     End Sub
 
@@ -166,6 +192,9 @@
             Case SideContentType.NRMonsters
                 t.NRMPicker = EdControl.NRMPicker
                 EdControl.SetSidePanel(EdControl.NRMPicker)
+            Case SideContentType.Monsters
+                t.MonsterPicker = EdControl.MonsterPicker
+                EdControl.SetSidePanel(EdControl.MonsterPicker)
         End Select
         CurTool = t
         EdControl.t = t
@@ -217,7 +246,7 @@
         TSContainer.ContentPanel.BackColor = SystemColors.AppWorkspace
     End Sub
 
-    Private Sub ToolStripButton1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripButton1.Click
+    Private Sub ToolStripButton1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Dim b As New Bitmap(64 * 16, 64 * 16)
         Using g As Graphics = Graphics.FromImage(b)
             For l As Integer = 0 To 255

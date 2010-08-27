@@ -54,8 +54,8 @@
             If x1 = 0 And radius = 0 Then Exit Do
             Dim mon As New Monster(radius, x1 + s.ReadByte * &H100, s.ReadByte + s.ReadByte * &H100, _
                                    s.ReadByte, Shrd.ReadFileAddr(s))
-            'mon.x -=
-            'mon.y -=
+            mon.x -= LevelGFX.offsets(mon.index * 2)
+            mon.y -= LevelGFX.offsets(mon.index * 2 + 1)
             Monsters.Add(mon)
         Loop
         s.Seek(startAddr + 4, IO.SeekOrigin.Begin)

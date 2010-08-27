@@ -53,7 +53,7 @@ Public Class Tileset
                     g += &H100
                 End If
                 Shrd.DrawTile(data, x, y, LinGFX(g), &H10 * ((map16(m + 1) \ 4) And 7), (map16(m + 1) And &H40) > 1, (map16(m + 1) And &H80) > 1)
-                If collision(g * 2) = 0 And collision(g * 2 + 1) = 0 Then
+                If (collision(g * 2) And 2) > 0 Then
                     Shrd.DrawTile(dataPr, x, y, LinGFX(g), &H10 * ((map16(m + 1) \ 4) And 7), (map16(m + 1) And &H40) > 1, (map16(m + 1) And &H80) > 1)
                 End If
                 x += 8

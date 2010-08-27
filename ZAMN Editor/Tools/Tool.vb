@@ -6,6 +6,7 @@
     Public WithEvents ItemPicker As ItemBrowser
     Public WithEvents VictimPicker As VictimBrowser
     Public WithEvents NRMPicker As NRMBrowser
+    Public WithEvents MonsterPicker As MonsterBrowser
     Public Status As String
 
     Public Sub New(ByVal ed As Editor)
@@ -41,6 +42,9 @@
     Public Overridable Sub NRMChanged()
 
     End Sub
+    Public Overridable Sub MonsterChanged()
+
+    End Sub
     Public Overridable Sub Refresh()
 
     End Sub
@@ -48,6 +52,15 @@
 
     End Sub
     Public Overridable Function SelectAll(ByVal selected As Boolean) As Boolean
+        Return True
+    End Function
+    Public Overridable Function Copy() As Boolean
+        Return True
+    End Function
+    Public Overridable Function Cut() As Boolean
+        Return True
+    End Function
+    Public Overridable Function Paste() As Boolean
         Return True
     End Function
 
@@ -63,6 +76,10 @@
     Private Sub NRMPicker_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles NRMPicker.ValueChanged
         NRMChanged()
     End Sub
+    Private Sub MonsterPicker_ValueChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles MonsterPicker.ValueChanged
+        MonsterChanged()
+    End Sub
+
 
     Public Sub Repaint()
         ed.EdControl.Repaint()
@@ -78,4 +95,5 @@ Public Enum SideContentType
     Items
     Victims
     NRMonsters
+    Monsters
 End Enum

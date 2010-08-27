@@ -145,4 +145,13 @@ Public Class Shrd
     Public Shared Function RealSize(ByVal rect As Rectangle) As Rectangle
         Return New Rectangle(rect.X, rect.Y, rect.Width - 1, rect.Height - 1)
     End Function
+
+    Public Shared Function HexL(ByVal n As Integer, ByVal length As Integer) As String
+        Dim str As String = Hex(n)
+        If str.Length < length Then
+            Return StrDup(length - str.Length, "0") & str
+        Else
+            Return str
+        End If
+    End Function
 End Class
