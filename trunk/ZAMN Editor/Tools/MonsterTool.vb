@@ -1,15 +1,15 @@
-﻿Public Class NRMonsterTool
+﻿Public Class MonsterTool
     Inherits Tool
 
-    Public selectedMonsters As List(Of NRMonster)
-    Public selectedMonster As NRMonster
-    Public allSelectedMonsters As New Dictionary(Of LvlEdCtrl, List(Of NRMonster))
+    Public selectedMonsters As List(Of Monster)
+    Public selectedMonster As Monster
+    Public allSelectedMonsters As New Dictionary(Of LvlEdCtrl, List(Of Monster))
     Public XStart As Integer
     Public YStart As Integer
     Public width As Integer
     Public height As Integer
 
-    Private curSelMonsters As New List(Of NRMonster)
+    Private curSelMonsters As New List(Of Monster)
     Private selecting As Boolean = False
     Private curX As Integer
     Private curY As Integer
@@ -25,22 +25,22 @@
 
     Public Sub New(ByVal ed As Editor)
         MyBase.New(ed)
-        Me.SidePanel = SideContentType.NRMonsters
+        Me.SidePanel = SideContentType.Monsters
         Me.Status = DefaultText
         borderPen.DashPattern = New Single() {4, 4}
     End Sub
 
     Public Overrides Sub Refresh()
         If Not allSelectedMonsters.ContainsKey(ed.EdControl) Then
-            allSelectedMonsters.Add(ed.EdControl, New List(Of NRMonster))
+            allSelectedMonsters.Add(ed.EdControl, New List(Of Monster))
         End If
         selectedMonsters = allSelectedMonsters(ed.EdControl)
     End Sub
 
     Public Overrides Sub MouseDown(ByVal e As System.Windows.Forms.MouseEventArgs)
         Dim addmonster As Boolean = False
-        For l As Integer = ed.EdControl.lvl.NRMonsters.Count - 1 To 0 Step -1 'Find monster under mouse
-            Dim m As NRMonster = ed.EdControl.lvl.NRMonsters(l)
+        For l As Integer = ed.EdControl.lvl.Monsters.Count - 1 To 0 Step -1 'Find monster under mouse
+            Dim m As Monster = ed.EdControl.lvl.Monsters(l)
             If m.GetRect.Contains(e.Location) Then
                 If Not selectedMonsters.Contains(m) Then
                     If Control.ModifierKeys <> Keys.Shift Then
@@ -74,21 +74,21 @@
         selecting = Not addmonster
         If Control.ModifierKeys = Keys.Control Then 'Add a new monster
             If selectedMonsters.Count = 0 Then
-                If NRMPicker.SelectedIndex > -1 Then
-                    Dim m As New NRMonster(e.X - LevelGFX.VictimImages(NRMPicker.SelectedIndex).Width / 2, _
-                                           e.Y - LevelGFX.VictimImages(NRMPicker.SelectedIndex).Height / 2, 0, 0, LevelGFX.ptrs(NRMPicker.SelectedIndex))
+                If MonsterPicker.SelectedIndex > -1 Then
+                    Dim m As New Monster(e.X - LevelGFX.VictimImages(MonsterPicker.SelectedIndex).Width / 2, _
+                                         e.Y - LevelGFX.VictimImages(MonsterPicker.SelectedIndex).Height / 2, 0, 0, LevelGFX.ptrs(MonsterPicker.SelectedIndex))
                     selectedMonsters.Clear()
                     selectedMonsters.Add(m)
                     selectedMonster = m
-                    ed.EdControl.lvl.NRMonsters.Add(m)
+                    ed.EdControl.lvl.Monsters.Add(m)
                     dragXOff = 8
                     dragYOff = 8
                 End If
             Else 'Clone the current monster
-                Dim newMonsters As New List(Of NRMonster)
-                For Each m As NRMonster In selectedMonsters
-                    newMonsters.Add(New NRMonster(m))
-                    ed.EdControl.lvl.NRMonsters.Add(newMonsters.Last)
+                Dim newMonsters As New List(Of Monster)
+                For Each m As Monster In selectedMonsters
+                    newMonsters.Add(New Monster(m))
+                    ed.EdControl.lvl.Monsters.Add(newMonsters.Last)
                 Next
                 selectedMonster = newMonsters(selectedMonsters.IndexOf(selectedMonster))
                 selectedMonsters = newMonsters
@@ -116,7 +116,7 @@
                 End If
                 Dim selRect As New Rectangle(curX, curY, width, height)
                 curSelMonsters.Clear()
-                For Each m As NRMonster In ed.EdControl.lvl.NRMonsters 'Find monsters in selection rectangle
+                For Each m As Monster In ed.EdControl.lvl.Monsters 'Find monsters in selection rectangle
                     If selRect.IntersectsWith(m.GetRect) Then
                         curSelMonsters.Add(m)
                     End If
@@ -129,13 +129,13 @@
                 If Control.ModifierKeys = Keys.Shift Then
                     stp = 8
                 End If
-                For Each m As NRMonster In selectedMonsters
+                For Each m As Monster In selectedMonsters
                     If m.x < minX Then minX = m.x
                     If m.y < minY Then minY = m.y
                 Next
                 Dim XDelta As Integer = Math.Max(-minX, e.X - (selectedMonster.x + dragXOff))
                 Dim YDelta As Integer = Math.Max(-minY, e.Y - (selectedMonster.y + dragYOff))
-                For Each m As NRMonster In selectedMonsters
+                For Each m As Monster In selectedMonsters
                     m.x = ((m.x + XDelta) \ stp) * stp
                     m.y = ((m.y + YDelta) \ stp) * stp
                 Next
@@ -147,7 +147,7 @@
     End Sub
 
     Public Overrides Sub MouseUp(ByVal e As System.Windows.Forms.MouseEventArgs)
-        For Each m As NRMonster In curSelMonsters
+        For Each m As Monster In curSelMonsters
             If Not selectedMonsters.Contains(m) Then
                 selectedMonsters.Add(m)
             End If
@@ -160,8 +160,8 @@
 
     Public Overrides Sub KeyDown(ByVal e As System.Windows.Forms.KeyEventArgs)
         If e.KeyCode = Keys.Delete Then
-            For Each m As NRMonster In selectedMonsters
-                ed.EdControl.lvl.NRMonsters.Remove(m)
+            For Each m As Monster In selectedMonsters
+                ed.EdControl.lvl.Monsters.Remove(m)
             Next
             selectedMonsters.Clear()
             Repaint()
@@ -185,9 +185,9 @@
         UpdateStatus()
     End Sub
 
-    Public Overrides Sub NRMChanged()
-        For Each m As NRMonster In selectedMonsters
-            m.index = NRMPicker.SelectedIndex + 1
+    Public Overrides Sub MonsterChanged()
+        For Each m As Monster In selectedMonsters
+            m.index = MonsterPicker.SelectedIndex + 1
             m.UpdatePtr()
             Repaint()
         Next
@@ -198,11 +198,11 @@
             g.DrawRectangle(Pens.White, curX, curY, width, height)
             g.DrawRectangle(borderPen, curX, curY, width, height)
         End If
-        For Each m As NRMonster In selectedMonsters
+        For Each m As Monster In selectedMonsters
             g.FillRectangle(darkBrush, m.GetRect)
             g.DrawRectangle(Pens.White, m.GetRect)
         Next
-        For Each m As NRMonster In curSelMonsters
+        For Each m As Monster In curSelMonsters
             g.FillRectangle(darkBrush, m.GetRect)
             g.DrawRectangle(Pens.White, m.GetRect)
         Next
@@ -218,7 +218,7 @@
         selectedMonsters.Clear()
         selectedMonster = Nothing
         If selected Then
-            For Each m As NRMonster In ed.EdControl.lvl.NRMonsters
+            For Each m As Monster In ed.EdControl.lvl.Monsters
                 selectedMonsters.Add(m)
             Next
         End If
@@ -232,8 +232,8 @@
 
     Public Overrides Function Cut() As Boolean
         Copy()
-        For Each m As NRMonster In selectedMonsters
-            ed.EdControl.lvl.NRMonsters.Remove(m)
+        For Each m As Monster In selectedMonsters
+            ed.EdControl.lvl.Monsters.Remove(m)
         Next
         Return False
     End Function
@@ -241,38 +241,38 @@
     Public Overrides Function Paste() As Boolean
         selectedMonsters = FromText(Clipboard.GetText)
         Dim MinX As Integer = Integer.MaxValue, MinY As Integer = Integer.MaxValue
-        For Each m As NRMonster In selectedMonsters
-            ed.EdControl.lvl.NRMonsters.Add(m)
+        For Each m As Monster In selectedMonsters
+            ed.EdControl.lvl.Monsters.Add(m)
             If m.x < MinX Then MinX = m.x
             If m.y < MinY Then MinY = m.y
         Next
         Dim dx As Integer = ed.EdControl.HScrl.Value * ed.zoomLevel - MinX
         Dim dy As Integer = ed.EdControl.VScrl.Value * ed.zoomLevel - MinY
-        For Each m As NRMonster In selectedMonsters
+        For Each m As Monster In selectedMonsters
             m.x += dx
             m.y += dy
         Next
         Return False
     End Function
 
-    Private Function ToText(ByVal Monsters As List(Of NRMonster)) As String
+    Private Function ToText(ByVal Monsters As List(Of Monster)) As String
         Dim str As String = ""
-        For Each m As NRMonster In Monsters
-            str &= Shrd.HexL(m.x, 4) & Shrd.HexL(m.y, 4) & Shrd.HexL(m.unused1, 4) & _
-                   Shrd.HexL(m.unused2, 4) & Shrd.HexL(m.ptr, 8)
+        For Each m As Monster In Monsters
+            str &= Shrd.HexL(m.radius, 2) & Shrd.HexL(m.x, 4) & Shrd.HexL(m.y, 4) & _
+                   Shrd.HexL(m.delay, 2) & Shrd.HexL(m.ptr, 8)
         Next
         Return str
     End Function
 
-    Private Function FromText(ByVal txt As String) As List(Of NRMonster)
-        Dim Monsters As New List(Of NRMonster)
+    Private Function FromText(ByVal txt As String) As List(Of Monster)
+        Dim Monsters As New List(Of Monster)
         Try
             Dim indx As Integer = 1
             Do Until indx > txt.Length
-                Monsters.Add(New NRMonster(CInt("&H" & Mid(txt, indx, 4)), CInt("&H" & Mid(txt, indx + 4, 4)), _
-                                           CInt("&H" & Mid(txt, indx + 8, 4)), CInt("&H" & Mid(txt, indx + 12, 4)), _
-                                           CInt("&H" & Mid(txt, indx + 16, 8))))
-                indx += 24
+                Monsters.Add(New Monster(CInt("&H" & Mid(txt, indx, 2)), CInt("&H" & Mid(txt, indx + 2, 4)), _
+                                         CInt("&H" & Mid(txt, indx + 6, 4)), CInt("&H" & Mid(txt, indx + 10, 2)), _
+                                         CInt("&H" & Mid(txt, indx + 12, 8))))
+                indx += 20
             Loop
         Catch
         End Try

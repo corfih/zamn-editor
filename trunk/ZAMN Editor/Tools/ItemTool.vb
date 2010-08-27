@@ -94,6 +94,7 @@
             End If
             selecting = False
         End If
+        ed.SetCopy(selectedItems.Count > 0 Or curSelItems.Count > 0)
         Repaint()
     End Sub
 
@@ -220,5 +221,57 @@
             Next
         End If
         Return False
+    End Function
+
+    Public Overrides Function Copy() As Boolean
+        Clipboard.SetText(ToText(selectedItems))
+        Return False
+    End Function
+
+    Public Overrides Function Cut() As Boolean
+        Copy()
+        For Each i As Item In selectedItems
+            ed.EdControl.lvl.items.Remove(i)
+        Next
+        Return False
+    End Function
+
+    Public Overrides Function Paste() As Boolean
+        selectedItems = FromText(Clipboard.GetText)
+        Dim MinX As Integer = Integer.MaxValue, MinY As Integer = Integer.MaxValue
+        For Each i As Item In selectedItems
+            ed.EdControl.lvl.items.Add(i)
+            If i.x < MinX Then MinX = i.x
+            If i.y < MinY Then MinY = i.y
+        Next
+        Dim dx As Integer = ed.EdControl.HScrl.Value * ed.zoomLevel - MinX
+        Dim dy As Integer = ed.EdControl.VScrl.Value * ed.zoomLevel - MinY
+        For Each i As Item In selectedItems
+            i.x += dx
+            i.y += dy
+        Next
+        Return False
+    End Function
+
+    Private Function ToText(ByVal items As List(Of Item)) As String
+        Dim str As String = ""
+        For Each i As Item In items
+            str &= Shrd.HexL(i.x, 4) & Shrd.HexL(i.y, 4) & Shrd.HexL(i.type, 2)
+        Next
+        Return str
+    End Function
+
+    Private Function FromText(ByVal txt As String) As List(Of Item)
+        Dim items As New List(Of Item)
+        Try
+            Dim indx As Integer = 1
+            Do Until indx > txt.Length
+                items.Add(New Item(CInt("&H" & Mid(txt, indx, 4)), CInt("&H" & Mid(txt, indx + 4, 4)), _
+                                   CInt("&H" & Mid(txt, indx + 8, 2))))
+                indx += 10
+            Loop
+        Catch
+        End Try
+        Return items
     End Function
 End Class

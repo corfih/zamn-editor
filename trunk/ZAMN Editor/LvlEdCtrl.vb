@@ -5,6 +5,7 @@
     Public ItemPicker As New ItemBrowser
     Public VictimPicker As New VictimBrowser
     Public NRMPicker As New NRMBrowser
+    Public MonsterPicker As New MonsterBrowser
 
     Public Grid As Boolean
     Public priority As Boolean
@@ -101,6 +102,12 @@
             e.Graphics.DrawImage(LevelGFX.VictimImages(m.index), m.x, m.y)
             If m.index = 0 Then
                 e.Graphics.DrawRectangle(Pens.Yellow, m.GetRect)
+            End If
+        Next
+        For Each m As Monster In lvl.Monsters
+            e.Graphics.DrawImage(LevelGFX.VictimImages(m.index), m.x, m.y)
+            If m.index = 0 Then
+                e.Graphics.DrawRectangle(Pens.Blue, m.GetRect)
             End If
         Next
         For Each i As Item In lvl.items
