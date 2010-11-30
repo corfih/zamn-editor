@@ -1,0 +1,340 @@
+#summary Format of ZAMN levels
+
+= General information =
+
+Level pointers start at SNES $9F:8002 or PC $0F:8202.  All pointers are 2 bytes each and are relative to the 9F bank.
+All data is stored in little endian format.
+All pointers are in SNES format.
+
+= Level format =
+
+== Header ==
+
+This is the format of the level header
+
+  |00 01 02 03  04 05 06 07  08 09 0a 0b  0c 0d 0e 0f
+--+--------------------------------------------------
+00|TILESETPTR-  LVLDATAPTR-  TLSTCOLPTR-  TLSTGFXPTR-
+10|PALETTEPTR-  SPRTPLTPTR-  PLTANIMPTR-  MNSTR VCTIM
+20|ITEMS WIDTH  HEIGT UNKNW  UNKN3 P1XPS  P1YPS P2XPS
+30|P2YPS MUSIC  UNKN2 TITL1  TITL2 BONUS
+
+TILESETPTR - a pointer to the tilesets Map16 data.  It stores the arrangements of tiles that make up each background tile
+LVLDATAPTR - a pointer to the arrangement of tiles in the background
+TLSTCOLPTR - a pointer to the collision data for the tileset
+TLSTGFXPTR - a pointer to the graphics data for the tileset
+PALETTEPTR - a pointer to the palette for the tileset
+SPRTPLTPTR - a pointer to the sprite palette for the level
+MNSTR - a pointer to the levels respawning monster data
+VCTIM - a pointer to the levels victim and non-respawning monster data
+ITEMS - a pointer to the levels item data
+WIDTH - the width in tiles of the level background
+HEIGT - the height in tiles of the level background
+UNKNW - unknown
+UNKN3 - unknown
+P1XPS - the starting x position of player 1
+P1YPS - the starting y position of player 1
+P2XPS - the starting x position of player 2
+P2YPS - the starting y position of player 2
+MUSIC - which song should be played on the level
+UNKN2 - unknown
+TITL1 - a pointer to the first page of the level title
+TITL2 - a pointer to the second page of the level title
+BONUS - a pointer to the bonus data
+
+== Boss monsters ==
+The boss monster data is listed directly after the header
+Each boss monster has this format:
+
+  |00 01 02 03  04 05 06 07  08 09 0a 0b  0c 0d 0e 0f
+--+--------------------------------------------------
+00|CODEPOINTER  EXTRADATA--
+
+CODEPOINTER - a pointer to the monsters code
+    $82:873C = UFO
+    $82:9569 = Giant Baby
+    $82:A8BB = Desert Snakeoid
+    $82:A8C3 = Grass Snakeoid
+    $82:AB95 = Palette fade
+    $82:D7CF = Unknown
+    $83:AD33 = Giant Spider
+EXTRADATA - 4 bytes of extra data that can be used by the monster.  For all standard monsters this is 2 bytes for the x position followed by 2 bytes for the y position, but for the palette fade sprite, these 4 bytes specify a pointer to somewhere inside of the level file which tell it how to fade.  Exact format of this is currently not known.
+
+This is repeated for each boss monster in the level.
+After all of the boss monster, 00 00 00 00 is put.
+
+== Tileset Map16 ==
+
+This data is compressed using a compression method similar to Yaz0. Once decompressed, this is the format:
+Each tile gets 2 bytes.  The first byte tells which graphics tile to use.  The second bytes individual bits set properties for the tile.
+
+XY-PPP-G
+
+X - Flip the tile horizontally
+Y - Flip the tile vertically
+P - The palette to use for the tile
+G - Use the second graphics page (add 0x100 to the original graphics tile number)
+
+Each full background tile is made of 64 of these.  The tileset has 256 background tiles.
+
+Addresses:
+    $9A:C000 = Castle
+    $9B:8000 = Grass
+    $9B:BCB5 = Pyramid/Beach
+    $9C:8000 = Office
+    $9C:B6EF = Mall
+
+== Background data ==
+
+This is just the numbers of the background tiles listed from left to right, top to bottom.  Each tile is 2 bytes.
+
+== Collision data ==
+
+There are 2 bytes for each graphics tile.  The bits set properties of the tile.  What each bit does is currently unknown.
+
+Addresses:
+    $9B:F4D1 = Grass
+    $9B:F8D1 = Pyramid/Beach
+    $9C:EAAB = Castle
+    $9C:EEAB = Mall
+    $9C:F2AB = Office
+
+== Graphics data ==
+
+The graphics are stored in 4bpp planar format.  There are 512 tiles per tileset.
+
+Addresses:
+    $98:8000 = Grass
+    $98:C000 = Pyramid/Beach
+    $99:8000 = Castle
+    $99:C000 = Mall
+    $9A:8000 = Office
+
+== Palette data ==
+
+Standard 0BBBBBGG GGGRRRRR color format. 128 colors are in the palette.
+
+Addresses: $9E:xx76
+    8E = Grass
+    90 = Fall grass
+    91 = Snowy grass
+    92 = Night grass
+
+    94 = Pyramid
+    95 = Beach/Desert
+    96 = Dark beach
+    97 = Cave
+
+    98 = Castle
+    99 = Night castle
+    9A = Bright castle
+    9B = Dark castle
+
+    9C = Mall
+    9D = Dark mall
+
+    9E = Office
+    9F = Dark fire cave
+    A0 = Light office
+    A1 = Dark office
+    A2 = Fire cave
+
+== Sprite palette ==
+
+Standard palette format.  Is always $9E:8F76
+
+== Palette animation ==
+
+This appears to point to code.  I haven't yet tried to figure out how the code works.
+
+Addresses:
+    $80:A0AD = Castle
+    $80:A0EF = Grass
+    $80:A137 = Beach
+    $80:A222 = Pyramid
+    $80:A264 = Fire cave
+
+== Respawning monster data ==
+
+Each monster has this format:
+
+  |00 01 02 03  04 05 06 07  08 09 0a 0b  0c 0d 0e 0f
+--+--------------------------------------------------
+00|RR XPOS- YPOS-- DD CODEPOINTER-
+
+RR - The radius of the respawn location
+XPOS - The x position of the respawn location
+YPOS - The y position of the respawn location
+DD - The delay between spawns
+CODEPOINTER - A pointer to the monsters code
+    $81:87F8 = Normal Zombie
+    $81:88CA = Fast Zombie
+    $81:8C17 = Mummy
+    $81:8E89 = Clone
+    $81:99DF = Martian
+    $81:ABF5 = Werewolf
+    $81:B2B0 = Evil doll
+    $81:B664 = Flame guy
+    $81:C1FB = Ant from hole
+    $81:C321 = Ant from hiding
+    $81:C3B6 = Red ant from hole
+    $81:C87B = Football player
+    $81:CCCF = Blob
+    $81:D704 = Mushroom men
+    $82:990F = Tentacle
+
+After all monsters, 00 00 is put.
+
+== Victim data ==
+
+Each victim has this format:
+
+  |00 01 02 03  04 05 06 07  08 09 0a 0b  0c 0d 0e 0f
+--+--------------------------------------------------
+00|XPOS- YPOS-  00 00 VN 00  CODEPOINTER
+
+XPOS - The x position of the victim
+YPOS - The y position of the victim
+VN - The victim number.  This specifies which victims will be available when some are lost.  The victims are eliminated from highest to lowest.  For the 10th victim the number should be 0x10 not 0x0A.
+CODEPOINTER - A pointer to the victims code.
+    $83:9699 = Barbecue guy
+    $83:9776 = Baby
+    $83:9843 = Trampoline girl
+    $83:993D = Army guy
+    $83:9A89 = Dog
+    $83:9BAD = Dr. Bug
+    $83:9C6D = Teacher
+    $83:9E15 = Archaeologist
+    $83:9D00 = Pool Guy
+    $83:9EBE = Cheerleader
+    $83:9FE2 = Tourists
+
+After the 10 victims, non-respawning monsters are listed with the same format, except the victim number is always 0.
+
+Code pointers:
+    $81:983A = Chainsaw guy
+    $81:A455 = Frankenstein
+    $81:D2F1 = Plant
+    $81:D2F9 = Plant 2
+    $82:EF36 = Dracula
+    $82:F25D = Fire
+    $83:B55E = Dr. Tongue (disappears)
+    $83:B7F6 = Giant head (credit level)
+
+After all the monsters, 00 00 is put.
+
+== Item data ==
+
+Each item has this format:
+
+  |00 01 02 03  04 05 06 07  08 09 0a 0b  0c 0d 0e 0f
+--+--------------------------------------------------
+00|XPOS- YPOS-  NN
+
+XPOS - The x position of the item
+YPOS - The y position of the item
+NN - The item numer
+    00 = Squirtgun
+    02 = Fire Extinguisher
+    04 = Bubble Gun
+    06 = Weed Whacker
+    08 = Key
+    0A = Running Shoes
+    0C = Monster Potion
+    0E = Blue Potion
+    10 = Mystery Potion
+    12 = Gray Potion (unused)
+    14 = Hamburger
+    16 = Pop Cans
+    18 = Tomatoes
+    1A = Popsicles
+    1C = Bananas (unused)
+    1E = First Aid Kit
+    20 = Plates
+    22 = Silverware
+    24 = Cross
+    26 = Bazooka
+    28 = Footballs
+    2A = Flamethrower
+    2C = Pandora's Box
+    2E = Skull Key
+    30 = Clowns
+    32 = Pile of Keys (only used when a player dies)
+    34 = Secret Level
+    36 = 1up
+    38 = Coins
+    3A = Dollar Bills
+
+After all of the items, 00 00 is put.
+
+== Unknown ==
+
+This value always corresponds to the level's tileset:
+    57 = Office
+    59 = Pyramid
+    69 = Mall
+    70 = Grass/Castle
+
+== Unknown 2 ==
+
+I have no clue what this does.  It doesn't appear to affect the level in any way.
+
+== Unknown 3 ==
+
+This is always 1FF
+
+== Music ==
+
+02 = Evening of the Undead
+03 = Title Screen
+04 = Pyramid of Fear
+05 = Terror in Aisle Five
+06 = Zombie Panic
+07 = Chainsaw Mayhem
+08 = Mars Needs Cheerleaders
+09 = Dr. Tongue's Castle
+0A = Unused Song
+0B = Titanic Toddler
+
+== Level Titles ==
+
+Each word has this format:
+
+  |00 01 02 03  04 05 06 07  08 09 0a 0b  0c 0d 0e 0f
+--+--------------------------------------------------
+00|XP YP PL PG
+
+XP - The x position of the word in tiles
+YP - The y position of the word in tiles
+PL - The palette of the word
+    00 = Blue dripping letters
+    02 = Green Block letters
+    04 = Red/Orange block letters
+    06 = Red dripping letters
+PG - The page it should go on
+    01 = First page
+    00 = Second page
+
+Then the characters are listed.  Each is 1 byte.
+After each word is 0xFF, or 0x00 if it is the end of the page.
+
+== Bonus data ==
+
+All of the bonuses available in the level are listed.  They are 2 bytes each.
+    04 = All Victims Saved
+    06 = Ten Cheerleader
+    08 = Massive Destruction
+    0A = Pass Completion
+    0C = Weed Cutting
+    0E = No Bazooka Fired
+    10 = Monster Frozen
+    12 = Extermination
+    14 = Chainsaw Begone
+    16 = Fish Fry Bonus
+    18 = Frankenstein Destroyed
+    1A = Martian Bubbled
+    1C = Alien Invasion Repulsed
+    1E = Vampire Crossed Out
+    20 = Secret Bonus
+
+After all of the bonuses 00 00 is put.
