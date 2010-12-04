@@ -63,7 +63,16 @@ CODEPOINTER - a pointer to the monsters code<br />
     $82:AB95 = Palette fade<br />
     $82:D7CF = Unknown<br />
     $83:AD33 = Giant Spider<br />
-EXTRADATA - 4 bytes of extra data that can be used by the monster.  For all standard monsters this is 2 bytes for the x position followed by 2 bytes for the y position, but for the palette fade sprite, these 4 bytes specify a pointer to somewhere inside of the level file which tell it how to fade.  Exact format of this is currently not known.
+EXTRADATA - 4 bytes of extra data that can be used by the monster.  For all standard monsters this is 2 bytes for the x position followed by 2 bytes for the y position, but for the palette fade sprite, these 4 bytes specify a pointer to somewhere inside of the level file to this data:
+
+{{{
+  |00 01 02 03  04 05 06 07  08 09 0a 0b  0c 0d 0e 0f
+--+--------------------------------------------------
+00|NEWBGPALETT  NEWSPRITEPL
+}}}
+
+NEWBGPALETT - A pointer to the background palette to fade to<br />
+NEWSPRITEPL - A pointer to the sprite palette to fade to
 
 After all of the boss monster, 00 00 00 00 is put.
 
